@@ -1,0 +1,1 @@
+require 'librarian/puppet/extension'
