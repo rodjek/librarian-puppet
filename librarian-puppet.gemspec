@@ -17,6 +17,7 @@ Gem::Specification.new do |s|
     'lib/librarian/puppet/dsl.rb',
     'lib/librarian/puppet/environment.rb',
     'lib/librarian/puppet/extension.rb',
+    'lib/librarian/puppet/source/forge.rb',
     'lib/librarian/puppet/source/git.rb',
     'lib/librarian/puppet/source/local.rb',
     'lib/librarian/puppet/source/path.rb',

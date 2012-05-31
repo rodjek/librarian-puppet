@@ -7,6 +7,7 @@ module Librarian
 
       dependency :mod
 
+      source :forge => Source::Forge
       source :git => Source::Git
       source :path => Source::Path
     end
