@@ -22,6 +22,9 @@ module Librarian
         copy_file environment.specfile_name
       end
 
+      def version
+        say "librarian-puppet v#{Librarian::Puppet::VERSION}"
+      end
     end
   end
 end
