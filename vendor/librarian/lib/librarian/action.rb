@@ -1,0 +1,5 @@
+require "librarian/action/clean"
+require "librarian/action/ensure"
+require "librarian/action/install"
+require "librarian/action/resolve"
+require "librarian/action/update"
