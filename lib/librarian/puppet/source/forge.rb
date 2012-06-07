@@ -70,7 +70,8 @@ module Librarian
 
             path.mkpath
 
-            p `puppet module install -i #{path.to_s} --modulepath #{path.to_s} --ignore-dependencies #{name}`
+            output = `puppet module install -i #{path.to_s} --modulepath #{path.to_s} --ignore-dependencies #{name} 2>&1`
+            debug { output }
           end
 
         private
