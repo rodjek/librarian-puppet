@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="librarian-puppet : You can all stop using git submodules now" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>librarian-puppet</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/rodjek/librarian-puppet">View on GitHub</a>
+
+          <h1 id="project_title">librarian-puppet</h1>
+          <h2 id="project_tagline">You can all stop using git submodules now</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/rodjek/librarian-puppet/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/rodjek/librarian-puppet/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>Introduction</h2>
+
+<p>Librarian-puppet is a bundler for your puppet infrastructure.  You can use
+librarian-puppet to manage the puppet modules your infrastructure depends on.
+It is based on <a href="https://github.com/applicationsonline/librarian">Librarian</a>, a
+framework for writing bundlers, which are tools that resolve, fetch, install,
+and isolate a project's dependencies.</p>
+
+<p>Librarian-puppet manages your <code>modules/</code> directory for you based on your
+<code>Puppetfile</code>.  Your <code>Puppetfile</code> becomes the authoritative source for what
+modules you require and at what version, tag or branch.</p>
+
+<p>Once using Librarian-puppet you should not modify the contents of your <code>modules</code>
+directory.  The individual modules' repos should be updated, tagged with a new
+release and the version bumped in your Puppetfile.</p>
+
+<h2>The Puppetfile</h2>
+
+<p>Every Puppet repository that uses Librarian-puppet will have a file named
+<code>Puppetfile</code> in the root directory of that repository.  The full specification
+for which modules your puppet infrastructure repository  depends goes in here.</p>
+
+<h3>Example Puppetfile</h3>
+
+<pre><code>forge "http://forge.puppetlabs.com"
+
+mod "puppetlabs/razor"
+mod "puppetlabs/ntp", "0.0.3"
+
+mod "apt",
+  :git =&gt; "git://github.com/puppetlabs/puppetlabs-apt.git"
+
+mod "stdlib",
+  :git =&gt; "git://github.com/puppetlabs/puppetlabs-stdlib.git"
+</code></pre>
+
+<p><em>See <a href="https://github.com/aussielunix/jenkins-appliance">jenkins-appliance</a> for
+a puppet repo already setup to use librarian-puppet.</em></p>
+
+<h3>Puppetfile Breakdown</h3>
+
+<pre><code>forge "http://forge.puppetlabs.com"
+</code></pre>
+
+<p>This declares that we want to use the official Puppet Labs Forge as our default
+source when pulling down modules.  If you run your own local forge, you may
+want to change this.</p>
+
+<pre><code>mod "puppetlabs/razor"
+</code></pre>
+
+<p>Pull in the latest version of the Puppet Labs Razor module from the default
+source.</p>
+
+<pre><code>mod "puppetlabs/ntp", "0.0.3"
+</code></pre>
+
+<p>Pull in version 0.0.3 of the Puppet Labs NTP module from the default source.</p>
+
+<pre><code>mod "apt",
+  :git =&gt; "git://github.com/puppetlabs/puppetlabs-apt.git"
+</code></pre>
+
+<p>Our puppet infrastructure repository depends on the <code>apt</code> module from the
+Puppet Labs GitHub repos and checks out the <code>master</code> branch.</p>
+
+<pre><code>mod "apt",
+  :git =&gt; "git://github.com/puppetlabs/puppetlabs-apt.git"
+  :ref =&gt; '0.0.3'
+</code></pre>
+
+<p>Our puppet infrastructure repository depends on the <code>apt</code> module from the
+Puppet Labs GitHub repos and checks out a tag of <code>0.0.3</code>.</p>
+
+<pre><code>mod "apt",
+  :git =&gt; "git://github.com/puppetlabs/puppetlabs-apt.git"
+  :ref =&gt; 'feature/master/dans_refactor'
+</code></pre>
+
+<p>Our puppet infrastructure repository depends on the <code>apt</code> module from the
+Puppet Labs GitHub repos and checks out the <code>dans_refactor</code> branch.</p>
+
+<p>When using a Git source, we do not have to use a <code>:ref =&gt;</code>.
+If we do not, then librarian-puppet will assume we meant the <code>master</code> branch.</p>
+
+<p>If we use a <code>:ref =&gt;</code>, we can use anything that Git will recognize as a ref.
+This includes any branch name, tag name, SHA, or SHA unique prefix. If we use a
+branch, we can later ask Librarian-pupet to update the modulek by fetching the
+most recent version of the module from that same branch.</p>
+
+<p>The Git source also supports a <code>:path =&gt;</code> option. If we use the path option,
+Librarian-puppet will navigate down into the Git repository and only use the
+specified subdirectory. Some people have the habit of having a single repository
+with many modules in it. If we need a module from such a repository, we can
+use the <code>:path =&gt;</code> option here to help Librarian-puppet drill down and find the
+module subdirectory.</p>
+
+<pre><code>mod "apt",
+  :git =&gt; "git://github.com/fake/puppet-modules.git"
+  :path =&gt; "modules/apt"
+</code></pre>
+
+<p>Our puppet infrastructure repository depends on the <code>apt</code> module, which we have
+stored as a directory under our <code>puppet-modules</code> git repos.</p>
+
+<h2>How to Use</h2>
+
+<p>Install librarian-puppet:</p>
+
+<pre><code>$ gem install --pre librarian-puppet
+</code></pre>
+
+<p>Prepare your puppet infrastructure repository:</p>
+
+<pre><code>$ cd ~/path/to/puppet-inf-repos
+$ (git) rm -rf modules
+$ librarian-puppet init
+</code></pre>
+
+<p>Librarian-puppet takes over your <code>modules/</code> directory, and will always
+reinstall (if missing) the modules listed the <code>Puppetfile.lock</code> into your
+<code>modules/</code> directory, therefore you do not need your <code>modules/</code> directory to be
+tracked in Git.</p>
+
+<p>Librarian-puppet uses a <code>.tmp/</code> directory for tempfiles and caches. You should
+not track this directory in Git.</p>
+
+<p>Running <code>librarian-puppet init</code> will create a skeleton Puppetfile for you as
+well as adding <code>tmp/</code> and <code>modules/</code> to your <code>.gitignore</code>.</p>
+
+<pre><code>$ librarian-puppet install [--clean] [--verbose]
+</code></pre>
+
+<p>This command looks at each <code>mod</code> declaration and fetches the module from the
+source specified.  This command writes the complete resolution into
+<code>Puppetfile.lock</code> and then copies all of the fetched modules into your
+<code>modules/</code> directory, overwriting whatever was there before.</p>
+
+<p>Get an overview of your <code>Puppetfile.lock</code> with:</p>
+
+<pre><code>$ librarian-puppet show
+</code></pre>
+
+<p>Inspect the details of specific resolved dependencies with:</p>
+
+<pre><code>$ librarian-puppet show NAME1 [NAME2, ...]
+</code></pre>
+
+<p>Find out which dependencies are outdated and may be updated:</p>
+
+<pre><code>$ librarian-puppet outdated [--verbose]
+</code></pre>
+
+<p>Update the version of a dependency:</p>
+
+<pre><code>$ librarian-puppet update apt [--verbose]
+$ git diff Puppetfile.lock
+$ git add Puppetfile.lock
+$ git commit -m "bumped the version of apt up to 0.0.4."
+</code></pre>
+
+<h2>How to Contribute</h2>
+
+<ul>
+<li>Pull requests please.</li>
+<li>Bonus points for feature branches.</li>
+</ul><h2>Reporting Issues</h2>
+
+<p>Bug reports to the github issue tracker please.
+Please include:</p>
+
+<ul>
+<li>relevant <code>Puppetfile</code> and <code>Puppetfile.lock</code> files.</li>
+<li>version of ruby, librarian-puppet</li>
+<li>What distro</li>
+<li>Please run the <code>librarian-puppet</code> commands in verbose mode by using the
+<code>--verbose</code> flag, and include the verbose output in the bug report as well.</li>
+</ul><h2>License</h2>
+
+<p>Please see the <a href="https://github.com/rodjek/librarian-puppet/blob/master/LICENSE">LICENSE</a>
+file.</p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">librarian-puppet maintained by <a href="https://github.com/rodjek">rodjek</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
