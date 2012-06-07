@@ -124,4 +124,5 @@ Gem::Specification.new do |s|
   s.executables = ['librarian-puppet']
 
   s.add_dependency "thor", "~> 0.15"
+  s.add_dependency "json"
 end

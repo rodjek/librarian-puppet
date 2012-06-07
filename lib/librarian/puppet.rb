@@ -2,6 +2,6 @@ require 'librarian/puppet/extension'
 
 module Librarian
   module Puppet
-    VERSION = "0.0.1.pre2"
+    VERSION = "0.9.0"
   end
 end
