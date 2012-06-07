@@ -13,6 +13,14 @@ module Librarian
       def install_path
         project_path.join("modules")
       end
+
+      def cache_path
+        project_path.join(".tmp/librarian/cache")
+      end
+
+      def scratch_path
+        project_path.join(".tmp/librarian/scratch")
+      end
     end
   end
 end
