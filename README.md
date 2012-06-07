@@ -163,8 +163,5 @@ Please include:
   `--verbose` flag, and include the verbose output in the bug report as well.
 
 ## License
-
-Written by Tim Sharpe
-Copyright (c) 2012
-Released under the terms of the MIT License.
-For further information, please see [LICENSE](https://github.com/rodjek/librarian-puppet/blob/master/LICENSE)
+Please see the [LICENSE](https://github.com/rodjek/librarian-puppet/blob/master/LICENSE)
+file.
