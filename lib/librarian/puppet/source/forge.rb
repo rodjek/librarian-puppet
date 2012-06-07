@@ -1,13 +1,16 @@
 require 'uri'
 require 'net/http'
 require 'json'
+require 'librarian/helpers/debug'
 
 module Librarian
   module Puppet
     module Source
       class Forge
+        include Helpers::Debug
         class Repo
 
+          include Helpers::Debug
           attr_accessor :source, :name
           private :source=, :name=
 
@@ -33,15 +36,49 @@ module Librarian
           end
 
           def install_version!(version, install_path)
+            cache_version_unpacked! version
+
+            if install_path.exist?
+              debug { "Deleting #{relative_path_to(install_path)}" }
+              install_path.rmtree
+            end
+
+            unpacked_path = version_unpacked_cache_path(version).join(name.split('/').last)
+            debug { "Copying #{relative_path_to(unpacked_path)} to #{relative_path_to(install_path)}" }
+            FileUtils.cp_r(unpacked_path, install_path)
+          end
+
+          def environment
+            source.environment
+          end
+
+          def cache_path
+            @cache_path ||= source.cache_path.join(name)
+          end
+
+          def version_unpacked_cache_path(version)
+            cache_path.join('version').join(hexdigest(version.to_s))
+          end
+
+          def hexdigest(value)
+            Digest::MD5.hexdigest(value)
+          end
+
+          def cache_version_unpacked!(version)
+            path = version_unpacked_cache_path(version)
+            return if path.directory?
+
+            path.mkpath
+
+            p `puppet module install -i #{path.to_s} --modulepath #{path.to_s} --ignore-dependencies #{name}`
           end
 
         private
 
           def api_call(path)
-            base_url = 'http://forge.puppetlabs.com/'
+            base_url = source.to_s
             resp = Net::HTTP.get_response(URI.parse("#{base_url}#{path}"))
             data = resp.body
-            p path
 
             JSON.parse(data)
           end
@@ -105,7 +142,16 @@ module Librarian
         end
 
         def install!(manifest)
-          # XXX
+          manifest.source == self or raise ArgumentError
+
+          name = manifest.name
+          version = manifest.version
+          install_path = install_path(name)
+          repo = repo(name)
+
+          debug { "Installing #{manifest}" }
+
+          repo.install_version! version, install_path
         end
 
         def manifest(name, version, dependencies)
@@ -122,8 +168,8 @@ module Librarian
           end
         end
 
-        def install_path
-          environment.install_path.join(name)
+        def install_path(name)
+          environment.install_path.join(name.split('/').last)
         end
 
         def fetch_version(name, version_uri)
