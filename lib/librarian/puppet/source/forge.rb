@@ -77,7 +77,7 @@ module Librarian
 
           def api_call(path)
             base_url = source.to_s
-            resp = Net::HTTP.get_response(URI.parse("#{base_url}#{path}"))
+            resp = Net::HTTP.get_response(URI.parse("#{base_url}/#{path}"))
             data = resp.body
 
             JSON.parse(data)
