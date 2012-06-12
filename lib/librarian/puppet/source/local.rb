@@ -38,7 +38,9 @@ module Librarian
         end
 
         def manifest?(name, path)
-          path.join('manifests').exist?
+          return true if path.join('manifests').exist?
+          return true if path.join('lib').join('puppet').exist?
+          false
         end
       end
     end
