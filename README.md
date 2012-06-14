@@ -101,7 +101,7 @@ stored as a directory under our `puppet-modules` git repos.
 
 Install librarian-puppet:
 
-    $ gem install --pre librarian-puppet
+    $ gem install librarian-puppet
 
 Prepare your puppet infrastructure repository:
 
