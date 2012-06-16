@@ -27,7 +27,7 @@ module Librarian
           gitignore = []
         end
 
-        gitignore << "tmp/" unless gitignore.include? "tmp/"
+        gitignore << ".tmp/" unless gitignore.include? ".tmp/"
         gitignore << "modules/" unless gitignore.include? "modules/"
 
         File.open(".gitignore", 'w') do |f|
