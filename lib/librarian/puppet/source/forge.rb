@@ -21,6 +21,10 @@ module Librarian
 
           def versions
             data = api_call("#{name}.json")
+            if data.nil?
+              raise Error, "Unable to find module '#{name}' on #{source}"
+            end
+
             data['releases'].map { |r| r['version'] }.sort.reverse
           end
 
@@ -79,9 +83,12 @@ module Librarian
           def api_call(path)
             base_url = source.to_s
             resp = Net::HTTP.get_response(URI.parse("#{base_url}/#{path}"))
-            data = resp.body
-
-            JSON.parse(data)
+            if resp.code.to_i != 200
+              nil
+            else
+              data = resp.body
+              JSON.parse(data)
+            end
           end
         end
 
