@@ -11,6 +11,12 @@ module Librarian
           name, version = manifest.name, manifest.version
           found_path = found_path(name)
 
+          if name.include? '/'
+            new_name = name.split('/').last
+            debug { "Invalid module name '#{name}', guessing you meant '#{new_name}'" }
+            name = new_name
+          end
+
           install_path = environment.install_path.join(name)
           if install_path.exist?
             debug { "Deleting #{relative_path_to(install_path)}" }
