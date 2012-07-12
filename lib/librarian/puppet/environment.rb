@@ -1,6 +1,7 @@
 require "librarian/environment"
 require "librarian/puppet/dsl"
 require "librarian/puppet/source"
+require "librarian/puppet/lockfile/parser"
 
 module Librarian
   module Puppet
