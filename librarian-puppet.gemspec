@@ -1,6 +1,6 @@
 $:.push File.expand_path("../lib", __FILE__)
-$:.push File.expand_path("../vendor/librarian/lib", __FILE__)
-require 'librarian/puppet'
+
+require 'librarian/puppet/version'
 
 Gem::Specification.new do |s|
   s.name = 'librarian-puppet'
