@@ -17,7 +17,7 @@ module Librarian
           source_type_name = lines.shift
           source[:type] = source_type_names_map[source_type_name]
           options = {}
-          while lines.first =~ /^ {2}([\w-]+):\s+(.+)$/
+          while lines.first =~ /^ {2}([\w\-\/]+):\s+(.+)$/
             lines.shift
             options[$1.to_sym] = $2
           end
@@ -28,7 +28,7 @@ module Librarian
             lines.shift
             name = $1
             manifests[name] = {:version => $2, :dependencies => {}}
-            while lines.first =~ /^ {6}([\w-]+) \((.*)\)$/
+            while lines.first =~ /^ {6}([\w\-\/]+) \((.*)\)$/
               lines.shift
               manifests[name][:dependencies][$1] = $2.split(/,\s*/)
             end
