@@ -1,10 +1,6 @@
-require "librarian/helpers/debug"
-
 module Librarian
   module Action
     class Base
-
-      include Helpers::Debug
 
       attr_accessor :environment
       private :environment=
@@ -15,6 +11,12 @@ module Librarian
       def initialize(environment, options = { })
         self.environment = environment
         self.options = options
+      end
+
+    private
+
+      def debug(*args, &block)
+        environment.logger.debug(*args, &block)
       end
 
     end

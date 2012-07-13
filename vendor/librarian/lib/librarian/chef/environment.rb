@@ -11,7 +11,15 @@ module Librarian
       end
 
       def install_path
-        project_path.join("cookbooks")
+        part = config_db["path"] || "cookbooks"
+        project_path.join(part)
+      end
+
+      def config_keys
+        super + %w[
+          install.strip-dot-git
+          path
+        ]
       end
 
     end

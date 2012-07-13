@@ -12,33 +12,49 @@ A bundler written with Librarian will expect you to provide a specfile listing
 your project's declared dependencies, including any version constraints and
 including the upstream sources for finding them. Librarian can resolve the spec,
 write a lockfile listing the full resolution, fetch the resolved dependencies,
-install them, and isolate them in your project. This is what Bundler does for
-projects that depend on Ruby gems.
+install them, and isolate them in your project.
+
+A bundler written with Librarian will be similar in kind to [Bundler](http://gembundler.com),
+the bundler for Ruby gems that many modern Rails applications use.
 
 Librarian-Chef
 ---------------
 
-Librarian-Chef is a bundler for infrastructure repositories using Chef. You can
-use Librarian-Chef to resolve your infrastructure's cookbook dependencies,
-fetch them and install them into your infrastructure.
+Librarian-Chef is a tool that helps you manage the cookbooks that your chef-repo
+depends on. Here are some more details.
 
-Librarian-Chef is for resolving and fetching third-party, publicly-released
-cookbooks, and installing them into your infrastructure repository. It is not
-for dealing with the cookbooks you're actively working on within your
-infrastructure repository.
+Librarian-Chef is a bundler for infrastructure repositories using Chef. You can
+use Librarian-Chef to resolve your infrastructure's cookbook dependencies, fetch
+them, and install them into your infrastructure repository.
+
+Librarian-Chef can resolve and fetch third-party, publicly-released cookbooks,
+and install them into your infrastructure repository. It can also source
+cookbooks directly from their own source control repositories.
+
+Librarian-Chef can also deal with cookbooks you may actively be working on
+outside your infrastructure repository. For example, it can deal with cookbooks
+directly from their own private source control repositories, whether they are
+remote or local to your machine, and it can deal with cookbooks released to and
+hosted on a private cookbooks server.
+
+Librarian-Chef is not primarily intended for dealing with the cookbooks you are
+actively working on *within* your infrastructure repository. In such a case, you
+can still use Librarian-Chef, but it is likely unnecessary.
 
 Librarian-Chef *takes over* your `cookbooks/` directory and manages it for you
 based on your `Cheffile`. Your `Cheffile` becomes the authoritative source for
 the cookbooks your infrastructure repository depends on. You should not modify
 the contents of your `cookbooks/` directory when using Librarian-Chef. If you
-have custom cookbooks which are specific to your infrastructure repository,
-they should go in your `site-cookbooks/` directory.
+have cookbooks which are, rather than being separate projects, inherently part
+of your infrastructure repository, then they should go in a separate directory,
+like your `site-cookbooks/` directory, and you do not need to use Librarian-Chef
+to manage them.
 
 ### The Cheffile
 
 Every infrastruture repository that uses Librarian-Chef will have a file named
 `Cheffile` in the root directory of that repository. The full specification for
-which third-party, publicly-rleased cookbooks your infrastructure repository
+which third-party, publicly-released cookbooks your infrastructure repository
 depends will go here.
 
 Here's an example `Cheffile`:
@@ -103,7 +119,7 @@ most recent version of the cookbook from that same branch.
 
 The Git source also supports a `:path =>` option. If we use the path option,
 Librarian-Chef will navigate down into the Git repository and only use the
-specified subdirectory. Many people have the havit of having a single repository
+specified subdirectory. Many people have the habit of having a single repository
 with many cookbooks in it. If we need a cookbook from such a repository, we can
 use the `:path =>` option here to help Librarian-Chef drill down and find the
 cookbook subdirectory.
@@ -130,8 +146,8 @@ Prepare your infrastructure repository:
 
     $ cd ~/path/to/chef-repo
     $ git rm -r cookbooks
-    $ echo cookbooks >> .gitignore
-    $ echo tmp >> .gitignore
+    $ echo /cookbooks >> .gitignore
+    $ echo /tmp >> .gitignore
 
 Librarian-Chef takes over your `cookbooks/` directory, and will always reinstall
 the cookbooks listed the `Cheffile.lock` into your `cookbooks/` directory. Hence
@@ -239,6 +255,75 @@ Push your changes to the git repository:
 Upload the cookbooks to your chef-server:
 
     $ knife cookbook upload --all
+
+### Configuration
+
+Configuration comes from three sources with the following highest-to-lowest
+precedence:
+
+* The local config (`./.librarian/chef/config`)
+* The environment
+* The global config (`~/.librarian/chef/config`)
+
+You can inspect the final configuration with:
+
+    $ librarian-chef config
+
+You can find out where a particular key is set with:
+
+    $ librarian-chef config KEY
+
+You can set a key at the global level with:
+
+    $ librarian-chef config KEY VALUE --global
+
+And remove it with:
+
+    $ librarian-chef config KEY --global --delete
+
+You can set a key at the local level with:
+
+    $ librarian-chef config KEY VALUE --local
+
+And remove it with:
+
+    $ librarian-chef config KEY --local --delete
+
+You cannot set or delete environment-level config keys with the CLI.
+
+Configuration set at either the global or local level will affect subsequent
+invocations of `librarian-chef`. Configurations set at the environment level are
+not saved and will not affect subsequent invocations of `librarian-chef`.
+
+You can pass a config at the environment level by taking the original config key
+and transforming it: replace hyphens (`-`) with underscores (`_`) and periods
+(`.`) with doubled underscores (`__`), uppercase, and finally prefix with
+`LIBRARIAN_CHEF_`. For example, to pass a config in the environment for the key
+`part-one.part-two`, set the environment variable
+`LIBRARIAN_CHEF_PART_ONE__PART_TWO`.
+
+Configuration affects how various commands operate.
+
+* The `path` config sets the cookbooks directory to install to. If a relative
+  path, it is relative to the directory containing the `Cheffile`. The
+  equivalent environment variable is `LIBRARIAN_CHEF_PATH`.
+
+* The `install.strip-dot-git` config causes the `.git/` directory to be stripped
+  out when installing cookbooks from a git source. This must be set to exactly
+  "1" to cause this behavior. The equivalent environment variable is
+  `LIBRARIAN_CHEF_INSTALL__STRIP_DOT_GIT`.
+
+Configuration can be set by passing specific options to other commands.
+
+* The `path` config can be set at the local level by passing the `--path` option
+  to the `install` command. It can be unset at the local level by passing the
+  `--no-path` option to the `install` command. Note that if this is set at the
+  environment or global level then, even if `--no-path` is given as an option,
+  the environment or global config will be used.
+
+* The `install.strip-dot-git` config can be set at the local level by passing
+  the `--strip-dot-git` option to the `install` command. It can be unset at the
+  local level by passing the `--no-strip-dot-git` option.
 
 ### Knife Integration
 

@@ -8,8 +8,6 @@ require 'zlib'
 require 'securerandom'
 require 'archive/tar/minitar'
 
-require 'librarian/helpers/debug'
-
 require 'librarian/chef/manifest_reader'
 
 module Librarian
@@ -17,11 +15,7 @@ module Librarian
     module Source
       class Site
 
-        include Helpers::Debug
-
         class Line
-
-          include Helpers::Debug
 
           attr_accessor :source, :name
           private :source=, :name=
@@ -313,6 +307,14 @@ module Librarian
             uri
           end
 
+          def debug(*args, &block)
+            environment.logger.debug(*args, &block)
+          end
+
+          def relative_path_to(path)
+            environment.logger.relative_path_to(path)
+          end
+
         end
 
         class << self
@@ -384,6 +386,8 @@ module Librarian
           install_path = install_path(name)
           line = line(name)
 
+          info { "Installing #{manifest.name} (#{manifest.version})" }
+
           debug { "Installing #{manifest}" }
 
           line.install_version! version, install_path
@@ -426,6 +430,14 @@ module Librarian
         def line(name)
           @line ||= { }
           @line[name] ||= Line.new(self, name)
+        end
+
+        def info(*args, &block)
+          environment.logger.info(*args, &block)
+        end
+
+        def debug(*args, &block)
+          environment.logger.debug(*args, &block)
         end
 
       end

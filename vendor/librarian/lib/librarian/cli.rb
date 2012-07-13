@@ -6,8 +6,6 @@ require 'librarian/error'
 require 'librarian/action'
 require "librarian/ui"
 
-require "librarian/helpers/debug"
-
 module Librarian
   class Cli < Thor
 
@@ -23,8 +21,6 @@ module Librarian
 
     include Particularity
     extend Particularity
-
-    include Helpers::Debug
 
     class << self
       def bin!
@@ -46,6 +42,7 @@ module Librarian
       super
       the_shell = (options["no-color"] ? Thor::Shell::Basic.new : shell)
       environment.ui = UI::Shell.new(the_shell)
+      environment.ui.be_quiet! if options["quiet"]
       environment.ui.debug! if options["verbose"]
       environment.ui.debug_line_numbers! if options["verbose"] && options["line-numbers"]
 
@@ -57,28 +54,49 @@ module Librarian
       say "librarian-#{root_module.version}"
     end
 
+    desc "config", "Show or edit the config."
+    option "verbose", :type => :boolean, :default => false
+    option "line-numbers", :type => :boolean, :default => false
+    option "global", :type => :boolean, :default => false
+    option "local", :type => :boolean, :default => false
+    option "delete", :type => :boolean, :default => false
+    def config(key = nil, value = nil)
+      if key
+        raise Error, "cannot set both value and delete" if value && options["delete"]
+        if options["delete"]
+          raise Error, "must set either global or local" unless options["global"] ^ options["local"]
+          scope = options["global"] ? :global : options["local"] ? :local : nil
+          environment.config_db[key, scope] = nil
+        elsif value
+          raise Error, "must set either global or local" unless options["global"] ^ options["local"]
+          scope = options["global"] ? :global : options["local"] ? :local : nil
+          environment.config_db[key, scope] = value
+        else
+          raise Error, "cannot set both global and local" if options["global"] && options["local"]
+          scope = options["global"] ? :global : options["local"] ? :local : nil
+          if value = environment.config_db[key, scope]
+            prefix = scope ? "#{key} (#{scope})" : key
+            say "#{prefix}: #{value}"
+          end
+        end
+      else
+        environment.config_db.keys.each do |key|
+          say "#{key}: #{environment.config_db[key]}"
+        end
+      end
+    end
+
     desc "clean", "Cleans out the cache and install paths."
-    option "verbose"
-    option "line-numbers"
+    option "verbose", :type => :boolean, :default => false
+    option "line-numbers", :type => :boolean, :default => false
     def clean
       ensure!
       clean!
     end
 
-    desc "install", "Resolves and installs all of the dependencies you specify."
-    option "verbose"
-    option "line-numbers"
-    option "clean"
-    def install
-      ensure!
-      clean! if options["clean"]
-      resolve!
-      install!
-    end
-
     desc "update", "Updates and installs the dependencies you specify."
-    option "verbose"
-    option "line-numbers"
+    option "verbose", :type => :boolean, :default => false
+    option "line-numbers", :type => :boolean, :default => false
     def update(*names)
       ensure!
       if names.empty?
@@ -90,8 +108,8 @@ module Librarian
     end
 
     desc "outdated", "Lists outdated dependencies."
-    option "verbose"
-    option "line-numbers"
+    option "verbose", :type => :boolean, :default => false
+    option "line-numbers", :type => :boolean, :default => false
     def outdated
       ensure!
       resolution = environment.lock
@@ -104,12 +122,16 @@ module Librarian
     end
 
     desc "show", "Shows dependencies"
-    option "verbose"
-    option "line-numbers"
+    option "verbose", :type => :boolean, :default => false
+    option "line-numbers", :type => :boolean, :default => false
     option "detailed", :type => :boolean
     def show(*names)
       ensure!
-      manifest_presenter.present(names, :detailed => options["detailed"])
+      if environment.lockfile_path.file?
+        manifest_presenter.present(names, :detailed => options["detailed"])
+      else
+        raise Error, "Be sure to install first!"
+      end
     end
 
     desc "init", "Initializes the current directory."
@@ -169,6 +191,14 @@ module Librarian
           debug { "  #{k}=#{v}"}
         end
       end
+    end
+
+    def debug(*args, &block)
+      environment.logger.debug(*args, &block)
+    end
+
+    def relative_path_to(path)
+      environment.logger.relative_path_to(path)
     end
 
   end

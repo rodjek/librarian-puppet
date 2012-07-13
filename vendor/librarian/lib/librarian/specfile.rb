@@ -1,9 +1,5 @@
-require 'librarian/helpers/debug'
-
 module Librarian
   class Specfile
-
-    include Helpers::Debug
 
     attr_accessor :environment
     private :environment=

@@ -1,4 +1,3 @@
-require 'librarian/helpers/debug'
 require 'librarian/support/abstract_method'
 
 module Librarian
@@ -8,7 +7,6 @@ module Librarian
     #   #environment
     module Local
 
-      include Helpers::Debug
       include Support::AbstractMethod
 
       abstract_method :path, :fetch_version, :fetch_dependencies
@@ -45,6 +43,18 @@ module Librarian
     private
 
       abstract_method :manifest? # (name, path) -> boolean
+
+      def info(*args, &block)
+        environment.logger.info(*args, &block)
+      end
+
+      def debug(*args, &block)
+        environment.logger.debug(*args, &block)
+      end
+
+      def relative_path_to(path)
+        environment.logger.relative_path_to(path)
+      end
 
     end
   end

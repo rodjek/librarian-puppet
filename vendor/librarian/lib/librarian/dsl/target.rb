@@ -1,12 +1,8 @@
-require 'librarian/helpers/debug'
-
 require 'librarian/spec'
 
 module Librarian
   class Dsl
     class Target
-
-      include Helpers::Debug
 
       class SourceShortcutDefinitionReceiver
         def initialize(target)

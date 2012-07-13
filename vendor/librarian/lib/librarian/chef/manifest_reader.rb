@@ -16,8 +16,8 @@ module Librarian
 
       def read_manifest(name, manifest_path)
         case manifest_path.extname
-        when ".json" then JSON.parse(manifest_path.read)
-        when ".yml", ".yaml" then YAML.load(manifest_path.read)
+        when ".json" then JSON.parse(binread(manifest_path))
+        when ".yml", ".yaml" then YAML.load(binread(manifest_path))
         when ".rb" then compile_manifest(name, manifest_path.dirname)
         end
       end
@@ -40,6 +40,18 @@ module Librarian
       def check_manifest(name, manifest_path)
         manifest = read_manifest(name, manifest_path)
         manifest["name"] == name
+      end
+
+    private
+
+      if IO.respond_to?(:binread)
+        def binread(path)
+          path.binread
+        end
+      else
+        def binread(path)
+          path.read
+        end
       end
 
     end

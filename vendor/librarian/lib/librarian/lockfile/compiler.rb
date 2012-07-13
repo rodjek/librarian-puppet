@@ -1,10 +1,6 @@
-require 'librarian/helpers/debug'
-
 module Librarian
   class Lockfile
     class Compiler
-
-      include Helpers::Debug
 
       attr_accessor :environment
       private :environment=
