@@ -1,16 +1,13 @@
 require 'uri'
 require 'net/http'
 require 'json'
-require 'librarian/helpers/debug'
 
 module Librarian
   module Puppet
     module Source
       class Forge
-        include Helpers::Debug
         class Repo
 
-          include Helpers::Debug
           attr_accessor :source, :name
           private :source=, :name=
 
@@ -43,12 +40,10 @@ module Librarian
             cache_version_unpacked! version
 
             if install_path.exist?
-              debug { "Deleting #{relative_path_to(install_path)}" }
               install_path.rmtree
             end
 
             unpacked_path = version_unpacked_cache_path(version).join(name.split('/').last)
-            debug { "Copying #{relative_path_to(unpacked_path)} to #{relative_path_to(install_path)}" }
             FileUtils.cp_r(unpacked_path, install_path)
           end
 
@@ -75,7 +70,6 @@ module Librarian
             path.mkpath
 
             output = `puppet module install -i #{path.to_s} --modulepath #{path.to_s} --ignore-dependencies #{name} 2>&1`
-            debug { output }
           end
 
         private
@@ -156,8 +150,6 @@ module Librarian
           version = manifest.version
           install_path = install_path(name)
           repo = repo(name)
-
-          debug { "Installing #{manifest}" }
 
           repo.install_version! version, install_path
         end
