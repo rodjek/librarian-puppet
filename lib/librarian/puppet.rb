@@ -1,4 +1,5 @@
 require 'librarian'
+require 'puppet'
 
 require 'librarian/puppet/extension'
 require 'librarian/puppet/version'
