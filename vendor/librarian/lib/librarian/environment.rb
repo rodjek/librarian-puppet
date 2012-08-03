@@ -1,10 +1,11 @@
 require "pathname"
 
-require "librarian/helpers/debug"
 require "librarian/support/abstract_method"
 
 require "librarian/error"
+require "librarian/config"
 require "librarian/lockfile"
+require "librarian/logger"
 require "librarian/specfile"
 require "librarian/resolver"
 require "librarian/dsl"
@@ -14,30 +15,33 @@ module Librarian
   class Environment
 
     include Support::AbstractMethod
-    include Helpers::Debug
 
     attr_accessor :ui
 
     abstract_method :specfile_name, :dsl_class, :install_path
 
     def initialize(options = { })
+      @pwd = options.fetch(:pwd) { Dir.pwd }
+      @env = options.fetch(:env) { ENV.to_hash }
+      @home = options.fetch(:home) { File.expand_path("~") }
       @project_path = options[:project_path]
       @specfile_name = options[:specfile_name]
     end
 
-    def project_path
-      @project_path ||= begin
-        root = Pathname.new(Dir.pwd)
-        root = root.dirname until project_path?(root)
-        path = root.join(specfile_name)
-        path.file? ? root : nil
-      end
+    def logger
+      @logger ||= Logger.new(self)
     end
 
-    def project_path?(path)
-      path.join(config_name).directory? ||
-      path.join(specfile_name).file? ||
-      path.dirname == path
+    def config_db
+      @config_db ||= begin
+        Config::Database.new(adapter_name,
+          :pwd => @pwd,
+          :env => @env,
+          :home => @home,
+          :project_path => @project_path,
+          :specfile_name => default_specfile_name
+        )
+      end
     end
 
     def default_specfile_name
@@ -47,12 +51,16 @@ module Librarian
       end
     end
 
+    def project_path
+      config_db.project_path
+    end
+
     def specfile_name
-      @specfile_name ||= default_specfile_name
+      config_db.specfile_name
     end
 
     def specfile_path
-      project_path.join(specfile_name)
+      config_db.specfile_path
     end
 
     def specfile
@@ -63,20 +71,12 @@ module Librarian
       nil
     end
 
-    def config_name
-      File.join(*[config_prefix, adapter_name].compact)
-    end
-
-    def config_prefix
-      ".librarian"
-    end
-
     def lockfile_name
-      "#{specfile_name}.lock"
+      config_db.lockfile_name
     end
 
     def lockfile_path
-      project_path.join(lockfile_name)
+      config_db.lockfile_path
     end
 
     def lockfile
@@ -117,6 +117,11 @@ module Librarian
 
     def dsl_class
       self.class.name.split("::")[0 ... -1].inject(Object, &:const_get)::Dsl
+    end
+
+    def config_keys
+      %[
+      ]
     end
 
   private

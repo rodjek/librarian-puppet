@@ -25,6 +25,12 @@ describe Librarian::Dependency do
       end
     end
 
+    context "when the name is a single character" do
+      it "passes" do
+        described_class.new("R", [], nil)
+      end
+    end
+
   end
 
 end

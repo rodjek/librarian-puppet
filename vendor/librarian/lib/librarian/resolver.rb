@@ -4,7 +4,6 @@ require 'librarian/resolution'
 
 module Librarian
   class Resolver
-    include Helpers::Debug
 
     attr_accessor :environment
     private :environment=
@@ -67,6 +66,12 @@ module Librarian
 
     def sort(manifests)
       ManifestSet.sort(manifests)
+    end
+
+  private
+
+    def debug(*args, &block)
+      environment.logger.debug(*args, &block)
     end
 
   end

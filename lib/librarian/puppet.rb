@@ -1,7 +1,12 @@
+require 'librarian'
+require 'puppet'
+
 require 'librarian/puppet/extension'
+require 'librarian/puppet/version'
+
+require 'librarian/action/install'
 
 module Librarian
   module Puppet
-    VERSION = "0.9.1"
   end
 end

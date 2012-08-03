@@ -1,12 +1,8 @@
-require 'librarian/helpers/debug'
-
 require 'librarian/dependency'
 
 module Librarian
   class Resolver
     class Implementation
-
-      include Helpers::Debug
 
       attr_reader :resolver, :source, :dependency_source_map
 
@@ -110,7 +106,7 @@ module Librarian
       end
 
       def debug
-        super { '  ' * @level + yield }
+        environment.logger.debug { '  ' * @level + yield }
       end
 
       def environment

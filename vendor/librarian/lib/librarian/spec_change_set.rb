@@ -1,5 +1,4 @@
 require 'librarian/helpers'
-require 'librarian/helpers/debug'
 
 require 'librarian/manifest_set'
 require 'librarian/resolution'
@@ -7,8 +6,6 @@ require 'librarian/spec'
 
 module Librarian
   class SpecChangeSet
-
-    include Helpers::Debug
 
     attr_accessor :environment
     private :environment=
@@ -164,6 +161,12 @@ module Librarian
         manifests.shallow_strip!(shallow_strip_manifest_names)
         manifests.to_a
       end
+    end
+
+  private
+
+    def debug(*args, &block)
+      environment.logger.debug(*args, &block)
     end
 
   end

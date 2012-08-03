@@ -1,7 +1,5 @@
 require 'open3'
 
-require 'librarian/helpers/debug'
-
 module Librarian
   module Source
     class Git
@@ -34,14 +32,12 @@ module Librarian
               path = File.expand_path(path)
               exts.each do |ext|
                 exe = File.join(path, cmd + ext)
-                return exe if File.executable?(exe)
+                return exe if File.file?(exe) && File.executable?(exe)
               end
             end
             nil
           end
         end
-
-        include Helpers::Debug
 
         attr_accessor :environment, :path
         private :environment=, :path=
@@ -127,7 +123,7 @@ module Librarian
             reference = "#{remote}/#{reference}"
           end
 
-          command = %W(rev-parse #{reference} --quiet)
+          command = %W(rev-list #{reference} -1)
           run!(command, :chdir => true).strip
         end
 
@@ -205,6 +201,14 @@ module Librarian
             raise StandardError, e.read unless (t ? t.value : $?).success?
             o.read
           end
+        end
+
+        def debug(*args, &block)
+          environment.logger.debug(*args, &block)
+        end
+
+        def relative_path_to(path)
+          environment.logger.relative_path_to(path)
         end
 
       end

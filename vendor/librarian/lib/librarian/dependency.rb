@@ -1,7 +1,5 @@
 require 'rubygems'
 
-require 'librarian/helpers/debug'
-
 module Librarian
   class Dependency
 
@@ -41,8 +39,6 @@ module Librarian
         end
       end
     end
-
-    include Helpers::Debug
 
     attr_accessor :name, :requirement, :source
     private :name=, :requirement=, :source=
@@ -88,7 +84,7 @@ module Librarian
     end
 
     def assert_name_valid!(name)
-      raise ArgumentError, "name (#{name.inspect}) must be sensible" unless name =~ /^\S.*\S$/
+      raise ArgumentError, "name (#{name.inspect}) must be sensible" unless name =~ /\A\S(?:.*\S)?\z/
     end
 
   end

@@ -25,6 +25,12 @@ describe Librarian::Manifest do
       end
     end
 
+    context "when the name is a single character" do
+      it "passes" do
+        described_class.new(nil, "R")
+      end
+    end
+
   end
 
 end

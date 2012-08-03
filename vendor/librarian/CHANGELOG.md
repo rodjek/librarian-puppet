@@ -1,5 +1,22 @@
 # Change Log
 
+## 0.0.24
+
+* \#15. A remembered configuration system.
+
+* \#16. Configure, and remember configuration for, chef install paths.
+
+* \#38. Configure, and remember configuration for, stripping out `.git`
+  directories from git-sources chef dependencies.
+
+* \#76. Support git annotated tags.
+
+* \#80. Ignore directories in the `PATH` named `git` when looking for the `git`
+  bin.
+
+* \#85. Provide a helpful message when running the `show` command without a
+  lockfile present.
+
 ## 0.0.23
 
 * \#41. Build gems with a built gemspec.

@@ -1,12 +1,9 @@
 require 'librarian/dependency'
 require 'librarian/dsl/receiver'
 require 'librarian/dsl/target'
-require 'librarian/helpers/debug'
 
 module Librarian
   class Dsl
-
-    include Helpers::Debug
 
     class Error < Exception
     end
@@ -99,6 +96,12 @@ module Librarian
         attributes = key[1...key.size]
         debug { "  #{key.inspect}" }
       end
+    end
+
+  private
+
+    def debug(*args, &block)
+      environment.logger.debug(*args, &block)
     end
 
   end
