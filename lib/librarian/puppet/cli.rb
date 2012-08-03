@@ -42,9 +42,13 @@ module Librarian
       option "clean", :type => :boolean, :default => false
       option "strip-dot-git", :type => :boolean
       option "path", :type => :string
+      option "destructive", :type => :boolean, :default => false
       def install
         ensure!
         clean! if options["clean"]
+        unless options["destructive"].nil?
+          environment.config_db.local['destructive'] = options['destructive'].to_s
+        end
         if options.include?("strip-dot-git")
           strip_dot_git_val = options["strip-dot-git"] ? "1" : nil
           environment.config_db.local["install.strip-dot-git"] = strip_dot_git_val

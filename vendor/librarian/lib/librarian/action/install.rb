@@ -40,7 +40,7 @@ module Librarian
       end
 
       def create_install_path
-        install_path.rmtree if install_path.exist?
+        install_path.rmtree if install_path.exist? && destructive?
         install_path.mkpath
       end
 
@@ -52,6 +52,10 @@ module Librarian
 
       def sorted_manifests
         ManifestSet.sort(lock.manifests)
+      end
+
+      def destructive?
+        environment.config_db.local['destructive'] == 'true'
       end
 
       def specfile_name
