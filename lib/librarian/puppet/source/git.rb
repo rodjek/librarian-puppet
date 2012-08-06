@@ -14,28 +14,6 @@ module Librarian
           command = %W(rev-parse #{reference}^{commit} --quiet)
           run!(command, :chdir => true).strip
         end
-
-        def dependencies
-          return {} unless modulefile?
-
-          metadata = ::Puppet::ModuleTool::Metadata.new
-
-          ::Puppet::ModuleTool::ModulefileReader.evaluate(metadata, modulefile)
-
-          metadata.dependencies.inject({}) do |h, dependency|
-            name = dependency.instance_variable_get(:@full_module_name)
-            version = dependency.instance_variable_get(:@version_requirement)
-            h.update(name => version)
-          end
-        end
-
-        def modulefile
-          File.join(path, 'Modulefile')
-        end
-
-        def modulefile?
-          File.exists?(modulefile)
-        end
       end
     end
   end
@@ -44,13 +22,6 @@ module Librarian
     module Source
       class Git < Librarian::Source::Git
         include Local
-
-        def fetch_dependencies(name, version, extra)
-          repository.dependencies.map do |k, v|
-            Dependency.new(k, v, nil)
-          end
-        end
-
       end
     end
   end
