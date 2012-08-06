@@ -62,14 +62,14 @@ Our puppet infrastructure repository depends on the `apt` module from the
 Puppet Labs GitHub repos and checks out the `master` branch.
 
     mod "apt",
-      :git => "git://github.com/puppetlabs/puppetlabs-apt.git"
+      :git => "git://github.com/puppetlabs/puppetlabs-apt.git",
       :ref => '0.0.3'
 
 Our puppet infrastructure repository depends on the `apt` module from the
 Puppet Labs GitHub repos and checks out a tag of `0.0.3`.
 
     mod "apt",
-      :git => "git://github.com/puppetlabs/puppetlabs-apt.git"
+      :git => "git://github.com/puppetlabs/puppetlabs-apt.git",
       :ref => 'feature/master/dans_refactor'
 
 Our puppet infrastructure repository depends on the `apt` module from the
@@ -91,7 +91,7 @@ use the `:path =>` option here to help Librarian-puppet drill down and find the
 module subdirectory.
 
     mod "apt",
-      :git => "git://github.com/fake/puppet-modules.git"
+      :git => "git://github.com/fake/puppet-modules.git",
       :path => "modules/apt"
 
 Our puppet infrastructure repository depends on the `apt` module, which we have
