@@ -12,7 +12,8 @@ module Librarian
       end
 
       def install_path
-        project_path.join("modules")
+        part = config_db["path"] || "modules"
+        project_path.join(part)
       end
 
       def cache_path
