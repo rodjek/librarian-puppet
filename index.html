@@ -98,7 +98,7 @@ source.</p>
 Puppet Labs GitHub repos and checks out the <code>master</code> branch.</p>
 
 <pre><code>mod "apt",
-  :git =&gt; "git://github.com/puppetlabs/puppetlabs-apt.git"
+  :git =&gt; "git://github.com/puppetlabs/puppetlabs-apt.git",
   :ref =&gt; '0.0.3'
 </code></pre>
 
@@ -106,7 +106,7 @@ Puppet Labs GitHub repos and checks out the <code>master</code> branch.</p>
 Puppet Labs GitHub repos and checks out a tag of <code>0.0.3</code>.</p>
 
 <pre><code>mod "apt",
-  :git =&gt; "git://github.com/puppetlabs/puppetlabs-apt.git"
+  :git =&gt; "git://github.com/puppetlabs/puppetlabs-apt.git",
   :ref =&gt; 'feature/master/dans_refactor'
 </code></pre>
 
@@ -129,7 +129,7 @@ use the <code>:path =&gt;</code> option here to help Librarian-puppet drill down
 module subdirectory.</p>
 
 <pre><code>mod "apt",
-  :git =&gt; "git://github.com/fake/puppet-modules.git"
+  :git =&gt; "git://github.com/fake/puppet-modules.git",
   :path =&gt; "modules/apt"
 </code></pre>
 
