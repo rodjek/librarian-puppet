@@ -37,6 +37,10 @@ module Librarian
           end
 
           def install_version!(version, install_path)
+            if environment.vendor_packages?
+              vendor_cache(name, version) unless vendored?(name, version)
+            end
+
             cache_version_unpacked! version
 
             if install_path.exist?
@@ -69,7 +73,41 @@ module Librarian
 
             path.mkpath
 
-            output = `puppet module install -i #{path.to_s} --modulepath #{path.to_s} --ignore-dependencies #{name} 2>&1`
+            target = vendored?(name, version) ? vendored_path(name, version) : name
+
+            `puppet module install --target-dir #{path} --modulepath #{path} --ignore-dependencies #{target}`
+          end
+
+          def vendored?(name, version)
+            vendored_path(name, version).exist?
+          end
+
+          def vendored_path(name, version)
+            environment.vendor_cache.join("#{name.sub("/", "-")}-#{version}.tar.gz")
+          end
+
+          def vendor_cache(name, version)
+            File.open(vendored_path(name, version).to_s, 'w') do |f|
+              download(name, version) do |data|
+                f << data
+              end
+            end
+          end
+
+          def download(name, version, &block)
+            data = api_call("api/v1/releases.json?module=#{name}&version=#{version}")
+
+            info = data[name].detect {|h| h['version'] == version.to_s }
+
+            stream(info['file'], &block)
+          end
+
+          def stream(file, &block)
+            Net::HTTP.get_response(URI.parse("#{source}#{file}")) do |res|
+              res.code
+
+              res.read_body(&block)
+            end
           end
 
         private

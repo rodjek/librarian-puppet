@@ -16,12 +16,20 @@ module Librarian
         project_path.join(part)
       end
 
+      def vendor_cache
+        project_path.join('vendor/puppet/cache')
+      end
+
       def cache_path
         project_path.join(".tmp/librarian/cache")
       end
 
       def scratch_path
         project_path.join(".tmp/librarian/scratch")
+      end
+
+      def vendor_packages?
+        vendor_cache.exist?
       end
     end
   end
