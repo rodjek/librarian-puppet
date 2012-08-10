@@ -1,5 +1,6 @@
 require 'librarian'
 require 'puppet'
+require 'fileutils'
 
 require 'librarian/puppet/extension'
 require 'librarian/puppet/version'

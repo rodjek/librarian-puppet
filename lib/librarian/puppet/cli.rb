@@ -60,6 +60,19 @@ module Librarian
         install!
       end
 
+      desc "package", "Cache the puppet modules in vendor/puppet/cache."
+      option "quiet", :type => :boolean, :default => false
+      option "verbose", :type => :boolean, :default => false
+      option "line-numbers", :type => :boolean, :default => false
+      option "clean", :type => :boolean, :default => false
+      option "strip-dot-git", :type => :boolean
+      option "path", :type => :string
+      option "destructive", :type => :boolean, :default => false
+      def package
+        FileUtils.mkdir_p(environment.vendor_cache.to_s)
+        install
+      end
+
       def version
         say "librarian-puppet v#{Librarian::Puppet::VERSION}"
       end
