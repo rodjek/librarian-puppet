@@ -45,6 +45,10 @@ module Librarian
         vendor_path.exist?
       end
 
+      def local?
+        config_db['mode'] == 'local'
+      end
+
     end
   end
 end

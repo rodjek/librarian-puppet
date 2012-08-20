@@ -26,6 +26,10 @@ module Librarian
         def cache!
           return vendor_checkout! if vendor_cached?
 
+          if environment.local?
+            raise Error, "Could not find a local copy of #{uri} at #{sha}."
+          end
+
           super
 
           cache_in_vendor(repository.path) if environment.vendor?
