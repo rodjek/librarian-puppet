@@ -22,6 +22,23 @@ module Librarian
     module Source
       class Git < Librarian::Source::Git
         include Local
+
+        def cache!
+          super
+
+          cache_in_vendor(repository.path) if environment.vendor?
+        end
+
+        def cache_in_vendor(tmp_path)
+          output = environment.vendor_source + "#{sha}.tar.gz"
+
+          return if output.exist?
+
+          Dir.chdir(tmp_path.to_s) do
+            %x{git archive #{sha} | gzip > #{output}}
+          end
+        end
+
       end
     end
   end

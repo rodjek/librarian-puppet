@@ -37,7 +37,7 @@ module Librarian
           end
 
           def install_version!(version, install_path)
-            if environment.vendor_packages?
+            if environment.vendor?
               vendor_cache(name, version) unless vendored?(name, version)
             end
 

@@ -69,7 +69,7 @@ module Librarian
       option "path", :type => :string
       option "destructive", :type => :boolean, :default => false
       def package
-        FileUtils.mkdir_p(environment.vendor_cache.to_s)
+        environment.vendor!
         install
       end
 
