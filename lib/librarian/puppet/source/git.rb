@@ -24,18 +24,35 @@ module Librarian
         include Local
 
         def cache!
+          return vendor_checkout! if vendor_cached?
+
           super
 
           cache_in_vendor(repository.path) if environment.vendor?
         end
 
+        def vendor_tgz
+          environment.vendor_source + "#{sha}.tar.gz"
+        end
+
+        def vendor_cached?
+          vendor_tgz.exist?
+        end
+
+        def vendor_checkout!
+          repository.path.rmtree if repository.path.exist?
+          repository.path.mkpath
+
+          Dir.chdir(repository.path.to_s) do
+            %x{tar xzf #{vendor_tgz}}
+          end
+
+          repository_cached!
+        end
+
         def cache_in_vendor(tmp_path)
-          output = environment.vendor_source + "#{sha}.tar.gz"
-
-          return if output.exist?
-
           Dir.chdir(tmp_path.to_s) do
-            %x{git archive #{sha} | gzip > #{output}}
+            %x{git archive #{sha} | gzip > #{vendor_tgz}}
           end
         end
 
