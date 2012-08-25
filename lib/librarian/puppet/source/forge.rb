@@ -37,7 +37,11 @@ module Librarian
           end
 
           def install_version!(version, install_path)
-            if environment.vendor_packages?
+            if environment.local? && !vendored?(name, version)
+              raise Error, "Could not find a local copy of #{name} at #{version}."
+            end
+
+            if environment.vendor?
               vendor_cache(name, version) unless vendored?(name, version)
             end
 

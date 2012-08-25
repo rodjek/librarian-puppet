@@ -16,8 +16,16 @@ module Librarian
         project_path.join(part)
       end
 
+      def vendor_path
+        project_path.join('vendor/puppet')
+      end
+
       def vendor_cache
-        project_path.join('vendor/puppet/cache')
+        vendor_path.join('cache')
+      end
+
+      def vendor_source
+        vendor_path.join('source')
       end
 
       def cache_path
@@ -28,9 +36,19 @@ module Librarian
         project_path.join(".tmp/librarian/scratch")
       end
 
-      def vendor_packages?
-        vendor_cache.exist?
+      def vendor!
+        vendor_cache.mkpath  unless vendor_cache.exist?
+        vendor_source.mkpath unless vendor_source.exist?
       end
+
+      def vendor?
+        vendor_path.exist?
+      end
+
+      def local?
+        config_db['mode'] == 'local'
+      end
+
     end
   end
 end
