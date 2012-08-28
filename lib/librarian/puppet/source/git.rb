@@ -15,6 +15,16 @@ module Librarian
           run!(command, :chdir => true).strip
         end
 
+        # Naming this method 'version' causes an exception to be raised.
+        def module_version
+          return '0.0.1' unless modulefile?
+
+          metadata  = ::Puppet::ModuleTool::Metadata.new
+          ::Puppet::ModuleTool::ModulefileReader.evaluate(metadata, modulefile)
+
+          metadata.version
+        end
+
         def dependencies
           return {} unless modulefile?
 
@@ -80,6 +90,12 @@ module Librarian
           Dir.chdir(tmp_path.to_s) do
             %x{git archive #{sha} | gzip > #{vendor_tgz}}
           end
+        end
+
+        def fetch_version(name, extra)
+          cache!
+          found_path = found_path(name)
+          repository.module_version
         end
 
         def fetch_dependencies(name, version, extra)
