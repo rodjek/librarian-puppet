@@ -100,8 +100,12 @@ module Librarian
 
         def fetch_dependencies(name, version, extra)
           repository.dependencies.map do |k, v|
-            Dependency.new(k, v, nil)
+            Dependency.new(k, v, forge_source)
           end
+        end
+
+        def forge_source
+          Forge.from_lock_options(environment, :remote=>"http://forge.puppetlabs.com")
         end
 
       end
