@@ -52,7 +52,13 @@ module Librarian
             end
 
             unpacked_path = version_unpacked_cache_path(version).join(name.split('/').last)
-            FileUtils.cp_r(unpacked_path, install_path)
+
+            unless unpacked_path.exist?
+              raise Error, "#{unpacked_path} does not exist, something went wrong. Try removing it manually"
+            else
+              FileUtils.cp_r(unpacked_path, install_path)
+            end
+
           end
 
           def environment
@@ -75,11 +81,48 @@ module Librarian
             path = version_unpacked_cache_path(version)
             return if path.directory?
 
+            # The puppet module command is only available from puppet versions >= 2.7.13
+            #
+            # Specifying the version in the gemspec would force people to upgrade puppet while it's still usable for git
+            # So we do some more clever checking
+            #
+            # Executing older versions or via puppet-module tool gives an exit status = 0 . 
+            # Therefore we check the available options via the help page
+            #
+            check_puppet_module_options
+
             path.mkpath
 
             target = vendored?(name, version) ? vendored_path(name, version) : name
 
-            `puppet module install --target-dir #{path} --modulepath #{path} --ignore-dependencies #{target}`
+
+            command = "puppet module install --target-dir '#{path}' --modulepath '#{path}' --ignore-dependencies '#{target}'"
+            output = `#{command}`
+
+            # Check for bad exit code
+            unless $? == 0
+              # Rollback the directory if the puppet module had an error
+              path.unlink
+              raise Error, "Error executing puppet module install:\n#{command}\nError:\n#{output}"
+            end
+
+          end
+
+          def check_puppet_module_options
+            command = "puppet help module install"
+            options = [ '--target-dir', '--modulepath','--ignore-dependencies' ]
+            output = `#{command}`
+
+            # Check puppet module for used options
+            has_options = true
+            options.each do |option|
+              unless output.include?(option)
+                has_options = false
+              end
+            end
+            unless has_options
+              raise Error, "To get modules from the forge, we use the puppet faces module command. Your current version does not support the options #{options.join(',')} . For this you need at least puppet version 2.7.13"
+            end
           end
 
           def vendored?(name, version)
