@@ -25,6 +25,17 @@ module Librarian
           metadata.version
         end
 
+        def manifests(source, name)
+          if source.send(:repository_cached?)
+            source = source.dup
+            source.send(:sha=, current_commit_hash)
+            [Manifest.new(source, name, module_version)]
+          else
+            manifest = Manifest.new(source, name, module_version)
+            [manifest].compact
+          end
+        end
+
         def dependencies
           return {} unless modulefile?
 
@@ -106,6 +117,15 @@ module Librarian
 
         def forge_source
           Forge.from_lock_options(environment, :remote=>"http://forge.puppetlabs.com")
+        end
+
+        def manifests(name)
+          repository.manifests(self, name)
+        end
+
+        def to_s
+          short_sha = sha ? sha[0..6] : nil
+          path ? "#{uri}##{ref}-#{short_sha}(#{path})" : "#{uri}##{ref}-#{short_sha}"
         end
 
       end

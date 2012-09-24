@@ -83,6 +83,31 @@ module Librarian
         install
       end
 
+      desc "outdated", "Lists outdated dependencies."
+      option "verbose", :type => :boolean, :default => false
+      option "line-numbers", :type => :boolean, :default => false
+      def outdated
+        ensure!
+        resolution = environment.lock
+        resolution.manifests.sort_by(&:name).each do |manifest|
+          source = manifest.source
+          source_manifest = source.manifests(manifest.name).first
+          if source.class == Librarian::Puppet::Source::Git
+            next if manifest.version == source_manifest.version && manifest.source.sha == source_manifest.source.sha
+          else
+            next if manifest.version == source_manifest.version
+          end
+
+          source_sha = source
+          if manifest.source.class == Librarian::Puppet::Source::Git
+            sha = " #{manifest.source.sha[0..6]}"
+            source_sha = " #{source_manifest.source.sha[0..6]}"
+          end
+          say "#{manifest.name} (#{manifest.version}#{sha} -> #{source_manifest.version}#{source_sha})"
+        end
+      end
+
+
       def version
         say "librarian-puppet v#{Librarian::Puppet::VERSION}"
       end
