@@ -4,6 +4,12 @@ require 'librarian/cli'
 require 'librarian/puppet'
 
 module Librarian
+  class Cli < Thor
+    autoload :ManifestPresenter, "librarian/puppet/cli/manifest_presenter"
+  end
+end
+
+module Librarian
   module Puppet
     class Cli < Librarian::Cli
 
