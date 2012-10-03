@@ -10,6 +10,7 @@ module Librarian
       source :forge => Source::Forge
       source :git => Source::Git
       source :path => Source::Path
+      source :github_tarball => Source::GitHubTarball
     end
   end
 end
