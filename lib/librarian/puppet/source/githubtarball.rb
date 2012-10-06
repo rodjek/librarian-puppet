@@ -85,9 +85,17 @@ module Librarian
           end
 
           def vendor_cache(name, version)
+            clean_up_old_cached_versions(name)
+
             url = "https://api.github.com/repos/#{name}/tarball/#{version}"
             url << "?access_token=#{ENV['GITHUB_API_TOKEN']}" if ENV['GITHUB_API_TOKEN']
             `curl #{url} -o #{vendored_path(name, version).to_s} -L 2>&1`
+          end
+
+          def clean_up_old_cached_versions(name)
+            Dir["#{environment.vendor_cache}/#{name.sub('/', '-')}*.tar.gz"].each do |old_version|
+              FileUtils.rm old_version
+            end
           end
 
         private
