@@ -86,8 +86,7 @@ module Librarian
             # Specifying the version in the gemspec would force people to upgrade puppet while it's still usable for git
             # So we do some more clever checking
             #
-            # Executing older versions or via puppet-module tool gives an exit status = 0 . 
-            # Therefore we check the available options via the help page
+            # Executing older versions or via puppet-module tool gives an exit status = 0 .
             #
             check_puppet_module_options
 
@@ -109,19 +108,11 @@ module Librarian
           end
 
           def check_puppet_module_options
-            command = "puppet help module install"
-            options = [ '--target-dir', '--modulepath','--ignore-dependencies' ]
-            output = `#{command}`
+            min_version    = Gem::Version.create('2.7.13')
+            puppet_version = Gem::Version.create(`puppet --version`.strip)
 
-            # Check puppet module for used options
-            has_options = true
-            options.each do |option|
-              unless output.include?(option)
-                has_options = false
-              end
-            end
-            unless has_options
-              raise Error, "To get modules from the forge, we use the puppet faces module command. Your current version does not support the options #{options.join(',')} . For this you need at least puppet version 2.7.13"
+            if puppet_version < min_version
+              raise Error, "To get modules from the forge, we use the puppet faces module command. Your current version does not support the options #{options.join(',')} . For this you need at least puppet version 2.7.13 and you have #{puppet_version}"
             end
           end
 
@@ -271,7 +262,7 @@ module Librarian
             Dependency.new(k, v, nil)
           end
         end
-      
+
         def manifests(name)
           repo(name).manifests
         end
