@@ -22,7 +22,8 @@ module Librarian
               raise Error, "Unable to find module '#{source.uri}' on https://github.com"
             end
 
-            data.map { |r| r['name'] }.sort.reverse
+            all_versions = data.map { |r| r['name'] }.sort.reverse
+            all_versions.reject { |version| version =~ /^v/ }.compact
           end
 
           def manifests
