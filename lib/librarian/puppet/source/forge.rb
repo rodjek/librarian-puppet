@@ -95,7 +95,8 @@ module Librarian
             target = vendored?(name, version) ? vendored_path(name, version) : name
 
 
-            command = "puppet module install --target-dir '#{path}' --module_repository '#{source}' --modulepath '#{path}' --ignore-dependencies '#{target}'"
+            command = "puppet module install --version #{version} --target-dir '#{path}' --module_repository '#{source}' --modulepath '#{path}' --ignore-dependencies '#{target}'"
+            debug { "Executing puppet module install for #{name} #{version}" }
             output = `#{command}`
 
             # Check for bad exit code
@@ -146,6 +147,10 @@ module Librarian
 
               res.read_body(&block)
             end
+          end
+
+          def debug(*args, &block)
+            environment.logger.debug(*args, &block)
           end
 
         private
