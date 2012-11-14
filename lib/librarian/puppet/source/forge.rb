@@ -95,7 +95,7 @@ module Librarian
             target = vendored?(name, version) ? vendored_path(name, version) : name
 
 
-            command = "puppet module install --target-dir '#{path}' --modulepath '#{path}' --ignore-dependencies '#{target}'"
+            command = "puppet module install --version #{version} --target-dir '#{path}' --modulepath '#{path}' --ignore-dependencies '#{target}'"
             output = `#{command}`
 
             # Check for bad exit code
