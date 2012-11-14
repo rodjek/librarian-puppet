@@ -10,6 +10,7 @@ module Librarian
 
           name, version = manifest.name, manifest.version
           found_path = found_path(name)
+          raise Error, "Path for #{name} doesn't contain a puppet module" if found_path.nil?
 
           if name.include? '/'
             new_name = name.split('/').last
@@ -47,6 +48,7 @@ module Librarian
           return true if path.join('manifests').exist?
           return true if path.join('lib').join('puppet').exist?
           return true if path.join('lib').join('facter').exist?
+          debug { "Could not find manifests, lib/puppet or lib/facter under #{path}, assuming is not a puppet module" }
           false
         end
       end

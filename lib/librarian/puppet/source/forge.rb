@@ -95,7 +95,7 @@ module Librarian
             target = vendored?(name, version) ? vendored_path(name, version) : name
 
 
-            command = "puppet module install --target-dir '#{path}' --modulepath '#{path}' --ignore-dependencies '#{target}'"
+            command = "puppet module install --version #{version} --target-dir '#{path}' --modulepath '#{path}' --ignore-dependencies '#{target}'"
             output = `#{command}`
 
             # Check for bad exit code
@@ -112,7 +112,7 @@ module Librarian
             puppet_version = Gem::Version.create(`puppet --version`.strip)
 
             if puppet_version < min_version
-              raise Error, "To get modules from the forge, we use the puppet faces module command. Your current version does not support the options #{options.join(',')} . For this you need at least puppet version 2.7.13 and you have #{puppet_version}"
+              raise Error, "To get modules from the forge, we use the puppet faces module command. For this you need at least puppet version 2.7.13 and you have #{puppet_version}"
             end
           end
 
