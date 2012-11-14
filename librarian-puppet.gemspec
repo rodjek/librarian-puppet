@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 require 'librarian/puppet/version'
 
 Gem::Specification.new do |s|
-  s.name = 'librarian-puppet'
+  s.name = 'librarian-puppet-maestrodev'
   s.version = Librarian::Puppet::VERSION
   s.platform = Gem::Platform::RUBY
   s.authors = ['Tim Sharpe']
