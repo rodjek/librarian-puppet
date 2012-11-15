@@ -78,7 +78,7 @@ module Librarian
       end
 
       def version
-        say "librarian-puppet v#{Librarian::Puppet::VERSION}"
+        say "librarian-puppet-maestrodev v#{Librarian::Puppet::VERSION}"
       end
     end
   end
