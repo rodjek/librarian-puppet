@@ -57,8 +57,7 @@ Feature: cli/install
     forge "http://forge.puppetlabs.com"
 
     mod 'puppetlabs/postgresql',
-      :git => 'file:///tmp/puppet-postgresql', :ref => '1.0.0'
-      #:git => 'https://github.com/puppetlabs/puppet-postgresql.git', :ref => '1.0.0'
+      :git => 'https://github.com/puppetlabs/puppet-postgresql.git', :ref => '1.0.0'
     """
     And I run `librarian-puppet install`
     Then the exit status should be 0
