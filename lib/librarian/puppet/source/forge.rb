@@ -151,7 +151,7 @@ module Librarian
         private
 
           def api_call(path)
-            base_url = source.to_s
+            base_url = source.uri
             resp = Net::HTTP.get_response(URI.parse("#{base_url}/#{path}"))
             if resp.code.to_i != 200
               nil
@@ -202,6 +202,11 @@ module Librarian
           other &&
           self.class == other.class &&
           self.uri == other.uri
+        end
+        alias eql? ==
+
+        def hash
+          self.uri.hash
         end
 
         def to_spec_args

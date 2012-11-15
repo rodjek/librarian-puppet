@@ -40,6 +40,32 @@ Feature: cli/install
     And the file "modules/apt/Modulefile" should match /version *'1\.0\.0'/
     And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
 
+  Scenario: Switching a module from forge to git
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'puppetlabs/postgresql', '1.0.0'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/postgresql/Modulefile" should match /name *'puppetlabs-postgresql'/
+    And the file "modules/postgresql/Modulefile" should match /version *'1\.0\.0'/
+    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
+    When I overwrite "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'puppetlabs/postgresql',
+      :git => 'file:///tmp/puppet-postgresql', :ref => '1.0.0'
+      #:git => 'https://github.com/puppetlabs/puppet-postgresql.git', :ref => '1.0.0'
+    """
+    And I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/postgresql/Modulefile" should match /name *'puppetlabs-postgresql'/
+    And the file "modules/postgresql/Modulefile" should match /version *'1\.0\.0'/
+    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
+
   Scenario: Changing the path
     Given a directory named "puppet"
     And a file named "Puppetfile" with:
