@@ -268,8 +268,13 @@ module Librarian
         end
 
         def fetch_dependencies(name, version, version_uri)
+          environment.logger.debug { "      Fetching dependencies for #{name} #{version}" }
           repo(name).dependencies(version).map do |k, v|
-            Dependency.new(k, v, nil)
+            begin
+              Dependency.new(k, v, nil)
+            rescue ArgumentError => e
+              raise Error, "Error fetching dependency for #{name} [#{version}]: #{k} [#{v}]: #{e}"
+            end
           end
         end
 

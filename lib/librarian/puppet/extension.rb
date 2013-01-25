@@ -24,17 +24,23 @@ module Librarian
           when String
             puppet_to_gem_version(arg)
           else
-            # Gem::Requirement, do nothing
-            arg
+            # Gem::Requirement, convert to string (ie. =1.0) so we can concat later
+            # Gem::Requirements can not be concatenated
+            arg.requirements.map{|x,y| "#{x}#{y}"}
           end
-        end
+        end.flatten
       end
 
-      # convert Puppet '1.x' versions to gem supported versions '~>1.0'
+      # convert Puppet versions to gem supported versions
+      # '1.x' to '~>1.0'
+      # '>=1.1.0 <2.0.0' to ['>=1.1.0', '<2.0.0']
       # http://docs.puppetlabs.com/puppet/2.7/reference/modules_publishing.html
       def puppet_to_gem_version(version)
-        matched = /(.*)\.x/.match(version)
-        matched.nil? ? version : "~>#{matched[1]}.0"
+        constraints = version.scan(/([~<>=]*[ ]*[\d\.x]+)/).flatten # split the constraints
+        constraints.map do |constraint|
+          matched = /(.*)\.x/.match(constraint)
+          matched.nil? ? constraint : "~>#{matched[1]}.0"
+        end
       end
     end
   end
