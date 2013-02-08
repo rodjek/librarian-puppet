@@ -95,7 +95,14 @@ module Librarian
         def fetch_version(name, extra)
           cache!
           found_path = found_path(name)
-          repository.module_version
+          v = repository.module_version
+          v = v.gsub("-",".") # fix for some invalid versions like 1.0.0-rc1
+
+          # if still not valid, use some default version
+          unless Gem::Version.correct? v
+            debug { "Ignoring invalid version '#{v}' for module #{name}, using 0.0.1" }
+            v = '0.0.1'
+          end
         end
 
         def fetch_dependencies(name, version, extra)
