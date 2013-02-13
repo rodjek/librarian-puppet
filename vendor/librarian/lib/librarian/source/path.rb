@@ -47,6 +47,12 @@ module Librarian
         self.path   == other.path
       end
 
+      alias :eql? :==
+
+      def hash
+        self.to_s.hash
+      end
+
       def to_spec_args
         [path.to_s, {}]
       end
