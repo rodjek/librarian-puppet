@@ -23,7 +23,16 @@ module Librarian
             end
 
             all_versions = data.map { |r| r['name'] }.sort.reverse
-            all_versions.reject { |version| version =~ /^v/ }.compact
+
+            all_versions = all_versions.map do |version|
+              version.gsub(/^v/, '')
+            end
+
+            all_versions.delete_if do |version|
+              version !~ /\A\d\.\d(\.\d.*)?\z/
+            end
+
+            all_versions.compact
           end
 
           def manifests
