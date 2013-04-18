@@ -14,20 +14,26 @@ module Librarian
           def initialize(source, name)
             self.source = source
             self.name = name
+            @dependencies = {}
           end
 
           def versions
+            return @versions if @versions
             data = api_call("#{name}.json")
             if data.nil?
               raise Error, "Unable to find module '#{name}' on #{source}"
             end
 
-            data['releases'].map { |r| r['version'] }.sort.reverse
+            @versions = data['releases'].map { |r| r['version'] }.sort.reverse
           end
 
           def dependencies(version)
+            return @dependencies[version] if @dependencies[version]
             data = api_call("api/v1/releases.json?module=#{name}&version=#{version}")
-            data[name].first['dependencies']
+            if data.nil?
+              raise Error, "Unable to find version #{version} for module '#{name}' on #{source}"
+            end
+            @dependencies[version] = data[name].first['dependencies']
           end
 
           def manifests
@@ -158,11 +164,14 @@ module Librarian
           def api_call(path)
             base_url = source.to_s
             resp = Net::HTTP.get_response(URI.parse("#{base_url}/#{path}"))
-            if resp.code.to_i != 200
+            case resp.code.to_i
+            when 404,410
               nil
-            else
+            when 200
               data = resp.body
               JSON.parse(data)
+            else
+              raise Error, "Error requesting #{base_url}/#{path}: [#{resp.code}] #{resp.body}"
             end
           end
         end
