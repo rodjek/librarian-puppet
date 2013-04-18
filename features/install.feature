@@ -42,6 +42,24 @@ Feature: cli/install
     And the file "modules/postgresql/Modulefile" should match /name *'puppetlabs-postgresql'/
     And the file "modules/postgresql/Modulefile" should match /version *'2\.0\.1'/
 
+  Scenario: Installing a module from git 
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'puppetlabs/apache',
+        :git => 'git@github.com:puppetlabs/puppetlabs-apache.git', :ref => '0.6.0'
+
+    mod 'puppetlabs/stdlib',
+        :git => 'git@github.com:puppetlabs/puppetlabs-stdlib.git', :ref => 'v2.2.1'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/apache/Modulefile" should match /name *'puppetlabs-apache'/
+    And the file "modules/apache/Modulefile" should match /version *'0\.6\.0'/
+    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
+    And the file "modules/stdlib/Modulefile" should match /version *'2\.2\.1'/
+
   Scenario: Installing a module with invalid versions in git
     Given a file named "Puppetfile" with:
     """
