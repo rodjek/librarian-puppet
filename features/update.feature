@@ -1,9 +1,8 @@
 Feature: cli/update
   Puppet librarian needs to update modules properly
 
-  @pending
   Scenario: Updating a module
-    Given PENDING a file named "Puppetfile" with:
+    Given a file named "Puppetfile" with:
     """
     forge "http://forge.puppetlabs.com"
 

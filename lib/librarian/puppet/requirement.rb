@@ -11,10 +11,14 @@ module Librarian
         if range_requirement?
           [@range_match[1], @range_match[2]]
         elsif pessimistic_requirement?
-          "~> #{@pessimistic_match[1]}"
+          "~> #{@pessimistic_match[1]}.0"
         else
           requirement
         end
+      end
+
+      def to_s
+        gem_requirement.to_s
       end
 
       private
