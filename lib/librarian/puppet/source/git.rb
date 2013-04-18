@@ -103,6 +103,7 @@ module Librarian
             debug { "Ignoring invalid version '#{v}' for module #{name}, using 0.0.1" }
             v = '0.0.1'
           end
+          v
         end
 
         def fetch_dependencies(name, version, extra)
