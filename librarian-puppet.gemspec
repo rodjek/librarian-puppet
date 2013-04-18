@@ -18,10 +18,11 @@ Gem::Specification.new do |s|
     '.gitignore',
     'LICENSE',
     'README.md',
-  ] + Dir['{bin,lib,vendor}/**/*']
+  ] + Dir['{bin,lib}/**/*']
 
   s.executables = ['librarian-puppet']
 
+  s.add_dependency "librarian", ">=0.1.0"
   s.add_dependency "thor", "~> 0.15"
   s.add_dependency "json"
 

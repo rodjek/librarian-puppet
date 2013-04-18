@@ -1,4 +1,5 @@
 require 'librarian/puppet/environment'
+require 'librarian/action/base'
 
 module Librarian
   module Puppet
@@ -42,6 +43,74 @@ module Librarian
           matched.nil? ? constraint : "~>#{matched[1]}.0"
         end
       end
+    end
+  end
+
+  # Fixes for librarian not yet released in their gem
+  module Mock
+    module Source
+      class Mock
+        alias :eql? :==
+
+        def hash
+          self.to_s.hash
+        end
+      end
+    end
+  end
+  module Source
+    class Git
+      alias :eql? :==
+
+      def hash
+        self.to_s.hash
+      end
+    end
+
+    class Path
+      alias :eql? :==
+
+      def hash
+        self.to_s.hash
+      end
+    end
+  end
+
+
+  module Action
+    class Install < Base
+
+    private
+
+      def create_install_path
+        install_path.rmtree if install_path.exist? && destructive?
+        install_path.mkpath
+      end
+
+      def destructive?
+        environment.config_db.local['destructive'] == 'true'
+      end
+    end
+  end
+
+  class ManifestSet
+    private
+
+    # Check if module doesn't exist and fail fast
+    def dependencies_of(names)
+      names = Array === names ? names.dup : names.to_a
+      assert_strings!(names)
+
+      deps = Set.new
+      until names.empty?
+        name = names.shift
+        next if deps.include?(name)
+
+        deps << name
+        raise(Error, "Unable to find module #{name}") if index[name].nil?
+        names.concat index[name].dependencies.map(&:name)
+      end
+      deps.to_a
     end
   end
 end

@@ -1,9 +1,7 @@
 #!/usr/bin/env ruby
 
 lib = File.expand_path('../../lib', __FILE__)
-vendor = File.expand_path('../../vendor/librarian/lib', __FILE__)
 $:.unshift(lib) unless $:.include?(lib)
-$:.unshift(vendor) unless $:.include?(vendor)
 
 require 'librarian/puppet/cli'
 Librarian::Puppet::Cli.bin!
