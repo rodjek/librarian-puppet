@@ -110,7 +110,7 @@ module Librarian
 
           def check_puppet_module_options
             min_version    = Gem::Version.create('2.7.13')
-            puppet_version = Gem::Version.create(`puppet --version`.strip.gsub('-', '.'))
+            puppet_version = Gem::Version.create(`puppet --version`.split(' ').first.strip.gsub('-', '.'))
 
             if puppet_version < min_version
               raise Error, "To get modules from the forge, we use the puppet faces module command. For this you need at least puppet version 2.7.13 and you have #{puppet_version}"
@@ -214,6 +214,12 @@ module Librarian
           self.uri.hash
         end
 
+        alias :eql? :==
+
+        def hash
+          self.to_s.hash
+        end
+
         def to_spec_args
           [uri, {}]
         end
@@ -271,6 +277,7 @@ module Librarian
           environment.logger.debug { "      Fetching dependencies for #{name} #{version}" }
           repo(name).dependencies(version).map do |k, v|
             begin
+              v = Requirement.new(v).gem_requirement
               Dependency.new(k, v, nil)
             rescue ArgumentError => e
               raise Error, "Error fetching dependency for #{name} [#{version}]: #{k} [#{v}]: #{e}"

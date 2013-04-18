@@ -108,6 +108,7 @@ module Librarian
 
         def fetch_dependencies(name, version, extra)
           repository.dependencies.map do |k, v|
+            v = Requirement.new(v).gem_requirement
             Dependency.new(k, v, forge_source)
           end
         end

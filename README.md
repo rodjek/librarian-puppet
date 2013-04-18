@@ -88,7 +88,7 @@ If we do not, then librarian-puppet will assume we meant the `master` branch.
 
 If we use a `:ref =>`, we can use anything that Git will recognize as a ref.
 This includes any branch name, tag name, SHA, or SHA unique prefix. If we use a
-branch, we can later ask Librarian-pupet to update the modulek by fetching the
+branch, we can later ask Librarian-puppet to update the module by fetching the
 most recent version of the module from that same branch.
 
 The Git source also supports a `:path =>` option. If we use the path option,
@@ -164,8 +164,8 @@ Update the version of a dependency:
 Bug reports to the github issue tracker please.
 Please include:
 
- * relevant `Puppetfile` and `Puppetfile.lock` files.
- * version of ruby, librarian-puppet
+ * Relevant `Puppetfile` and `Puppetfile.lock` files
+ * Version of ruby, librarian-puppet
  * What distro
  * Please run the `librarian-puppet` commands in verbose mode by using the
   `--verbose` flag, and include the verbose output in the bug report as well.

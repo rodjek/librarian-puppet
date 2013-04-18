@@ -67,6 +67,12 @@ module Librarian
         (self.sha.nil? || other.sha.nil? || self.sha == other.sha)
       end
 
+      alias :eql? :==
+
+      def hash
+        self.to_s.hash
+      end
+
       def to_spec_args
         options = {}
         options.merge!(:ref => ref) if ref != DEFAULTS[:ref]

@@ -363,6 +363,12 @@ module Librarian
           self.uri    == other.uri
         end
 
+        alias :eql? :==
+
+        def hash
+          self.to_s.hash
+        end
+
         def to_spec_args
           [uri, {}]
         end
