@@ -1,14 +1,12 @@
-begin
-  require 'rake/clean'
-  require 'cucumber/rake/task'
+require 'rake/clean'
+require 'cucumber/rake/task'
+require 'rspec/core/rake_task'
+require 'bundler/gem_tasks'
 
-  CLEAN.include('pkg/', 'tmp/')
-  CLOBBER.include('Gemfile.lock')
+CLEAN.include('pkg/', 'tmp/')
+CLOBBER.include('Gemfile.lock')
 
-  Cucumber::Rake::Task.new(:features)
+RSpec::Core::RakeTask.new
+Cucumber::Rake::Task.new(:features)
 
-  require 'bundler/gem_tasks'
-
-  task :default => :features
-rescue LoadError
-end
+task :default => [:spec, :features]
