@@ -7,6 +7,10 @@ module Librarian
         @requirement = requirement
       end
 
+      # convert Puppet versions to gem supported versions
+      # '1.x' to '~>1.0'
+      # '>=1.1.0 <2.0.0' to ['>=1.1.0', '<2.0.0']
+      # http://docs.puppetlabs.com/puppet/2.7/reference/modules_publishing.html
       def gem_requirement
         if range_requirement?
           [@range_match[1], @range_match[2]]
