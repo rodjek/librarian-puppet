@@ -2,6 +2,8 @@ require 'uri'
 require 'net/https'
 require 'json'
 
+require 'librarian/puppet/version'
+
 module Librarian
   module Puppet
     module Source
@@ -118,6 +120,10 @@ module Librarian
             http.use_ssl = true
             http.verify_mode = OpenSSL::SSL::VERIFY_NONE
             request = Net::HTTP::Get.new(uri.request_uri)
+
+            request.add_field "User-Agent",
+              "librarian-puppet v#{Librarian::Puppet::VERSION}"
+
             resp = http.request(request)
             if resp.code.to_i != 200
               nil
