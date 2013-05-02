@@ -1,0 +1,3 @@
+# .travis.yml
+before_script:
+  - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
