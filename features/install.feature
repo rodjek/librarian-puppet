@@ -146,3 +146,14 @@ Feature: cli/install
     When I run `librarian-puppet install`
     Then the exit status should be 0
     And the file "modules/postgresql/Modulefile" should match /name *'puppetlabs-postgresql'/
+
+  Scenario: Installing a module that does not exist
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'puppetlabs/xxxxx'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 1
+    And the output should contain "Unable to find module 'puppetlabs/xxxxx' on http://forge.puppetlabs.com"
