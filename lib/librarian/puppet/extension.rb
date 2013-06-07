@@ -101,4 +101,12 @@ module Librarian
       deps.to_a
     end
   end
+
+  class Resolver
+    class Implementation
+      def debug_conflict(dependency, conflict)
+        raise Error, "Conflict between #{dependency} and #{conflict}"
+      end
+    end
+  end
 end
