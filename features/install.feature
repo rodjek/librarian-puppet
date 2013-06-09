@@ -49,3 +49,13 @@ Feature: cli/install
     When I run `librarian-puppet install`
     Then the exit status should be 0
     And the file "modules/postgresql/Modulefile" should match /name *'puppetlabs-postgresql'/
+  Scenario: Install a module with dependencies specified in a Puppetfile
+    Given a file named "Puppetfile" with:
+    """
+    mod 'super', :git => 'git://github.com/mpalmer/puppet-super'
+    
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/super/Puppetfile" should match /mod *'sub'/
+    And the file "Puppetfile.lock" should match /remote: git:..github\.com.mpalmer.puppet-sub/
