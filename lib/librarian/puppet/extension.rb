@@ -103,10 +103,14 @@ module Librarian
   end
 
   class Resolver
-    class Implementation
-      def debug_conflict(dependency, conflict)
-        raise Error, "Conflict between #{dependency} and #{conflict}"
+    # ensure we don't return nil, if manifests is nil we return a resolution that is not valid
+    def resolve(spec, partial_manifests = [])
+      manifests = implementation(spec).resolve(partial_manifests)
+      if manifests
+        enforce_consistency!(spec.dependencies, manifests)
+        manifests = sort(manifests)
       end
+      Resolution.new(spec.dependencies, manifests)
     end
   end
 end

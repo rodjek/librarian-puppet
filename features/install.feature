@@ -168,3 +168,15 @@ Feature: cli/install
     Then the exit status should be 0
     And the file "modules/super/Puppetfile" should match /mod *'sub'/
     And the file "Puppetfile.lock" should match /remote: git:..github\.com.mpalmer.puppet-sub/
+
+  Scenario: Install a module with conflicts
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'puppetlabs/apache', '0.6.0'
+    mod 'puppetlabs/stdlib', '<2.2.1'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 1
+    And the output should contain "Could not resolve the dependencies"
