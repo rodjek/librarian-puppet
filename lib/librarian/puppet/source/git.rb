@@ -35,7 +35,7 @@ module Librarian
 
             metadata.dependencies.map do |dependency|
               name = dependency.instance_variable_get(:@full_module_name)
-              version = dependency.instance_variable_get(:@version_requirement)
+              version = dependency.instance_variable_get(:@version_requirement) || ">=0"
               v = Librarian::Puppet::Requirement.new(version).gem_requirement
               Dependency.new(name, v, forge_source)
             end
