@@ -13,26 +13,18 @@ module Librarian
           def initialize(source, name)
             self.source = source
             self.name = name
-            @dependencies = {}
+            @api_data = nil
           end
 
           def versions
             return @versions if @versions
-            data = api_call("#{name}.json")
-            if data.nil?
-              raise Error, "Unable to find module '#{name}' on #{source}"
-            end
-
-            @versions = data['releases'].map { |r| r['version'] }.sort.reverse
+            @versions = api_data[name].map { |r| r['version'] }.reverse
+            debug { "  Module #{name} found versions: #{@versions.join(", ")}" }
+            @versions
           end
 
           def dependencies(version)
-            return @dependencies[version] if @dependencies[version]
-            data = api_call("api/v1/releases.json?module=#{name}&version=#{version}")
-            if data.nil?
-              raise Error, "Unable to find version #{version} for module '#{name}' on #{source}"
-            end
-            @dependencies[version] = data[name].first['dependencies']
+            api_data[name].detect{|x| x['version'] == version.to_s}['dependencies']
           end
 
           def manifests
@@ -131,8 +123,7 @@ module Librarian
           end
 
           def vendor_cache(name, version)
-            data = api_call("api/v1/releases.json?module=#{name}&version=#{version}")
-            info = data[name].detect {|h| h['version'] == version.to_s }
+            info = api_data[name].detect {|h| h['version'] == version.to_s }
             File.open(vendored_path(name, version).to_s, 'w') do |f|
               open("#{source}#{info['file']}") do |input|
                 while (buffer = input.read)
@@ -147,11 +138,21 @@ module Librarian
           end
 
         private
+          def api_data
+            return @api_data if @api_data
+            # call API and cache data
+            @api_data = api_call(name)
+            if @api_data.nil?
+              raise Error, "Unable to find module '#{name}' on #{source}"
+            end
+            @api_data
+          end
 
-          def api_call(path)
+          def api_call(module_name)
+            debug { "Querying Forge API for module #{name}" }
             base_url = source.uri
             begin
-              data = open("#{base_url}/#{path}") {|f| f.read}
+              data = open("#{base_url}/api/v1/releases.json?module=#{module_name}") {|f| f.read}
               JSON.parse(data)
             rescue OpenURI::HTTPError => e
               case e.io.status[0].to_i

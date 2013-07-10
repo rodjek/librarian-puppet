@@ -80,9 +80,8 @@ Feature: cli/update
     Then the exit status should be 1
     And the output should contain "Unable to find module stdlib"
 
-  @pending
   Scenario: Updating a module to a .10 release to ensure versions are correctly ordered
-    Given PENDING a file named "Puppetfile" with:
+    Given a file named "Puppetfile" with:
     """
     forge "http://forge.puppetlabs.com"
 
