@@ -78,3 +78,26 @@ Feature: cli/update
     When I run `librarian-puppet update stdlib`
     Then the exit status should be 1
     And the output should contain "Unable to find module stdlib"
+
+  Scenario: Updating a module to a .10 release to ensure versions are correctly ordered
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'maestrodev/test'
+    """
+    And a file named "Puppetfile.lock" with:
+    """
+    FORGE
+      remote: http://forge.puppetlabs.com
+      specs:
+        maestrodev/test (1.0.2)
+
+    DEPENDENCIES
+      maestrodev/test (>= 0)
+    """
+    When I run `librarian-puppet update --verbose`
+    Then the exit status should be 0
+    And the file "Puppetfile.lock" should contain "maestrodev/test (1.0.10)"
+    And the file "modules/test/Modulefile" should contain "name 'maestrodev-test'"
+    And the file "modules/test/Modulefile" should contain "version '1.0.10'"

@@ -24,7 +24,8 @@ module Librarian
               raise Error, "Unable to find module '#{name}' on #{source}"
             end
 
-            versions = data['releases'].map { |r| r['version'] }.sort.reverse
+            versions = data['releases'].map { |r| r['version'] }
+            debug { "  Module #{name} found versions: #{versions.join(", ")}" }
             versions.select { |v| ! Gem::Version.correct? v }.each { |v| debug { "Ignoring invalid version '#{v}' for module #{name}" } }
             @versions = versions.select { |v| Gem::Version.correct? v }
           end
