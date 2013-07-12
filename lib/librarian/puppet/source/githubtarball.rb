@@ -24,11 +24,7 @@ module Librarian
               raise Error, "Unable to find module '#{source.uri}' on https://github.com"
             end
 
-            all_versions = data.map { |r| r['name'] }.sort.reverse
-
-            all_versions = all_versions.map do |version|
-              version.gsub(/^v/, '')
-            end
+            all_versions = data.map { |r| r['name'].gsub(/^v/, '') }.sort.reverse
 
             all_versions.delete_if do |version|
               version !~ /\A\d\.\d(\.\d.*)?\z/
