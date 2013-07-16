@@ -1,6 +1,5 @@
-require 'uri'
-require 'net/http'
 require 'json'
+require 'open-uri'
 
 module Librarian
   module Puppet
@@ -133,26 +132,14 @@ module Librarian
           end
 
           def vendor_cache(name, version)
-            File.open(vendored_path(name, version).to_s, 'w') do |f|
-              download(name, version) do |data|
-                f << data
-              end
-            end
-          end
-
-          def download(name, version, &block)
             data = api_call("api/v1/releases.json?module=#{name}&version=#{version}")
-
             info = data[name].detect {|h| h['version'] == version.to_s }
-
-            stream(info['file'], &block)
-          end
-
-          def stream(file, &block)
-            Net::HTTP.get_response(URI.parse("#{source}#{file}")) do |res|
-              res.code
-
-              res.read_body(&block)
+            File.open(vendored_path(name, version).to_s, 'w') do |f|
+              open("#{source}#{info['file']}") do |input|
+                while (buffer = input.read)
+                  f.write(buffer)
+                end
+              end
             end
           end
 
@@ -164,15 +151,16 @@ module Librarian
 
           def api_call(path)
             base_url = source.uri
-            resp = Net::HTTP.get_response(URI.parse("#{base_url}/#{path}"))
-            case resp.code.to_i
-            when 404,410
-              nil
-            when 200
-              data = resp.body
+            begin
+              data = open("#{base_url}/#{path}") {|f| f.read}
               JSON.parse(data)
-            else
-              raise Error, "Error requesting #{base_url}/#{path}: [#{resp.code}] #{resp.body}"
+            rescue OpenURI::HTTPError => e
+              case e.io.status[0].to_i
+              when 404,410
+                nil
+              else
+                raise e, "Error requesting #{base_url}/#{path}: #{e.to_s}"
+              end
             end
           end
         end
