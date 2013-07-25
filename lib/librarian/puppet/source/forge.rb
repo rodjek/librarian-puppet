@@ -7,22 +7,22 @@ module Librarian
       class Forge
         class Repo
 
-          attr_accessor :source, :name, :versions, :api_data
-          private :source=, :name=, :versions=, :api_data, :api_data=
+          attr_accessor :source, :name
+          private :source=, :name=
 
           def initialize(source, name)
             self.source = source
             self.name = name
+            @api_data = nil
+          end
 
-            # call API and cache data
-            self.api_data = api_call(name)
-            if api_data.nil?
-              raise Error, "Unable to find module '#{name}' on #{source}"
-            end
+          def versions
+            return @versions if @versions
             versions = api_data[name].map { |r| r['version'] }.reverse
             debug { "  Module #{name} found versions: #{versions.join(", ")}" }
             versions.select { |v| ! Gem::Version.correct? v }.each { |v| debug { "Ignoring invalid version '#{v}' for module #{name}" } }
-            self.versions = versions.select { |v| Gem::Version.correct? v }
+            @versions = versions.select { |v| Gem::Version.correct? v }
+            @versions
           end
 
           def dependencies(version)
@@ -95,6 +95,7 @@ module Librarian
 
 
             command = "puppet module install --version #{version} --target-dir '#{path}' --module_repository '#{source}' --modulepath '#{path}' --ignore-dependencies '#{target}'"
+            debug { "Executing puppet module install for #{name} #{version}" }
             output = `#{command}`
 
             # Check for bad exit code
@@ -138,8 +139,18 @@ module Librarian
           end
 
         private
+          def api_data
+            return @api_data if @api_data
+            # call API and cache data
+            @api_data = api_call(name)
+            if @api_data.nil?
+              raise Error, "Unable to find module '#{name}' on #{source}"
+            end
+            @api_data
+          end
 
           def api_call(module_name)
+            debug { "Querying Forge API for module #{name}" }
             base_url = source.uri
             begin
               data = open("#{base_url}/api/v1/releases.json?module=#{module_name}") {|f| f.read}
