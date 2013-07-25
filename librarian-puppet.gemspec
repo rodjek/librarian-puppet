@@ -7,6 +7,7 @@ Gem::Specification.new do |s|
   s.version = Librarian::Puppet::VERSION
   s.platform = Gem::Platform::RUBY
   s.authors = ['Tim Sharpe']
+  s.license = 'MIT'
   s.email = ['tim@sharpe.id.au']
   s.homepage = 'https://github.com/rodjek/librarian-puppet'
   s.summary = 'Bundler for your Puppet modules'
