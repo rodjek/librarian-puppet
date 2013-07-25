@@ -7,35 +7,26 @@ module Librarian
       class Forge
         class Repo
 
-          attr_accessor :source, :name
-          private :source=, :name=
+          attr_accessor :source, :name, :versions, :api_data
+          private :source=, :name=, :versions=, :api_data, :api_data=
 
           def initialize(source, name)
             self.source = source
             self.name = name
-            @dependencies = {}
-          end
 
-          def versions
-            return @versions if @versions
-            data = api_call("#{name}.json")
-            if data.nil?
+            # call API and cache data
+            self.api_data = api_call(name)
+            if api_data.nil?
               raise Error, "Unable to find module '#{name}' on #{source}"
             end
-
-            versions = data['releases'].map { |r| r['version'] }
+            versions = api_data[name].map { |r| r['version'] }.reverse
             debug { "  Module #{name} found versions: #{versions.join(", ")}" }
             versions.select { |v| ! Gem::Version.correct? v }.each { |v| debug { "Ignoring invalid version '#{v}' for module #{name}" } }
-            @versions = versions.select { |v| Gem::Version.correct? v }
+            self.versions = versions.select { |v| Gem::Version.correct? v }
           end
 
           def dependencies(version)
-            return @dependencies[version] if @dependencies[version]
-            data = api_call("api/v1/releases.json?module=#{name}&version=#{version}")
-            if data.nil?
-              raise Error, "Unable to find version #{version} for module '#{name}' on #{source}"
-            end
-            @dependencies[version] = data[name].first['dependencies']
+            api_data[name].detect{|x| x['version'] == version.to_s}['dependencies']
           end
 
           def manifests
@@ -132,8 +123,7 @@ module Librarian
           end
 
           def vendor_cache(name, version)
-            data = api_call("api/v1/releases.json?module=#{name}&version=#{version}")
-            info = data[name].detect {|h| h['version'] == version.to_s }
+            info = api_data[name].detect {|h| h['version'] == version.to_s }
             File.open(vendored_path(name, version).to_s, 'w') do |f|
               open("#{source}#{info['file']}") do |input|
                 while (buffer = input.read)
@@ -149,10 +139,10 @@ module Librarian
 
         private
 
-          def api_call(path)
+          def api_call(module_name)
             base_url = source.uri
             begin
-              data = open("#{base_url}/#{path}") {|f| f.read}
+              data = open("#{base_url}/api/v1/releases.json?module=#{module_name}") {|f| f.read}
               JSON.parse(data)
             rescue OpenURI::HTTPError => e
               case e.io.status[0].to_i
