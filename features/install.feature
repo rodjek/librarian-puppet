@@ -2,6 +2,7 @@ Feature: cli/install
   In order to be worth anything
   Puppet librarian needs to install modules properly
 
+  @slow
   Scenario: Installing a module and its dependencies
     Given a file named "Puppetfile" with:
     """
@@ -14,6 +15,7 @@ Feature: cli/install
     And the file "modules/apt/Modulefile" should match /name *'puppetlabs-apt'/
     And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
 
+  @slow
   Scenario: Installing an exact version of a module
     Given a file named "Puppetfile" with:
     """
@@ -27,6 +29,7 @@ Feature: cli/install
     And the file "modules/apt/Modulefile" should match /version *'0\.0\.4'/
     And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
 
+  @veryslow
   Scenario: Installing a module with invalid versions in the forge
     Given a file named "Puppetfile" with:
     """
@@ -42,6 +45,7 @@ Feature: cli/install
     And the file "modules/postgresql/Modulefile" should match /name *'puppetlabs-postgresql'/
     And the file "modules/postgresql/Modulefile" should match /version *'2\.0\.1'/
 
+  @veryslow
   Scenario: Installing a module from git 
     Given a file named "Puppetfile" with:
     """
@@ -60,6 +64,7 @@ Feature: cli/install
     And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
     And the file "modules/stdlib/Modulefile" should match /version *'2\.2\.1'/
 
+  @slow
   Scenario: Installing a module with invalid versions in git
     Given a file named "Puppetfile" with:
     """
@@ -73,6 +78,7 @@ Feature: cli/install
     And the file "modules/apache/Modulefile" should match /name *'puppetlabs-apache'/
     And the file "modules/apache/Modulefile" should match /version *'0\.5\.0-rc1'/
 
+  @slow
   Scenario: Installing a module with several constraints
     Given a file named "Puppetfile" with:
     """
@@ -86,6 +92,7 @@ Feature: cli/install
     And the file "modules/apt/Modulefile" should match /version *'1\.0\.0'/
     And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
 
+  @slow
   Scenario: Switching a module from forge to git
     Given a file named "Puppetfile" with:
     """
@@ -111,6 +118,7 @@ Feature: cli/install
     And the file "modules/postgresql/Modulefile" should match /version *'1\.0\.0'/
     And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
 
+  @slow
   Scenario: Changing the path
     Given a directory named "puppet"
     And a file named "Puppetfile" with:
@@ -126,6 +134,7 @@ Feature: cli/install
     And the file "puppet/modules/apt/Modulefile" should match /name *'puppetlabs-apt'/
     And the file "puppet/modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
 
+  @veryslow
   Scenario: Handle range version numbers
     Given a file named "Puppetfile" with:
     """

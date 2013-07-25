@@ -24,6 +24,7 @@ Feature: cli/update
     And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
     And the file "modules/stdlib/Modulefile" should match /version *'3\.1\.1'/
 
+  @slow
   Scenario: Updating a module with invalid versions in git
     Given a file named "Puppetfile" with:
     """
