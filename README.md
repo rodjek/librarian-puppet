@@ -164,25 +164,6 @@ Please include:
  * Please run the `librarian-puppet` commands in verbose mode by using the
   `--verbose` flag, and include the verbose output in the bug report as well.
 
-## Changelog
-
-### 0.9.0
-
- * Initial release
-
-### 0.9.1
-
- * Proper error message when a module that is sourced from the forge does not
-   exist.
- * Added support for annotated tags as git references.
- * `librarian-puppet init` adds `.tmp/` to gitignore instead of `tmp/`.
- * Fixed syntax error in the template Puppetfile created by `librarian-puppet
-   init`.
- * Checks for `lib/puppet` as well as `manifests/` when checking if the git
-   repository is a valid module.
- * When a user specifies `<foo>/<bar>` as the name of a module sources from a
-   git repository, assume the module name is actually `<bar>`.
- * Fixed gem description and summary in gemspec.
 
 ## License
 Please see the [LICENSE](https://github.com/rodjek/librarian-puppet/blob/master/LICENSE)
