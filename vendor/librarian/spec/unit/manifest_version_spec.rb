@@ -72,5 +72,23 @@ describe Librarian::Manifest::Version do
             to raise_error(ArgumentError)
       end
     end
+
+    context "when a version is converted to string" do
+      it "should be the full semver" do
+        version = "1.0.0-beta.11+200.1.2"
+        v1 = described_class.new(version)
+        expect(v1.to_s).to eq(version)
+      end
+      it "should be the full gem version" do
+        version = "1.0.0.a"
+        v1 = described_class.new(version)
+        expect(v1.to_s).to eq(version)
+      end
+      it "should be the two-component version" do
+        version = "1.0"
+        v1 = described_class.new(version)
+        expect(v1.to_s).to eq(version)
+      end
+    end
   end
 end
