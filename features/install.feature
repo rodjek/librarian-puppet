@@ -52,10 +52,10 @@ Feature: cli/install
     forge "http://forge.puppetlabs.com"
 
     mod 'puppetlabs/apache',
-        :git => 'git@github.com:puppetlabs/puppetlabs-apache.git', :ref => '0.6.0'
+        :git => 'https://github.com/puppetlabs/puppetlabs-apache.git', :ref => '0.6.0'
 
     mod 'puppetlabs/stdlib',
-        :git => 'git@github.com:puppetlabs/puppetlabs-stdlib.git', :ref => 'v2.2.1'
+        :git => 'https://github.com/puppetlabs/puppetlabs-stdlib.git', :ref => 'v2.2.1'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
