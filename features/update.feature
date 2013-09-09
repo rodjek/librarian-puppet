@@ -80,7 +80,6 @@ Feature: cli/update
     Then the exit status should be 1
     And the output should contain "Unable to find module stdlib"
 
-  @focus
   Scenario: Updating a module to a .10 release to ensure versions are correctly ordered
     Given a file named "Puppetfile" with:
     """
