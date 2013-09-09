@@ -152,8 +152,10 @@ module Librarian
           def api_call(module_name)
             debug { "Querying Forge API for module #{name}" }
             base_url = source.uri
+            path     = "api/v1/releases.json?module=#{module_name}"
+            
             begin
-              data = open("#{base_url}/api/v1/releases.json?module=#{module_name}") {|f| f.read}
+              data = open("#{base_url}/#{path}") {|f| f.read}
               JSON.parse(data)
             rescue OpenURI::HTTPError => e
               case e.io.status[0].to_i
