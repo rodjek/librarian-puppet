@@ -125,10 +125,20 @@ module Librarian
               "librarian-puppet v#{Librarian::Puppet::VERSION}"
 
             resp = http.request(request)
-            if resp.code.to_i != 200
+            data = resp.body
+
+            if resp.code.to_i == 403
+              begin
+                message = JSON.parse(data)['message']
+                if message.include? 'API rate limit exceeded'
+                  raise Error, message
+                end
+                rescue JSON::ParserError
+                  # 403 response does not return json, skip.
+              end
+            elsif resp.code.to_i != 200
               nil
             else
-              data = resp.body
               JSON.parse(data)
             end
           end

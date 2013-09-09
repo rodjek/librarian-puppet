@@ -1,3 +1,19 @@
-# .travis.yml
-before_script:
-  - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
+rvm:
+  - 1.8.7
+  - 1.9.2
+  - 1.9.3
+notifications:
+  email:
+    - support@maestrodev.com
+env:
+  - PUPPET_VERSION=2.6.18
+  - PUPPET_VERSION=2.7.23
+  - PUPPET_VERSION=3.0.2
+  - PUPPET_VERSION=3.1.1
+  - PUPPET_VERSION=3.2.4
+matrix:
+  exclude:
+    - rvm: 1.9.2
+      env: PUPPET_VERSION=2.6.18
+    - rvm: 1.9.3
+      env: PUPPET_VERSION=2.6.18
