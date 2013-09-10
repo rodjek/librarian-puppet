@@ -1,7 +1,7 @@
 require 'aruba/cucumber'
 
 Before do
-  @aruba_timeout_seconds = 5
+  @aruba_timeout_seconds = 10
 end
 
 Before('@slow') do
@@ -9,5 +9,5 @@ Before('@slow') do
 end
 
 Before('@veryslow') do
-  @aruba_timeout_seconds = 40
+  @aruba_timeout_seconds = 50
 end

@@ -92,7 +92,7 @@ Feature: cli/install
     And the file "modules/apt/Modulefile" should match /version *'1\.0\.0'/
     And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
 
-  @slow
+  @veryslow
   Scenario: Switching a module from forge to git
     Given a file named "Puppetfile" with:
     """
