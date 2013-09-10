@@ -1,5 +1,11 @@
 ## Changelog
 
+### 0.9.10.1
+
+ * Catch GitHub API rate limit exceeded
+ * Make Librarian::Manifest Semver 2.0.0 compatible
+ * Fix undefined 'path' variable when forge returns an error
+
 ### 0.9.9.8
  * Reduce the number of API calls to the Forge
 
