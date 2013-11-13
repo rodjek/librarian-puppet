@@ -1,5 +1,7 @@
 # Librarian-puppet
 
+[![Build Status](https://travis-ci.org/rodjek/librarian-puppet.png?branch=master)](https://travis-ci.org/rodjek/librarian-puppet)
+
 ## Introduction
 
 Librarian-puppet is a bundler for your puppet infrastructure.  You can use
