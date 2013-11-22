@@ -115,32 +115,33 @@ module Librarian
           def api_call(path)
             url = "https://api.github.com#{path}"
             url << "?access_token=#{ENV['GITHUB_API_TOKEN']}" if ENV['GITHUB_API_TOKEN']
+            code, data = http_get(url, :headers => {
+              "User-Agent" => "librarian-puppet v#{Librarian::Puppet::VERSION}"
+            })
+
+            if code == 200
+              JSON.parse(data)
+            elsif code == 403
+              begin
+                message = JSON.parse(data)['message']
+                if message && message.include?('API rate limit exceeded')
+                  raise Error, message
+                end
+              rescue JSON::ParserError
+                # 403 response does not return json, skip.
+              end
+            end
+          end
+
+          def http_get(url, options)
             uri = URI.parse(url)
             http = Net::HTTP.new(uri.host, uri.port)
             http.use_ssl = true
             http.verify_mode = OpenSSL::SSL::VERIFY_NONE
             request = Net::HTTP::Get.new(uri.request_uri)
-
-            request.add_field "User-Agent",
-              "librarian-puppet v#{Librarian::Puppet::VERSION}"
-
+            options[:headers].each { |k, v| request.add_field k, v }
             resp = http.request(request)
-            data = resp.body
-
-            if resp.code.to_i == 403
-              begin
-                message = JSON.parse(data)['message']
-                if message.include? 'API rate limit exceeded'
-                  raise Error, message
-                end
-                rescue JSON::ParserError
-                  # 403 response does not return json, skip.
-              end
-            elsif resp.code.to_i != 200
-              nil
-            else
-              JSON.parse(data)
-            end
+            [resp.code.to_i, resp.body]
           end
         end
 
