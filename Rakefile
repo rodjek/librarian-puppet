@@ -1,4 +1,4 @@
-require 'bundlet/setup'
+require 'bundler/setup'
 require 'cucumber/rake/task'
 require 'bundler/gem_tasks'
 require 'rake/testtask'

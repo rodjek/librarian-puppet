@@ -9,6 +9,7 @@ module Librarian
     module Source
       class GitHubTarball
         class Repo
+          TOKEN_KEY = 'GITHUB_API_TOKEN'
 
           attr_accessor :source, :name
           private :source=, :name=
@@ -114,7 +115,7 @@ module Librarian
 
           def api_call(path)
             url = "https://api.github.com#{path}"
-            url << "?access_token=#{ENV['GITHUB_API_TOKEN']}" if ENV['GITHUB_API_TOKEN']
+            url << "?access_token=#{ENV[TOKEN_KEY]}" if ENV[TOKEN_KEY]
             code, data = http_get(url, :headers => {
               "User-Agent" => "librarian-puppet v#{Librarian::Puppet::VERSION}"
             })
@@ -125,7 +126,7 @@ module Librarian
               begin
                 message = JSON.parse(data)['message']
                 if message && message.include?('API rate limit exceeded')
-                  raise Error, message
+                  raise Error, message + " -- increase limit by authenticating via #{TOKEN_KEY}=your-token"
                 end
               rescue JSON::ParserError
                 # 403 response does not return json, skip.

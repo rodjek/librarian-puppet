@@ -24,7 +24,8 @@ describe Librarian::Puppet::Source::GitHubTarball::Repo do
     it "fails when we hit api limit" do
       response = {"message" => "Oh boy! API rate limit exceeded!!!"}
       repo.expects(:http_get).with('https://api.github.com/foo', {:headers => headers}).returns([403, JSON.dump(response)])
-      assert_exact_error Librarian::Error, "Oh boy! API rate limit exceeded!!!" do
+      message = "Oh boy! API rate limit exceeded!!! -- increase limit by authenticating via GITHUB_API_TOKEN=your-token"
+      assert_exact_error Librarian::Error, message do
         repo.send(:api_call, "/foo")
       end
     end
