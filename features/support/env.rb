@@ -19,3 +19,7 @@ end
 Given /^PENDING/ do |x|
   pending
 end
+
+Given(/^there is no Puppetfile$/) do
+  fail if (File.exist?('Puppetfile'))
+end
