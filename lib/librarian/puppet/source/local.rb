@@ -41,7 +41,7 @@ module Librarian
 
         def install_perform_step_copy!(found_path, install_path)
           debug { "Copying #{relative_path_to(found_path)} to #{relative_path_to(install_path)}" }
-          FileUtils.cp_r(found_path, install_path)
+          FileUtils.cp_r(found_path, install_path, :preserve => true)
         end
 
         def manifest?(name, path)
