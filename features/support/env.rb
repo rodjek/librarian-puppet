@@ -1,9 +1,21 @@
 require 'aruba/cucumber'
 
 Before do
-  slow_boot = true
-  slow_boot ||= RUBY_PLATFORM == "java"
-  slow_boot ||= defined?(::Rubinius)
+  @aruba_timeout_seconds = 15
+end
 
-  @aruba_timeout_seconds = slow_boot ? 90 : 60
+Before('@slow') do
+  @aruba_timeout_seconds = 25
+end
+
+Before('@veryslow') do
+  @aruba_timeout_seconds = 50
+end
+
+Before('@veryveryslow') do
+  @aruba_timeout_seconds = 90
+end
+
+Given /^PENDING/ do |x|
+  pending
 end
