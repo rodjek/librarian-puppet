@@ -19,14 +19,15 @@ Gem::Specification.new do |s|
     '.gitignore',
     'LICENSE',
     'README.md',
-  ] + Dir['{bin,lib,vendor}/**/*']
+  ] + Dir['{bin,lib}/**/*']
 
   s.executables = ['librarian-puppet']
 
-  s.add_dependency "thor", "~> 0.15"
+  s.add_dependency "librarian", ">=0.1.1"
   s.add_dependency "json"
 
   s.add_development_dependency "rake"
+  s.add_development_dependency "rspec"
   s.add_development_dependency "cucumber"
   s.add_development_dependency "aruba"
   s.add_development_dependency "puppet"

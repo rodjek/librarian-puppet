@@ -1,1 +1,0 @@
-require 'librarian/chef/extension'
