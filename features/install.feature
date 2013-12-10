@@ -179,9 +179,8 @@ Feature: cli/install
     And the file "modules/super/Puppetfile" should match /mod *'sub'/
     And the file "Puppetfile.lock" should match /remote: git:..github\.com.mpalmer.puppet-sub/
 
-  @pending
   Scenario: Install a module with conflicts
-    Given PENDING a file named "Puppetfile" with:
+    Given a file named "Puppetfile" with:
     """
     forge "http://forge.puppetlabs.com"
 

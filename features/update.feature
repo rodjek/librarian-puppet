@@ -60,9 +60,8 @@ Feature: cli/update
     And the file "modules/apache/Modulefile" should match /name *'puppetlabs-apache'/
     And the file "modules/apache/Modulefile" should match /version *'0\.5\.0-rc1'/
 
-  @pending
   Scenario: Updating a module that is not in the Puppetfile
-    Given PENDING a file named "Puppetfile" with:
+    Given a file named "Puppetfile" with:
     """
     forge "http://forge.puppetlabs.com"
 
