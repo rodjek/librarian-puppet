@@ -4,7 +4,7 @@ module Librarian
       attr_reader :requirement
 
       def initialize(requirement)
-        @requirement = requirement
+        @requirement = requirement || ">=0"
       end
 
       def gem_requirement

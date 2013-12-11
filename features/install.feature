@@ -209,3 +209,28 @@ Feature: cli/install
     Then the exit status should be 0
     And the file "modules/test/Modulefile" should match /version *'0\.0\.1'/
     And a file named "modules/stdlib/Modulefile" should exist
+
+  @slow
+  Scenario: Install a module from the Forge with dependencies without version
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'sbadia/gitlab', '0.1.0'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/gitlab/Modulefile" should match /version *'0\.1\.0'/
+
+  @veryslow
+  Scenario: Install a module from git without version
+    Given PENDING a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'test', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/dependency_without_version'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/test/Modulefile" should match /version *'0\.0\.1'/
+    And a file named "modules/stdlib/Modulefile" should exist
