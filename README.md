@@ -24,6 +24,15 @@ Every Puppet repository that uses Librarian-puppet will have a file named
 `Puppetfile` in the root directory of that repository.  The full specification
 for which modules your puppet infrastructure repository  depends goes in here.
 
+### Simple Puppetfile
+
+This Puppetfile will download all the dependencies listed in your Modulefile from the Puppet Forge
+
+    forge "http://forge.puppetlabs.com"
+
+    modulefile
+
+
 ### Example Puppetfile
 
     forge "http://forge.puppetlabs.com"

@@ -1,6 +1,11 @@
 ## Changelog
 
 ### 0.9.11
+ * Better sort of githib tarball versions when there are mixed tags starting with and without 'v'
+ * Add modulefile dsl to reuse Modulefile dependencies
+ * Fix error if a git module has a dependency without version
+ * Fix git dependency with :path attribute
+ * Cleaner output when no Puppetfile found
  * Reduce the number of API calls to the Forge
  * Don't sort versions as strings. Rely on the forge returning them ordered
  * Pass --module_repository to `puppet module install` to install from other forges
