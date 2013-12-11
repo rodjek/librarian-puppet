@@ -1,6 +1,5 @@
-require 'uri'
-require 'net/http'
 require 'json'
+require 'open-uri'
 
 module Librarian
   module Puppet
@@ -14,20 +13,18 @@ module Librarian
           def initialize(source, name)
             self.source = source
             self.name = name
+            @api_data = nil
           end
 
           def versions
-            data = api_call("#{name}.json")
-            if data.nil?
-              raise Error, "Unable to find module '#{name}' on #{source}"
-            end
-
-            data['releases'].map { |r| r['version'] }.sort.reverse
+            return @versions if @versions
+            @versions = api_data[name].map { |r| r['version'] }.reverse
+            debug { "  Module #{name} found versions: #{@versions.join(", ")}" }
+            @versions
           end
 
           def dependencies(version)
-            data = api_call("api/v1/releases.json?module=#{name}&version=#{version}")
-            data[name].first['dependencies']
+            api_data[name].detect{|x| x['version'] == version.to_s}['dependencies']
           end
 
           def manifests
@@ -126,26 +123,13 @@ module Librarian
           end
 
           def vendor_cache(name, version)
+            info = api_data[name].detect {|h| h['version'] == version.to_s }
             File.open(vendored_path(name, version).to_s, 'w') do |f|
-              download(name, version) do |data|
-                f << data
+              open("#{source}#{info['file']}") do |input|
+                while (buffer = input.read)
+                  f.write(buffer)
+                end
               end
-            end
-          end
-
-          def download(name, version, &block)
-            data = api_call("api/v1/releases.json?module=#{name}&version=#{version}")
-
-            info = data[name].detect {|h| h['version'] == version.to_s }
-
-            stream(info['file'], &block)
-          end
-
-          def stream(file, &block)
-            Net::HTTP.get_response(URI.parse("#{source}#{file}")) do |res|
-              res.code
-
-              res.read_body(&block)
             end
           end
 
@@ -154,15 +138,29 @@ module Librarian
           end
 
         private
+          def api_data
+            return @api_data if @api_data
+            # call API and cache data
+            @api_data = api_call(name)
+            if @api_data.nil?
+              raise Error, "Unable to find module '#{name}' on #{source}"
+            end
+            @api_data
+          end
 
-          def api_call(path)
-            base_url = source.to_s
-            resp = Net::HTTP.get_response(URI.parse("#{base_url}/#{path}"))
-            if resp.code.to_i != 200
-              nil
-            else
-              data = resp.body
+          def api_call(module_name)
+            debug { "Querying Forge API for module #{name}" }
+            base_url = source.uri
+            begin
+              data = open("#{base_url}/api/v1/releases.json?module=#{module_name}") {|f| f.read}
               JSON.parse(data)
+            rescue OpenURI::HTTPError => e
+              case e.io.status[0].to_i
+              when 404,410
+                nil
+              else
+                raise e, "Error requesting #{base_url}/#{path}: #{e.to_s}"
+              end
             end
           end
         end
