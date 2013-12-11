@@ -224,7 +224,7 @@ Feature: cli/install
 
   @veryslow
   Scenario: Install a module from git without version
-    Given PENDING a file named "Puppetfile" with:
+    Given a file named "Puppetfile" with:
     """
     forge "http://forge.puppetlabs.com"
 
