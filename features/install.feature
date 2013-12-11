@@ -196,3 +196,16 @@ Feature: cli/install
     When I run `librarian-puppet install`
     Then the exit status should be 1
     And the output should contain "Could not resolve the dependencies"
+
+  @veryslow
+  Scenario: Install a module from git and using path
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'test', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/test'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/test/Modulefile" should match /version *'0\.0\.1'/
+    And a file named "modules/stdlib/Modulefile" should exist
