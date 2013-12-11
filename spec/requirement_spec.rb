@@ -13,6 +13,7 @@ describe Librarian::Puppet::Requirement do
 
   it 'should print to_s' do
     described_class.new('1.x').to_s.should eq('~> 1.0')
-    described_class.new('>=1.1.0 <2.0.0').to_s.should eq("[\">=1.1.0\", \"<2.0.0\"]")
+    expected = RUBY_VERSION =~ /^1\.8\./ ? ">=1.1.0<2.0.0" : "[\">=1.1.0\", \"<2.0.0\"]"
+    described_class.new('>=1.1.0 <2.0.0').to_s.should eq(expected)
   end
 end
