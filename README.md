@@ -1,12 +1,13 @@
 # Librarian-puppet
 
+[![Build Status](https://travis-ci.org/rodjek/librarian-puppet.png?branch=master)](https://travis-ci.org/rodjek/librarian-puppet)
+
 ## Note
 
 This is a fork of [rodjek librarian-puppet](https://github.com/rodjek/librarian-puppet) with
 a bunch of fixes submitted as pull requests there.
 It is published to rubygems as [librarian-puppet-maestrodev](https://rubygems.org/gems/librarian-puppet-maestrodev)
 so you can easily try it.
-
 
 ## Introduction
 
@@ -29,6 +30,15 @@ release and the version bumped in your Puppetfile.
 Every Puppet repository that uses Librarian-puppet will have a file named
 `Puppetfile` in the root directory of that repository.  The full specification
 for which modules your puppet infrastructure repository  depends goes in here.
+
+### Simple Puppetfile
+
+This Puppetfile will download all the dependencies listed in your Modulefile from the Puppet Forge
+
+    forge "http://forge.puppetlabs.com"
+
+    modulefile
+
 
 ### Example Puppetfile
 

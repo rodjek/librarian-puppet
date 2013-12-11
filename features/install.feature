@@ -2,7 +2,13 @@ Feature: cli/install
   In order to be worth anything
   Puppet librarian needs to install modules properly
 
-  @slow
+  Scenario: Running install with no Puppetfile
+    Given there is no Puppetfile
+    When I run `librarian-puppet install`
+    Then the output should contain "Could not find Puppetfile"
+    And the exit status should be 1
+
+  @veryslow
   Scenario: Installing a module and its dependencies
     Given a file named "Puppetfile" with:
     """
@@ -15,7 +21,7 @@ Feature: cli/install
     And the file "modules/apt/Modulefile" should match /name *'puppetlabs-apt'/
     And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
 
-  @slow
+  @veryveryslow
   Scenario: Installing an exact version of a module
     Given a file named "Puppetfile" with:
     """
@@ -167,8 +173,9 @@ Feature: cli/install
     Then the exit status should be 1
     And the output should contain "Unable to find module 'puppetlabs/xxxxx' on http://forge.puppetlabs.com"
 
+  @pending
   Scenario: Install a module with dependencies specified in a Puppetfile
-    Given a file named "Puppetfile" with:
+    Given PENDING a file named "Puppetfile" with:
     """
     mod 'super', :git => 'git://github.com/mpalmer/puppet-super'
     
@@ -189,3 +196,58 @@ Feature: cli/install
     When I run `librarian-puppet install`
     Then the exit status should be 1
     And the output should contain "Could not resolve the dependencies"
+
+  @veryslow
+  Scenario: Install a module from git and using path
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'test', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/test'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/test/Modulefile" should match /version *'0\.0\.1'/
+    And a file named "modules/stdlib/Modulefile" should exist
+
+  @slow
+  Scenario: Install a module from the Forge with dependencies without version
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'sbadia/gitlab', '0.1.0'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/gitlab/Modulefile" should match /version *'0\.1\.0'/
+
+  @veryslow
+  Scenario: Install a module from git without version
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'test', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/dependency_without_version'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/test/Modulefile" should match /version *'0\.0\.1'/
+    And a file named "modules/stdlib/Modulefile" should exist
+
+  @veryslow
+  Scenario: Source dependencies from Modulefile
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    modulefile
+    """
+    And a file named "Modulefile" with:
+    """
+    name "random name"
+    dependency "puppetlabs/postgresql", "2.4.1"
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/postgresql/Modulefile" should match /name *'puppetlabs-postgresql'/

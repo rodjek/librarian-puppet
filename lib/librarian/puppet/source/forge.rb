@@ -18,10 +18,8 @@ module Librarian
 
           def versions
             return @versions if @versions
-            versions = api_data[name].map { |r| r['version'] }.reverse
-            debug { "  Module #{name} found versions: #{versions.join(", ")}" }
-            versions.select { |v| ! Gem::Version.correct? v }.each { |v| debug { "Ignoring invalid version '#{v}' for module #{name}" } }
-            @versions = versions.select { |v| Gem::Version.correct? v }
+            @versions = api_data[name].map { |r| r['version'] }.reverse
+            debug { "  Module #{name} found versions: #{@versions.join(", ")}" }
             @versions
           end
 
@@ -104,6 +102,7 @@ module Librarian
               path.unlink
               raise Error, "Error executing puppet module install:\n#{command}\nError:\n#{output}"
             end
+
           end
 
           def check_puppet_module_options
@@ -209,11 +208,6 @@ module Librarian
           self.class == other.class &&
           self.uri == other.uri
         end
-        alias eql? ==
-
-        def hash
-          self.uri.hash
-        end
 
         alias :eql? :==
 
@@ -275,14 +269,9 @@ module Librarian
         end
 
         def fetch_dependencies(name, version, version_uri)
-          environment.logger.debug { "      Fetching dependencies for #{name} #{version}" }
           repo(name).dependencies(version).map do |k, v|
-            begin
-              v = Requirement.new(v).gem_requirement
-              Dependency.new(k, v, nil)
-            rescue ArgumentError => e
-              raise Error, "Error fetching dependency for #{name} [#{version}]: #{k} [#{v}]: #{e}"
-            end
+            v = Requirement.new(v).gem_requirement
+            Dependency.new(k, v, nil)
           end
         end
 

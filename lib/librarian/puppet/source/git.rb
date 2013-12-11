@@ -14,51 +14,6 @@ module Librarian
           command = %W(rev-parse #{reference}^{commit} --quiet)
           run!(command, :chdir => true).strip
         end
-
-        # Naming this method 'version' causes an exception to be raised.
-        def module_version
-          return '0.0.1' unless modulefile?
-
-          metadata  = ::Puppet::ModuleTool::Metadata.new
-          ::Puppet::ModuleTool::ModulefileReader.evaluate(metadata, modulefile)
-
-          metadata.version
-        end
-
-        def dependencies
-          return {} unless modulefile? or puppetfile?
-          
-          if modulefile?
-            metadata = ::Puppet::ModuleTool::Metadata.new
-
-            ::Puppet::ModuleTool::ModulefileReader.evaluate(metadata, modulefile)
-
-            metadata.dependencies.map do |dependency|
-              name = dependency.instance_variable_get(:@full_module_name)
-              version = dependency.instance_variable_get(:@version_requirement) || ">=0"
-              v = Librarian::Puppet::Requirement.new(version).gem_requirement
-              Dependency.new(name, v, forge_source)
-            end
-          elsif puppetfile?
-            Librarian::Puppet::Environment.new(:project_path => path).specfile.read.dependencies
-          end
-        end
-
-        def modulefile
-          File.join(path, 'Modulefile')
-        end
-
-        def modulefile?
-          File.exists?(modulefile)
-        end
-        
-        def puppetfile?
-          File.exists?(File.join(path, 'Puppetfile'))
-        end
-
-        def forge_source
-          Librarian::Puppet::Source::Forge.from_lock_options(environment, :remote=>"http://forge.puppetlabs.com")
-        end
       end
     end
   end
@@ -108,19 +63,52 @@ module Librarian
         def fetch_version(name, extra)
           cache!
           found_path = found_path(name)
-          v = repository.module_version
-          v = v.gsub("-",".") # fix for some invalid versions like 1.0.0-rc1
-
-          # if still not valid, use some default version
-          unless Gem::Version.correct? v
-            debug { "Ignoring invalid version '#{v}' for module #{name}, using 0.0.1" }
-            v = '0.0.1'
-          end
-          v
+          module_version
         end
 
         def fetch_dependencies(name, version, extra)
-          repository.dependencies
+          dependencies.map do |k, v|
+            v = Requirement.new(v).gem_requirement
+            Dependency.new(k, v, forge_source)
+          end
+        end
+
+        def forge_source
+          Forge.from_lock_options(environment, :remote=>"http://forge.puppetlabs.com")
+        end
+
+        private
+
+        # Naming this method 'version' causes an exception to be raised.
+        def module_version
+          return '0.0.1' unless modulefile?
+
+          metadata  = ::Puppet::ModuleTool::Metadata.new
+          ::Puppet::ModuleTool::ModulefileReader.evaluate(metadata, modulefile)
+
+          metadata.version
+        end
+
+        def dependencies
+          return {} unless modulefile?
+
+          metadata = ::Puppet::ModuleTool::Metadata.new
+
+          ::Puppet::ModuleTool::ModulefileReader.evaluate(metadata, modulefile)
+
+          metadata.dependencies.inject({}) do |h, dependency|
+            name = dependency.instance_variable_get(:@full_module_name)
+            version = dependency.instance_variable_get(:@version_requirement)
+            h.update(name => version)
+          end
+        end
+
+        def modulefile
+          File.join(filesystem_path, 'Modulefile')
+        end
+
+        def modulefile?
+          File.exists?(modulefile)
         end
 
       end
