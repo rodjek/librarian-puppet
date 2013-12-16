@@ -1,6 +1,6 @@
 # Librarian-puppet
 
-[![Build Status](https://travis-ci.org/rodjek/librarian-puppet.png?branch=master)](https://travis-ci.org/rodjek/librarian-puppet)
+[![Build Status](https://travis-ci.org/maestrodev/librarian-puppet.png?branch=maestrodev)](https://travis-ci.org/maestrodev/librarian-puppet)
 
 ## Note
 
