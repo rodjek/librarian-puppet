@@ -13,6 +13,7 @@
  * Add a User-Agent header to all requests to the GitHub API
  * Convert puppet version requirements to rubygems, pessimistic and ranges
  * Use librarian gem
+ * Consider Puppetfile-dependencies recursively in git-source
 
 ### 0.9.10
 
