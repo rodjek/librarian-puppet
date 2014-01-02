@@ -17,3 +17,6 @@ matrix:
       env: PUPPET_VERSION=2.6.18
     - rvm: 1.9.3
       env: PUPPET_VERSION=2.6.18
+
+before_install:
+  - gem update --system 2.1.11 #  todo: workaround for https://github.com/rubygems/rubygems/pull/763
