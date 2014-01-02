@@ -1,5 +1,6 @@
 require 'librarian/source/git'
 require 'librarian/puppet/source/local'
+require 'puppet'
 
 module Librarian
   module Source
