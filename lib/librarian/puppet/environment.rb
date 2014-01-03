@@ -28,14 +28,6 @@ module Librarian
         vendor_path.join('source')
       end
 
-      def cache_path
-        project_path.join(".tmp/librarian/cache")
-      end
-
-      def scratch_path
-        project_path.join(".tmp/librarian/scratch")
-      end
-
       def vendor!
         vendor_cache.mkpath  unless vendor_cache.exist?
         vendor_source.mkpath unless vendor_source.exist?
