@@ -173,17 +173,16 @@ Feature: cli/install
     Then the exit status should be 1
     And the output should contain "Unable to find module 'puppetlabs/xxxxx' on http://forge.puppetlabs.com"
 
-  @pending
+  @slow
   Scenario: Install a module with dependencies specified in a Puppetfile
-    Given PENDING a file named "Puppetfile" with:
+    Given a file named "Puppetfile" with:
     """
-    mod 'super', :git => 'git://github.com/mpalmer/puppet-super'
-    
+    mod 'with_puppetfile', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/with_puppetfile'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/super/Puppetfile" should match /mod *'sub'/
-    And the file "Puppetfile.lock" should match /remote: git:..github\.com.mpalmer.puppet-sub/
+    And the file "modules/with_puppetfile/Modulefile" should match /name *'with-puppetfile'/
+    And the file "modules/test/Modulefile" should match /name *'librarian-test'/
 
   Scenario: Install a module with conflicts
     Given a file named "Puppetfile" with:

@@ -67,10 +67,27 @@ module Librarian
         end
 
         def fetch_dependencies(name, version, extra)
-          dependencies.map do |k, v|
-            v = Requirement.new(v).gem_requirement
-            Dependency.new(k, v, forge_source)
+          dependencies = []
+
+          if modulefile?
+            metadata = ::Puppet::ModuleTool::Metadata.new
+
+            ::Puppet::ModuleTool::ModulefileReader.evaluate(metadata, modulefile)
+
+            metadata.dependencies.each do |dependency|
+              name = dependency.instance_variable_get(:@full_module_name)
+              version = dependency.instance_variable_get(:@version_requirement)
+              gem_requirement = Requirement.new(version).gem_requirement
+              dependencies.push Dependency.new(name, gem_requirement, forge_source)
+            end
           end
+
+          if specfile?
+            spec = environment.dsl(Pathname(specfile))
+            dependencies.concat spec.dependencies
+          end
+
+          dependencies
         end
 
         def forge_source
@@ -89,26 +106,20 @@ module Librarian
           metadata.version
         end
 
-        def dependencies
-          return {} unless modulefile?
-
-          metadata = ::Puppet::ModuleTool::Metadata.new
-
-          ::Puppet::ModuleTool::ModulefileReader.evaluate(metadata, modulefile)
-
-          metadata.dependencies.inject({}) do |h, dependency|
-            name = dependency.instance_variable_get(:@full_module_name)
-            version = dependency.instance_variable_get(:@version_requirement)
-            h.update(name => version)
-          end
-        end
-
         def modulefile
           File.join(filesystem_path, 'Modulefile')
         end
 
         def modulefile?
           File.exists?(modulefile)
+        end
+
+        def specfile
+          File.join(filesystem_path, environment.specfile_name)
+        end
+
+        def specfile?
+          File.exists?(specfile)
         end
 
       end
