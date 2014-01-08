@@ -32,6 +32,13 @@ module Librarian
         end.flatten
       end
     end
+
+    alias :eql? :==
+
+    def hash
+      self.to_s.hash
+    end
+
   end
 
   # Fixes for librarian not yet released in their gem
