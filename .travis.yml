@@ -5,15 +5,16 @@ notifications:
   email:
     - tim@github.com
 env:
-  - PUPPET_VERSION=2.7.23
+  - PUPPET_VERSION=2.7.25
   - PUPPET_VERSION=3.0.2
   - PUPPET_VERSION=3.1.1
   - PUPPET_VERSION=3.2.4
   - PUPPET_VERSION=3.3.2
-  - PUPPET_VERSION=3.4.1
+  - PUPPET_VERSION=3.4.2
 
 before_install:
-  - gem update --system 2.1.11 #  todo: workaround for https://github.com/rubygems/rubygems/pull/763
+  - gem --version
+  - gem update --system #  todo: workaround for https://github.com/rubygems/rubygems/pull/763
 
 before_script:
   - bundle list
