@@ -184,6 +184,17 @@ Feature: cli/install
     And the file "modules/with_puppetfile/Modulefile" should match /name *'with-puppetfile'/
     And the file "modules/test/Modulefile" should match /name *'librarian-test'/
 
+  @slow
+  Scenario: Install a module with dependencies specified in a Puppetfile and Modulefile
+    Given a file named "Puppetfile" with:
+    """
+    mod 'with_puppetfile', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/with_puppetfile_and_modulefile'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/with_puppetfile/Modulefile" should match /name *'with-puppetfile-and-modulefile'/
+    And the file "modules/test/Modulefile" should match /name *'maestrodev-test'/
+
   Scenario: Install a module with conflicts
     Given a file named "Puppetfile" with:
     """

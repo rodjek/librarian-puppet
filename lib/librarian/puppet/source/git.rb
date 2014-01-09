@@ -68,7 +68,7 @@ module Librarian
         end
 
         def fetch_dependencies(name, version, extra)
-          dependencies = []
+          dependencies = Set.new
 
           if modulefile?
             metadata = ::Puppet::ModuleTool::Metadata.new
@@ -76,16 +76,16 @@ module Librarian
             ::Puppet::ModuleTool::ModulefileReader.evaluate(metadata, modulefile)
 
             metadata.dependencies.each do |dependency|
-              name = dependency.instance_variable_get(:@full_module_name)
+              dependency_name = dependency.instance_variable_get(:@full_module_name)
               version = dependency.instance_variable_get(:@version_requirement)
               gem_requirement = Requirement.new(version).gem_requirement
-              dependencies.push Dependency.new(name, gem_requirement, forge_source)
+              dependencies << Dependency.new(dependency_name, gem_requirement, forge_source)
             end
           end
 
           if specfile?
             spec = environment.dsl(Pathname(specfile))
-            dependencies.concat spec.dependencies
+            dependencies.merge spec.dependencies
           end
 
           dependencies
