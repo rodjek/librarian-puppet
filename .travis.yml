@@ -19,3 +19,7 @@ before_install:
 
 before_script:
   - bundle list
+
+matrix:
+  allow_failures:
+    - rvm: 2.1.0 # broken in puppet < 3.5.0 https://tickets.puppetlabs.com/browse/PUP-1243
