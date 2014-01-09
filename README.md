@@ -162,6 +162,72 @@ Update the version of a dependency:
     $ git add Puppetfile.lock
     $ git commit -m "bumped the version of apt up to 0.0.4."
 
+## Configuration
+
+Configuration comes from three sources with the following highest-to-lowest
+precedence:
+
+* The local config (`./.librarian/puppet/config`)
+* The environment
+* The global config (`~/.librarian/puppet/config`)
+
+You can inspect the final configuration with:
+
+    $ librarian-puppet config
+
+You can find out where a particular key is set with:
+
+    $ librarian-puppet config KEY
+
+You can set a key at the global level with:
+
+    $ librarian-puppet config KEY VALUE --global
+
+And remove it with:
+
+    $ librarian-puppet config KEY --global --delete
+
+You can set a key at the local level with:
+
+    $ librarian-puppet config KEY VALUE --local
+
+And remove it with:
+
+    $ librarian-puppet config KEY --local --delete
+
+You cannot set or delete environment-level config keys with the CLI.
+
+Configuration set at either the global or local level will affect subsequent
+invocations of `librarian-puppet`. Configurations set at the environment level are
+not saved and will not affect subsequent invocations of `librarian-puppet`.
+
+You can pass a config at the environment level by taking the original config key
+and transforming it: replace hyphens (`-`) with underscores (`_`) and periods
+(`.`) with doubled underscores (`__`), uppercase, and finally prefix with
+`LIBRARIAN_PUPPET_`. For example, to pass a config in the environment for the key
+`part-one.part-two`, set the environment variable
+`LIBRARIAN_PUPPET_PART_ONE__PART_TWO`.
+
+Configuration affects how various commands operate.
+
+* The `path` config sets the cookbooks directory to install to. If a relative
+  path, it is relative to the directory containing the `Puppetfile`. The
+  equivalent environment variable is `LIBRARIAN_PUPPET_PATH`.
+
+* The `tmp` config sets the cache directory for librarian. If a relative
+  path, it is relative to the directory containing the `Puppetfile`. The
+  equivalent environment variable is `LIBRARIAN_PUPPET_TMP`.
+
+Configuration can be set by passing specific options to other commands.
+
+* The `path` config can be set at the local level by passing the `--path` option
+  to the `install` command. It can be unset at the local level by passing the
+  `--no-path` option to the `install` command. Note that if this is set at the
+  environment or global level then, even if `--no-path` is given as an option,
+  the environment or global config will be used.
+
+
+
 ## How to Contribute
 
  * Pull requests please.

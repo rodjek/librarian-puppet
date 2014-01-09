@@ -11,6 +11,11 @@ module Librarian
         "puppet"
       end
 
+      def tmp_path
+        part = config_db["tmp"] || ".tmp"
+        project_path.join(part)
+      end
+
       def install_path
         part = config_db["path"] || "modules"
         project_path.join(part)
