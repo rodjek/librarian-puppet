@@ -1,5 +1,6 @@
 require 'uri'
 require 'net/https'
+require 'open-uri'
 require 'json'
 
 require 'librarian/puppet/version'
@@ -98,13 +99,30 @@ module Librarian
 
             url = "https://api.github.com/repos/#{name}/tarball/#{version}"
             url << "?access_token=#{ENV['GITHUB_API_TOKEN']}" if ENV['GITHUB_API_TOKEN']
-            `curl #{url} -o #{vendored_path(name, version).to_s} -L 2>&1`
+
+            File.open(vendored_path(name, version).to_s, 'wb') do |f|
+              begin
+                debug { "Downloading <#{url}> to <#{f.path}>" }
+                open(url,
+                  "User-Agent" => "librarian-puppet v#{Librarian::Puppet::VERSION}") do |res|
+                  while buffer = res.read(8192)
+                    f.write(buffer)
+                  end
+                end
+              rescue OpenURI::HTTPError => e
+                raise e, "Error requesting <#{url}>: #{e.to_s}"
+              end
+            end
           end
 
           def clean_up_old_cached_versions(name)
             Dir["#{environment.vendor_cache}/#{name.sub('/', '-')}*.tar.gz"].each do |old_version|
               FileUtils.rm old_version
             end
+          end
+
+          def debug(*args, &block)
+            environment.logger.debug(*args, &block)
           end
 
         private
