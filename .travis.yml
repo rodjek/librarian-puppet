@@ -20,6 +20,7 @@ before_install:
 
 before_script:
   - bundle list
+  - puppet --version
 
 matrix:
   allow_failures:

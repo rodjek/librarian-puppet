@@ -19,7 +19,11 @@ module Librarian
           def versions
             return @versions if @versions
             @versions = api_data[name].map { |r| r['version'] }.reverse
-            debug { "  Module #{name} found versions: #{@versions.join(", ")}" }
+            if @versions.empty?
+              info { "No versions found for module #{name}" }
+            else
+              debug { "  Module #{name} found versions: #{@versions.join(", ")}" }
+            end
             @versions
           end
 
@@ -135,6 +139,9 @@ module Librarian
 
           def debug(*args, &block)
             environment.logger.debug(*args, &block)
+          end
+          def info(*args, &block)
+            environment.logger.info(*args, &block)
           end
 
         private
