@@ -67,6 +67,7 @@ module Librarian
         environment.config_db.local['mode'] = options['local'] ? 'local' : nil
 
         resolve!
+        debug { "Install: dependencies resolved"}
         install!
       end
 
