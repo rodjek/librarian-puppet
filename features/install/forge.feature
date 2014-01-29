@@ -80,21 +80,23 @@ Feature: cli/install/forge
     """
     forge "http://forge.puppetlabs.com"
 
-    mod 'puppetlabs/postgresql'
+    mod 'puppetlabs/postgresql', '3.2.0'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/postgresql/Modulefile" should match /name *'puppetlabs-postgresql'/
+    And the file "modules/postgresql/Modulefile" should match /name 'puppetlabs-postgresql'/
+    And the file "modules/postgresql/Modulefile" should match /version '3\.2\.0'/
 
     Given a file named "Puppetfile" with:
     """
     forge "http://forge.puppetlabs.com"
 
-    mod 'puppetlabs/postgresql', :git => 'git://github.com/puppetlabs/puppet-postgresql'
+    mod 'puppetlabs/postgresql', :git => 'git://github.com/puppetlabs/puppet-postgresql', :ref => '3.3.0'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/postgresql/Modulefile" should match /name *'puppetlabs-postgresql'/
+    And the file "modules/postgresql/Modulefile" should match /name 'puppetlabs-postgresql'/
+    And the file "modules/postgresql/Modulefile" should match /version '3\.3\.0'/
 
   Scenario: Installing a module that does not exist
     Given a file named "Puppetfile" with:

@@ -6,6 +6,7 @@ module Librarian
     module Source
       class Forge
         class Repo
+          include Librarian::Puppet::Util
 
           attr_accessor :source, :name
           private :source=, :name=
@@ -57,7 +58,7 @@ module Librarian
             unless unpacked_path.exist?
               raise Error, "#{unpacked_path} does not exist, something went wrong. Try removing it manually"
             else
-              FileUtils.cp_r(unpacked_path, install_path)
+              cp_r(unpacked_path, install_path)
             end
 
           end

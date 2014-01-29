@@ -10,6 +10,8 @@ module Librarian
     module Source
       class GitHubTarball
         class Repo
+          include Librarian::Puppet::Util
+
           TOKEN_KEY = 'GITHUB_API_TOKEN'
 
           attr_accessor :source, :name
@@ -55,7 +57,7 @@ module Librarian
             end
 
             unpacked_path = version_unpacked_cache_path(version).children.first
-            FileUtils.cp_r(unpacked_path, install_path)
+            cp_r(unpacked_path, install_path)
           end
 
           def environment
