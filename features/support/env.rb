@@ -25,3 +25,5 @@ Given(/^there is no Puppetfile$/) do
     fail "Puppetfile exists at #{File.expand_path('Puppetfile')}" if (File.exist?('Puppetfile'))
   end
 end
+
+ENV['LIBRARIAN_PUPPET_TMP'] = '.tmp'
