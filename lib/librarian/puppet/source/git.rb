@@ -23,6 +23,7 @@ module Librarian
     module Source
       class Git < Librarian::Source::Git
         include Local
+        include Librarian::Puppet::Util
 
         def cache!
           return vendor_checkout! if vendor_cached?

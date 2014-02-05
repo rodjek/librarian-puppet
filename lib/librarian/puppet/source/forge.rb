@@ -5,6 +5,8 @@ module Librarian
   module Puppet
     module Source
       class Forge
+        include Librarian::Puppet::Util
+
         class Repo
           include Librarian::Puppet::Util
 
@@ -136,13 +138,6 @@ module Librarian
                 end
               end
             end
-          end
-
-          def debug(*args, &block)
-            environment.logger.debug(*args, &block)
-          end
-          def info(*args, &block)
-            environment.logger.info(*args, &block)
           end
 
         private

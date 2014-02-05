@@ -9,6 +9,8 @@ module Librarian
   module Puppet
     module Source
       class GitHubTarball
+        include Librarian::Puppet::Util
+
         class Repo
           include Librarian::Puppet::Util
 
@@ -121,10 +123,6 @@ module Librarian
             Dir["#{environment.vendor_cache}/#{name.sub('/', '-')}*.tar.gz"].each do |old_version|
               FileUtils.rm old_version
             end
-          end
-
-          def debug(*args, &block)
-            environment.logger.debug(*args, &block)
           end
 
         private
