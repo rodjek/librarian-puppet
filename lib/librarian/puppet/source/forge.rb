@@ -16,12 +16,17 @@ module Librarian
           def initialize(source, name)
             self.source = source
             self.name = name
+            # API returned data for this module including all versions and dependencies, indexed by module name
+            # from http://forge.puppetlabs.com/api/v1/releases.json?module=#{name}
             @api_data = nil
+            # API returned data for this module and a specific version, indexed by version
+            # from http://forge.puppetlabs.com/api/v1/releases.json?module=#{name}&version=#{version}
+            @api_version_data = {}
           end
 
           def versions
             return @versions if @versions
-            @versions = api_data[name].map { |r| r['version'] }.reverse
+            @versions = api_data(name).map { |r| r['version'] }.reverse
             if @versions.empty?
               info { "No versions found for module #{name}" }
             else
@@ -31,7 +36,7 @@ module Librarian
           end
 
           def dependencies(version)
-            api_data[name].detect{|x| x['version'] == version.to_s}['dependencies']
+            api_version_data(name, version)['dependencies']
           end
 
           def manifests
@@ -130,34 +135,48 @@ module Librarian
           end
 
           def vendor_cache(name, version)
-            info = api_data[name].detect {|h| h['version'] == version.to_s }
-            File.open(vendored_path(name, version).to_s, 'w') do |f|
-              open("#{source}#{info['file']}") do |input|
-                while (buffer = input.read)
-                  f.write(buffer)
-                end
+            info = api_version_data(name, version)
+            url = "#{source}#{info[name].first['file']}"
+            path = vendored_path(name, version).to_s
+            debug { "Downloading #{url} into #{path}"}
+            File.open(path, 'wb') do |f|
+              open(url, "rb") do |input|
+                f.write(input.read)
               end
             end
           end
 
         private
-          def api_data
-            return @api_data if @api_data
+
+          # get and cache the API data for a specific module with all its versions and dependencies
+          def api_data(module_name)
+            return @api_data[module_name] if @api_data
             # call API and cache data
-            @api_data = api_call(name)
+            @api_data = api_call(module_name)
             if @api_data.nil?
               raise Error, "Unable to find module '#{name}' on #{source}"
             end
-            @api_data
+            @api_data[module_name]
           end
 
-          def api_call(module_name)
-            debug { "Querying Forge API for module #{name}" }
+          # get and cache the API data for a specific module and version
+          def api_version_data(module_name, version)
+            # if we already got all the versions, find in cached data
+            return @api_data[module_name].detect{|x| x['version'] == version.to_s} if @api_data
+            # otherwise call the api for this version if not cached already
+            @api_version_data[version] = api_call(name, version) if @api_version_data[version].nil?
+            @api_version_data[version]
+          end
+
+          def api_call(module_name, version=nil)
             base_url = source.uri
-            path     = "api/v1/releases.json?module=#{module_name}"
+            path = "api/v1/releases.json?module=#{module_name}"
+            path = "#{path}&version=#{version}" unless version.nil?
+            url = "#{base_url}/#{path}"
+            debug { "Querying Forge API for module #{name}#{" and version #{version}" unless version.nil?}: #{url}" }
             
             begin
-              data = open("#{base_url}/#{path}") {|f| f.read}
+              data = open(url) {|f| f.read}
               JSON.parse(data)
             rescue OpenURI::HTTPError => e
               case e.io.status[0].to_i
