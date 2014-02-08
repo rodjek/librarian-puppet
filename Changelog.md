@@ -1,17 +1,20 @@
 ## Changelog
 
 ### 0.9.12
+
  * Remove extra dependencies from gem added when 0.9.11 was released under ruby 1.8
 
 ### 0.9.11
+
+ * Add modulefile dsl to reuse Modulefile dependencies
+ * Consider Puppetfile-dependencies recursively in git-source
+ * Support changing tmp, cache and scratch paths
  * librarian-puppet package causes an infinite loop
  * Show a message if no versions are found for a module
  * Make download of tarballs more robust
  * Require open3_backport in ruby 1.8 and install if not present
  * Git dependencies in both Puppetfile and Modulefile cause a Cannot bounce Puppetfile.lock! error
- * Support changing tmp, cache and scratch paths
  * Better sort of github tarball versions when there are mixed tags starting with and without 'v'
- * Add modulefile dsl to reuse Modulefile dependencies
  * Fix error if a git module has a dependency without version
  * Fix git dependency with :path attribute
  * Cleaner output when no Puppetfile found
@@ -22,7 +25,6 @@
  * Add a User-Agent header to all requests to the GitHub API
  * Convert puppet version requirements to rubygems, pessimistic and ranges
  * Use librarian gem
- * Consider Puppetfile-dependencies recursively in git-source
 
 ### 0.9.10
 
