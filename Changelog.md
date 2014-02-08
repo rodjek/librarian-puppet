@@ -1,5 +1,8 @@
 ## Changelog
 
+### 0.9.12
+ * Remove extra dependencies from gem added when 0.9.11 was released under ruby 1.8
+
 ### 0.9.11
  * librarian-puppet package causes an infinite loop
  * Show a message if no versions are found for a module
