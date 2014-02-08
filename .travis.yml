@@ -5,6 +5,7 @@ rvm:
   - 2.1.0
 notifications:
   email:
+    - carlos@apache.org
     - tim@github.com
 env:
   - PUPPET_VERSION=2.7.25
