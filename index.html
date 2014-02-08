@@ -53,6 +53,15 @@ release and the version bumped in your Puppetfile.</p>
 <code>Puppetfile</code> in the root directory of that repository.  The full specification
 for which modules your puppet infrastructure repository  depends goes in here.</p>
 
+<h3>Simple Puppetfile</h3>
+
+<p>This Puppetfile will download all the dependencies listed in your Modulefile from the Puppet Forge</p>
+
+<pre><code>forge "http://forge.puppetlabs.com"
+
+modulefile
+</code></pre>
+
 <h3>Example Puppetfile</h3>
 
 <pre><code>forge "http://forge.puppetlabs.com"
@@ -69,6 +78,10 @@ mod "stdlib",
 
 <p><em>See <a href="https://github.com/aussielunix/jenkins-appliance">jenkins-appliance</a> for
 a puppet repo already setup to use librarian-puppet.</em></p>
+
+<h3>Recursive module dependency resolving</h3>
+
+<p>When fetching a module from a <code>:git-source</code> all dependencies specified in its Modulefile and Puppetfile will be resolved and installed.</p>
 
 <h3>Puppetfile Breakdown</h3>
 
