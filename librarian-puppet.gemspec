@@ -23,7 +23,7 @@ Gem::Specification.new do |s|
 
   s.executables = ['librarian-puppet']
 
-  s.add_dependency "librarian", ">=0.1.1"
+  s.add_dependency "librarian", ">=0.1.2"
   if RUBY_VERSION < '1.9'
     s.add_dependency "json"
     s.add_dependency "open3_backport"
