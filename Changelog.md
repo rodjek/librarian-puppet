@@ -2,7 +2,9 @@
 
 ### 0.9.13
 
- * Upgrade to librarian 0.1.2
+ * Issue #176 Upgrade to librarian 0.1.2
+ * Issue #179 Need to install extra gems just in case we are in ruby 1.8
+ * Issue #178 Print a meaningful message if puppet gem can't be loaded for :git sources
 
 ### 0.9.12
 
