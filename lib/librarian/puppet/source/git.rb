@@ -1,6 +1,15 @@
 require 'librarian/source/git'
 require 'librarian/puppet/source/local'
-require 'puppet'
+begin
+  require 'puppet'
+rescue LoadError
+  $stderr.puts <<-EOF
+Unable to load puppet, the puppet gem is required for :git source.
+Install it with: gem install puppet
+EOF
+  exit 1
+end
+
 
 module Librarian
   module Source
