@@ -1,5 +1,9 @@
 ## Changelog
 
+### 0.9.13
+
+ * Upgrade to librarian 0.1.2
+
 ### 0.9.12
 
  * Remove extra dependencies from gem added when 0.9.11 was released under ruby 1.8
