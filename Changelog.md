@@ -1,5 +1,9 @@
 ## Changelog
 
+### 0.9.14
+
+ * Issue #108 Don't fail on malformed Modulefile from a git dependency
+
 ### 0.9.13
 
  * Issue #176 Upgrade to librarian 0.1.2

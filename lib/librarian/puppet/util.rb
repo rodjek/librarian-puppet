@@ -9,6 +9,9 @@ module Librarian
       def info(*args, &block)
         environment.logger.info(*args, &block)
       end
+      def warn(*args, &block)
+        environment.logger.warn(*args, &block)
+      end
 
       # workaround Issue #173 FileUtils.cp_r will fail if there is a symlink that points to a missing file
       # or when the symlink is copied before the target file when preserve is true

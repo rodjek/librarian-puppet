@@ -81,11 +81,7 @@ module Librarian
           dependencies = Set.new
 
           if modulefile?
-            metadata = ::Puppet::ModuleTool::Metadata.new
-
-            ::Puppet::ModuleTool::ModulefileReader.evaluate(metadata, modulefile)
-
-            metadata.dependencies.each do |dependency|
+            evaluate_modulefile(modulefile).dependencies.each do |dependency|
               dependency_name = dependency.instance_variable_get(:@full_module_name)
               version = dependency.instance_variable_get(:@version_requirement)
               gem_requirement = Requirement.new(version).gem_requirement
@@ -110,11 +106,18 @@ module Librarian
         # Naming this method 'version' causes an exception to be raised.
         def module_version
           return '0.0.1' unless modulefile?
+          evaluate_modulefile(modulefile).version
+        end
 
-          metadata  = ::Puppet::ModuleTool::Metadata.new
-          ::Puppet::ModuleTool::ModulefileReader.evaluate(metadata, modulefile)
-
-          metadata.version
+        def evaluate_modulefile(modulefile)
+          metadata = ::Puppet::ModuleTool::Metadata.new
+          begin
+            ::Puppet::ModuleTool::ModulefileReader.evaluate(metadata, modulefile)
+          rescue ArgumentError, SyntaxError => error
+            warn { "Unable to parse #{modulefile}, ignoring: #{error}" }
+            metadata.version = '0.0.1'
+          end
+          metadata
         end
 
         def modulefile

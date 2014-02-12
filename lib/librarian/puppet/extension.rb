@@ -218,4 +218,11 @@ module Librarian
     end
   end
 
+  class Logger
+    def warn(string = nil, &block)
+      return unless ui
+
+      ui.warn(string || yield)
+    end
+  end
 end
