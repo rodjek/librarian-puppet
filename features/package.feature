@@ -6,7 +6,7 @@ Feature: cli/package
     """
     forge "http://forge.puppetlabs.com"
 
-    mod 'puppetlabs/apt'
+    mod 'puppetlabs/apt', '1.4.0'
     """
     When I run `librarian-puppet package --verbose`
     Then the exit status should be 0
