@@ -24,6 +24,17 @@ module Librarian
           command = %W(rev-parse #{reference}^{commit} --quiet)
           run!(command, :chdir => true).strip
         end
+
+        def manifests(source, name)
+          if source.repository_cached?
+            source = source.dup
+            source.sha = current_commit_hash
+            [Manifest.new(source, name, source.module_version)]
+          else
+            manifest = Manifest.new(source, name, source.module_version)
+            [manifest].compact
+          end
+        end
       end
     end
   end
@@ -105,7 +116,9 @@ module Librarian
           Forge.from_lock_options(environment, :remote=>"http://forge.puppetlabs.com")
         end
 
-        private
+        def manifests(name)
+          repository.manifests(self, name)
+        end
 
         # Naming this method 'version' causes an exception to be raised.
         def module_version
@@ -116,6 +129,21 @@ module Librarian
 
           metadata.version
         end
+
+        def to_s
+          short_sha = sha ? sha[0..6] : nil
+          path ? "#{uri}##{ref}-#{short_sha}(#{path})" : "#{uri}##{ref}-#{short_sha}"
+        end
+
+        # override private methods in parent
+        def sha=(sha)
+          super
+        end
+        def repository_cached?
+          super
+        end
+
+        private
 
         def modulefile
           File.join(filesystem_path, 'Modulefile')
