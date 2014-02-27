@@ -105,7 +105,7 @@ module Librarian
             next if manifest.version == source_manifest.version
           end
 
-          source_sha = source
+          source_sha = ""
           if manifest.source.class == Librarian::Puppet::Source::Git
             sha = " #{manifest.source.sha[0..6]}"
             source_sha = " #{source_manifest.source.sha[0..6]}"
