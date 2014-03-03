@@ -5,14 +5,27 @@ require 'open3_backport' if RUBY_VERSION < '1.9'
 
 status = nil
 out = nil
+err = nil
 error = nil
 
 begin
-  Open3.popen3('puppet --version') {|stdin, stdout, stderr, wait_thr|
-    pid = wait_thr.pid # pid of the started process.
-    out = stdout.read
-    status = wait_thr.value # Process::Status object returned.
-  }
+  if RUBY_VERSION < '1.9'
+    # Ruby 1.8.x backport of popen3 doesn't allow the 'env' hash argument
+    # Not sanitizing the environment for the moment.
+    Open3.popen3('puppet --version') {|stdin, stdout, stderr, wait_thr|
+      pid = wait_thr.pid # pid of the started process.
+      out = stdout.read
+      err = stderr.read
+      status = wait_thr.value # Process::Status object returned.
+    }
+  else
+    Open3.popen3({"GEM_PATH"=> nil},'puppet --version') {|stdin, stdout, stderr, wait_thr|
+      pid = wait_thr.pid # pid of the started process.
+      out = stdout.read
+      err = stderr.read
+      status = wait_thr.value # Process::Status object returned.
+    }
+  end
 rescue => e
   error = e
 end
@@ -22,6 +35,7 @@ if status.nil? or status.exitstatus != 0
 Unable to load puppet. Please install it using native packages for your platform (eg .deb, .rpm, .dmg, etc).
 #{out.nil? or out.empty? ? "puppet --version returned #{status.exitstatus}" : out}
 #{error.message unless error.nil?}
+#{err unless err.nil?}
 EOF
   exit 1
 end
