@@ -1,15 +1,5 @@
 require 'librarian/source/git'
 require 'librarian/puppet/source/local'
-begin
-  require 'puppet'
-rescue LoadError
-  $stderr.puts <<-EOF
-Unable to load puppet, the puppet gem is required for :git source.
-Install it with: gem install puppet
-EOF
-  exit 1
-end
-
 
 module Librarian
   module Source
@@ -69,71 +59,6 @@ module Librarian
           Dir.chdir(tmp_path.to_s) do
             %x{git archive #{sha} | gzip > #{vendor_tgz}}
           end
-        end
-
-        def fetch_version(name, extra)
-          cache!
-          found_path = found_path(name)
-          module_version
-        end
-
-        def fetch_dependencies(name, version, extra)
-          dependencies = Set.new
-
-          if modulefile?
-            evaluate_modulefile(modulefile).dependencies.each do |dependency|
-              dependency_name = dependency.instance_variable_get(:@full_module_name)
-              version = dependency.instance_variable_get(:@version_requirement)
-              gem_requirement = Requirement.new(version).gem_requirement
-              dependencies << Dependency.new(dependency_name, gem_requirement, forge_source)
-            end
-          end
-
-          if specfile?
-            spec = environment.dsl(Pathname(specfile))
-            dependencies.merge spec.dependencies
-          end
-
-          dependencies
-        end
-
-        def forge_source
-          Forge.from_lock_options(environment, :remote=>"http://forge.puppetlabs.com")
-        end
-
-        private
-
-        # Naming this method 'version' causes an exception to be raised.
-        def module_version
-          return '0.0.1' unless modulefile?
-          evaluate_modulefile(modulefile).version
-        end
-
-        def evaluate_modulefile(modulefile)
-          metadata = ::Puppet::ModuleTool::Metadata.new
-          begin
-            ::Puppet::ModuleTool::ModulefileReader.evaluate(metadata, modulefile)
-          rescue ArgumentError, SyntaxError => error
-            warn { "Unable to parse #{modulefile}, ignoring: #{error}" }
-            metadata.version = '0.0.1'
-          end
-          metadata
-        end
-
-        def modulefile
-          File.join(filesystem_path, 'Modulefile')
-        end
-
-        def modulefile?
-          File.exists?(modulefile)
-        end
-
-        def specfile
-          File.join(filesystem_path, environment.specfile_name)
-        end
-
-        def specfile?
-          File.exists?(specfile)
         end
 
       end
