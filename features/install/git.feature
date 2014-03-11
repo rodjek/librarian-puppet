@@ -82,6 +82,17 @@ Feature: cli/install/git
     And the file "modules/with_puppetfile/Modulefile" should match /name *'with-puppetfile-and-modulefile'/
     And the file "modules/test/Modulefile" should match /name *'maestrodev-test'/
 
+  @slow
+  Scenario: Install a module using modulefile syntax
+    Given a file named "Puppetfile" with:
+    """
+    mod 'modulefile_syntax', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/modulefile_syntax'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/modulefile_syntax/Modulefile" should match /name *'modulefile-syntax'/
+    And the file "modules/test/Modulefile" should match /name *'maestrodev-test'/
+
   @veryslow
   Scenario: Install a module from git and using path
     Given a file named "Puppetfile" with:
