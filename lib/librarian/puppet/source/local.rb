@@ -61,7 +61,6 @@ module Librarian
             dependencies.merge spec.dependencies
           end
 
-          info { "Deps = #{dependencies}" }
           dependencies
         end
 
