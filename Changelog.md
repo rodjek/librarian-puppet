@@ -2,6 +2,7 @@
 
 ### 0.9.14
 
+ * Git dependencies using modulefile syntax make librarian-puppet fail
  * Issue #108 Don't fail on malformed Modulefile from a git dependency
 
 ### 0.9.13
