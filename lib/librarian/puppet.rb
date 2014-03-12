@@ -19,7 +19,8 @@ begin
       status = wait_thr.value # Process::Status object returned.
     }
   else
-    Open3.popen3({"GEM_PATH"=> nil},'puppet --version') {|stdin, stdout, stderr, wait_thr|
+    env_reset = {'GEM_PATH' => nil, 'RUBYLIB' => nil, 'RUBYOPT' => nil, 'GEMRC' => nil}
+    Open3.popen3(env_reset,'puppet --version') {|stdin, stdout, stderr, wait_thr|
       pid = wait_thr.pid # pid of the started process.
       out = stdout.read
       err = stderr.read
