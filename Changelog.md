@@ -1,7 +1,11 @@
 ## Changelog
 
+### 0.9.15
+
+
 ### 0.9.14
 
+ * Issue #182 Sanitize the environment before spawning (ruby 1.9+)
  * Issue #184 Support transitive dependencies in modules using :path
  * Git dependencies using modulefile syntax make librarian-puppet fail
  * Issue #108 Don't fail on malformed Modulefile from a git dependency
