@@ -5,16 +5,16 @@
 
 ### 0.9.14
 
- * Issue #182 Sanitize the environment before spawning (ruby 1.9+)
- * Issue #184 Support transitive dependencies in modules using :path
+ * [Issue #182](https://github.com/rodjek/librarian-puppet/issues/182) Sanitize the environment before spawning (ruby 1.9+)
+ * [Issue #184](https://github.com/rodjek/librarian-puppet/issues/184) Support transitive dependencies in modules using :path
  * Git dependencies using modulefile syntax make librarian-puppet fail
- * Issue #108 Don't fail on malformed Modulefile from a git dependency
+ * [Issue #108](https://github.com/rodjek/librarian-puppet/issues/108) Don't fail on malformed Modulefile from a git dependency
 
 ### 0.9.13
 
- * Issue #176 Upgrade to librarian 0.1.2
- * Issue #179 Need to install extra gems just in case we are in ruby 1.8
- * Issue #178 Print a meaningful message if puppet gem can't be loaded for :git sources
+ * [Issue #176](https://github.com/rodjek/librarian-puppet/issues/176) Upgrade to librarian 0.1.2
+ * [Issue #179](https://github.com/rodjek/librarian-puppet/issues/179) Need to install extra gems just in case we are in ruby 1.8
+ * [Issue #178](https://github.com/rodjek/librarian-puppet/issues/178) Print a meaningful message if puppet gem can't be loaded for :git sources
 
 ### 0.9.12
 
