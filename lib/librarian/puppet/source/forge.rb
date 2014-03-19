@@ -104,7 +104,7 @@ module Librarian
             target = vendored?(name, version) ? vendored_path(name, version) : name
 
 
-            command = "puppet module install --version #{version} --target-dir '#{path}' --module_repository '#{source}' --modulepath '#{path}' --ignore-dependencies '#{target}'"
+            command = "puppet module install --version #{version} --target-dir '#{path}' --module_repository '#{source}' --modulepath '#{path}' --module_working_dir '#{path}' --ignore-dependencies '#{target}'"
             debug { "Executing puppet module install for #{name} #{version}" }
             output = `#{command}`
 
@@ -174,7 +174,7 @@ module Librarian
             path = "#{path}&version=#{version}" unless version.nil?
             url = "#{base_url}/#{path}"
             debug { "Querying Forge API for module #{name}#{" and version #{version}" unless version.nil?}: #{url}" }
-            
+
             begin
               data = open(url) {|f| f.read}
               JSON.parse(data)
