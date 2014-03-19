@@ -12,7 +12,7 @@ begin
   if RUBY_VERSION < '1.9'
     # Ruby 1.8.x backport of popen3 doesn't allow the 'env' hash argument
     # Not sanitizing the environment for the moment.
-    Open3.popen3('puppet --version') {|stdin, stdout, stderr, wait_thr|
+    Open3.popen3('puppet --version') { |stdin, stdout, stderr, wait_thr|
       pid = wait_thr.pid # pid of the started process.
       out = stdout.read
       err = stderr.read
@@ -20,7 +20,7 @@ begin
     }
   else
     env_reset = {'GEM_PATH' => nil, 'BUNDLE_APP_CONFIG' => nil, 'BUNDLE_CONFIG' => nil, 'BUNDLE_GEMFILE' => nil}
-    Open3.popen3(env_reset, 'puppet --version') {|stdin, stdout, stderr, wait_thr|
+    Open3.popen3(env_reset, 'puppet --version') { |stdin, stdout, stderr, wait_thr|
       pid = wait_thr.pid # pid of the started process.
       out = stdout.read
       err = stderr.read
