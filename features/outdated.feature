@@ -54,7 +54,7 @@ Feature: cli/outdated
     When I run `librarian-puppet outdated`
     Then the exit status should be 0
     And PENDING the output should match:
-    """
-    ^puppetlabs/stdlib \(3\.1\.0 -> [\.\d]+\)$
-    ^test .*$
-    """
+    # """
+    # ^puppetlabs/stdlib \(3\.1\.0 -> [\.\d]+\)$
+    # ^test .*$
+    # """
