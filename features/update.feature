@@ -25,6 +25,34 @@ Feature: cli/update
     And the file "modules/stdlib/Modulefile" should match /version *'3\.1\.1'/
 
   @slow
+  Scenario: Updating a module from git with a branch ref
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod "stdlib",
+      :git => "https://github.com/puppetlabs/puppetlabs-stdlib.git", :ref => "3.1.x"
+    """
+    And a file named "Puppetfile.lock" with:
+    """
+    GIT
+      remote: https://github.com/puppetlabs/puppetlabs-stdlib.git
+      ref: 3.1.x
+      sha: 614b3fbf6c15893e89ed8654fb85596223b5b7c5
+      specs:
+        stdlib (3.1.1)
+
+    DEPENDENCIES
+      stdlib (>= 0)
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/stdlib/.git/HEAD" should match /614b3fbf6c15893e89ed8654fb85596223b5b7c5/
+    When I run `librarian-puppet update`
+    Then the exit status should be 0
+    And the file "modules/stdlib/.git/HEAD" should match /a3c600d5f277f0c9d91c98ef67daf7efc9eed3c5/
+
+  @slow
   Scenario: Updating a module with invalid versions in git
     Given a file named "Puppetfile" with:
     """

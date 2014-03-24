@@ -17,8 +17,10 @@ Feature: cli/install/git
     Then the exit status should be 0
     And the file "modules/apache/Modulefile" should match /name *'puppetlabs-apache'/
     And the file "modules/apache/Modulefile" should match /version *'0\.6\.0'/
+    And the file "modules/apache/.git/HEAD" should match /b18fad908fe7cb8fbc6604fde1962c85540095f4/
     And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
     And the file "modules/stdlib/Modulefile" should match /version *'2\.2\.1'/
+    And the file "modules/stdlib/.git/HEAD" should match /a70b09d5de035de5254ebe6ad6e1519a6d7cf588/
 
   @slow
   Scenario: Installing a module with invalid versions in git
@@ -52,12 +54,13 @@ Feature: cli/install/git
     forge "http://forge.puppetlabs.com"
 
     mod 'puppetlabs/postgresql',
-      :git => 'https://github.com/puppetlabs/puppet-postgresql.git', :ref => '1.0.0'
+      :git => 'https://github.com/puppetlabs/puppetlabs-postgresql.git', :ref => '1.0.0'
     """
     And I run `librarian-puppet install`
     Then the exit status should be 0
     And the file "modules/postgresql/Modulefile" should match /name *'puppetlabs-postgresql'/
     And the file "modules/postgresql/Modulefile" should match /version *'1\.0\.0'/
+    And the file "modules/postgresql/.git/HEAD" should match /183d401a3ffeb2e83372dfcc05f5b6bab25034b1/
     And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
 
   @slow
