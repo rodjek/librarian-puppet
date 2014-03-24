@@ -16,7 +16,7 @@ Before('@veryveryslow') do
   @aruba_timeout_seconds = 90
 end
 
-Given /^PENDING/ do |x|
+Given /^PENDING/ do
   pending
 end
 
