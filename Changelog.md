@@ -1,7 +1,12 @@
 ## Changelog
 
+### 0.9.16
+
+
 ### 0.9.15
 
+ * [Issue #187](https://github.com/rodjek/librarian-puppet/issues/187) Fixed parallel installation issues
+ * [Issue #185](https://github.com/rodjek/librarian-puppet/issues/185) Sanitize the gem/bundler environment before spawning (ruby 1.9+)
 
 ### 0.9.14
 
