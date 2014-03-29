@@ -86,7 +86,7 @@ module Librarian
 
             target = vendored?(source.uri, version) ? vendored_path(source.uri, version) : name
 
-            `tar xzf #{target} -C #{path}`
+            Librarian::Posix.run!(%W{tar xzf #{target} -C #{path}})
           end
 
           def vendored?(name, version)

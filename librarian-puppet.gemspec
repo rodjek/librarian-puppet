@@ -27,7 +27,6 @@ Gem::Specification.new do |s|
 
   # only needed for ruby 1.8
   s.add_dependency "json"
-  s.add_dependency "open3_backport"
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"

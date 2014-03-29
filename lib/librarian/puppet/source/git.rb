@@ -48,17 +48,13 @@ module Librarian
           repository.path.rmtree if repository.path.exist?
           repository.path.mkpath
 
-          Dir.chdir(repository.path.to_s) do
-            %x{tar xzf #{vendor_tgz}}
-          end
+          run!(%W{tar xzf #{vendor_tgz}}, :chdir => repository.path.to_s)
 
           repository_cached!
         end
 
         def cache_in_vendor(tmp_path)
-          Dir.chdir(tmp_path.to_s) do
-            %x{git archive #{sha} | gzip > #{vendor_tgz}}
-          end
+          run!(%W{git archive #{sha} | gzip > #{vendor_tgz}}, :chdir => tmp_path.to_s)
         end
 
       end

@@ -101,18 +101,19 @@ module Librarian
 
             path.mkpath
 
-            target = vendored?(name, version) ? vendored_path(name, version) : name
+            target = vendored?(name, version) ? vendored_path(name, version).to_s : name
 
 
-            command = "puppet module install --version #{version} --target-dir '#{path}' --module_repository '#{source}' --modulepath '#{path}' --module_working_dir '#{path}' --ignore-dependencies '#{target}'"
+            command = %W{puppet module install --version #{version} --target-dir}
+            command.push(*[path.to_s, "--module_repository", source.to_s, "--modulepath", path.to_s, "--module_working_dir", path.to_s, "--ignore-dependencies", target])
             debug { "Executing puppet module install for #{name} #{version}" }
-            output = `#{command}`
 
-            # Check for bad exit code
-            unless $? == 0
+            begin
+              Librarian::Posix.run!(command)
+            rescue Posix::CommandFailure => e
               # Rollback the directory if the puppet module had an error
               path.unlink
-              raise Error, "Error executing puppet module install:\n#{command}\nError:\n#{output}"
+              raise Error, "Error executing puppet module install:\n#{command.join(" ")}\nError:\n#{e.message}"
             end
 
           end
