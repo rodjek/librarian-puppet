@@ -51,7 +51,7 @@ a puppet repo already setup to use librarian-puppet.*
 
 ### Recursive module dependency resolving
 
-When fetching a module from a `:git`-source all dependencies specified in its
+When fetching a module all dependencies specified in its
 `Modulefile` and `Puppetfile` will be resolved and installed.
 
 ### Puppetfile Breakdown
