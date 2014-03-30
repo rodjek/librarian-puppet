@@ -12,7 +12,9 @@ describe Librarian::Puppet::Source::GitHubTarball::Repo do
   end
 
   describe "#api_call" do
-    let(:repo) { Librarian::Puppet::Source::GitHubTarball::Repo.new("foo", "bar") }
+    let(:environment) { Librarian::Puppet::Environment.new }
+    let(:source) { Librarian::Puppet::Source::GitHubTarball.new(environment, "foo") }
+    let(:repo) { Librarian::Puppet::Source::GitHubTarball::Repo.new(source, "bar") }
     let(:headers) { {'User-Agent' => "librarian-puppet v#{Librarian::Puppet::VERSION}"} }
 
     it "succeeds" do

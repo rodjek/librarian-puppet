@@ -2,6 +2,8 @@
 
 ### 0.9.16
 
+ * Deprecate github_tarball sources
+ * Reduce number of API calls for github_tarball sources
 
 ### 0.9.15
 

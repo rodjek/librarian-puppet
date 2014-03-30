@@ -22,9 +22,11 @@ module Librarian
           def initialize(source, name)
             self.source = source
             self.name = name
+            warn { "githubtarball sources are deprecated: #{name} [#{source}]" }
           end
 
           def versions
+            return @versions if @versions
             data = api_call("/repos/#{source.uri}/tags")
             if data.nil?
               raise Error, "Unable to find module '#{source.uri}' on https://github.com"
@@ -36,7 +38,9 @@ module Librarian
               version !~ /\A\d\.\d(\.\d.*)?\z/
             end
 
-            all_versions.compact
+            @versions = all_versions.compact
+            debug { "  Module #{name} found versions: #{@versions.join(", ")}" }
+            @versions
           end
 
           def manifests
