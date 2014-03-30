@@ -3,6 +3,9 @@
 
 forge "http://forge.puppetlabs.com"
 
+# use dependencies defined in Modulefile
+modulefile
+
 # mod 'puppetlabs/stdlib'
 
 # mod 'ntp',
