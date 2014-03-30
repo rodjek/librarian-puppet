@@ -1,3 +1,5 @@
+require 'librarian/puppet/util'
+
 begin
   require 'puppet'
   require 'puppet/module_tool'

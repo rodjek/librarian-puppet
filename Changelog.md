@@ -2,6 +2,7 @@
 
 ### 1.0.1
 
+ * [Issue #190](https://github.com/rodjek/librarian-puppet/issues/190) Pass the PuppetLabs Forge API v3 endpoint to `puppet module` when running on Puppet Enterprise >= 3.2
  * [Issue #196](https://github.com/rodjek/librarian-puppet/issues/196) Fix error in error handling when puppet is not installed
 
 ### 1.0.0
