@@ -40,10 +40,10 @@ This Puppetfile will download all the dependencies listed in your Modulefile fro
     mod "puppetlabs/razor"
     mod "puppetlabs/ntp", "0.0.3"
 
-    mod "apt",
+    mod "puppetlabs/apt",
       :git => "git://github.com/puppetlabs/puppetlabs-apt.git"
 
-    mod "stdlib",
+    mod "puppetlabs/stdlib",
       :git => "git://github.com/puppetlabs/puppetlabs-stdlib.git"
 
 *See [jenkins-appliance](https://github.com/aussielunix/jenkins-appliance) for
@@ -71,20 +71,20 @@ source.
 
 Pull in version 0.0.3 of the Puppet Labs NTP module from the default source.
 
-    mod "apt",
+    mod "puppetlabs/apt",
       :git => "git://github.com/puppetlabs/puppetlabs-apt.git"
 
 Our puppet infrastructure repository depends on the `apt` module from the
 Puppet Labs GitHub repos and checks out the `master` branch.
 
-    mod "apt",
+    mod "puppetlabs/apt",
       :git => "git://github.com/puppetlabs/puppetlabs-apt.git",
       :ref => '0.0.3'
 
 Our puppet infrastructure repository depends on the `apt` module from the
 Puppet Labs GitHub repos and checks out a tag of `0.0.3`.
 
-    mod "apt",
+    mod "puppetlabs/apt",
       :git => "git://github.com/puppetlabs/puppetlabs-apt.git",
       :ref => 'feature/master/dans_refactor'
 
@@ -106,7 +106,7 @@ with many modules in it. If we need a module from such a repository, we can
 use the `:path =>` option here to help Librarian-puppet drill down and find the
 module subdirectory.
 
-    mod "apt",
+    mod "puppetlabs/apt",
       :git => "git://github.com/fake/puppet-modules.git",
       :path => "modules/apt"
 
