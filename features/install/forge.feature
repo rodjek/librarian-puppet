@@ -13,6 +13,35 @@ Feature: cli/install/forge
     And the file "modules/ntp/metadata.json" should match /"name": "puppetlabs-ntp"/
     And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
 
+  Scenario: Running install with no Puppetfile and metadata.json
+    Given there is no Puppetfile
+    And a file named "metadata.json" with:
+    """
+    {
+      "name": "random name",
+      "dependencies": [
+        {
+          "name": "puppetlabs/stdlib",
+          "version_requirement": "4.1.0"
+        }
+      ]
+    }
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
+
+  Scenario: Running install with no Puppetfile and Modulefile
+    Given there is no Puppetfile
+    And a file named "Modulefile" with:
+    """
+    name "random name"
+    dependency "puppetlabs/stdlib", "4.1.0"
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
+
   Scenario: Installing an exact version of a module
     Given a file named "Puppetfile" with:
     """
