@@ -14,7 +14,7 @@ EOF
   exit 1
 end
 
-PUPPET_VERSION=out.split(' ').first.strip
+PUPPET_VERSION=out
 
 require 'librarian/puppet/extension'
 require 'librarian/puppet/version'
@@ -23,5 +23,8 @@ require 'librarian/action/install'
 
 module Librarian
   module Puppet
+    def self.puppet_version
+      PUPPET_VERSION
+    end
   end
 end

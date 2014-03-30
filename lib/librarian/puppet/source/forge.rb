@@ -1,5 +1,6 @@
 require 'json'
 require 'open-uri'
+require 'librarian/puppet/util'
 
 module Librarian
   module Puppet
@@ -130,7 +131,7 @@ module Librarian
 
           def check_puppet_module_options
             min_version    = Gem::Version.create('2.7.13')
-            puppet_version = Gem::Version.create(PUPPET_VERSION.gsub('-', '.'))
+            puppet_version = Gem::Version.create(Librarian::Puppet.puppet_version.gsub('-', '.'))
 
             if puppet_version < min_version
               raise Error, "To get modules from the forge, we use the puppet faces module command. For this you need at least puppet version 2.7.13 and you have #{puppet_version}"
@@ -220,6 +221,18 @@ module Librarian
 
             new(environment, uri, options)
           end
+
+          def client_api_version()
+            version = 1
+            pe_version = Librarian::Puppet.puppet_version.match(/\(Puppet Enterprise (.+)\)/)
+
+            # Puppet enterprise 3.2.0+ uses api v3
+            if pe_version and Gem::Version.create(pe_version[1].strip) > Gem::Version.create('3.2.0')
+              version = 3
+            end
+            return version
+          end
+
         end
 
         attr_accessor :environment
