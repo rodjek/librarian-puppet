@@ -112,7 +112,7 @@ module Librarian
               Librarian::Posix.run!(command)
             rescue Posix::CommandFailure => e
               # Rollback the directory if the puppet module had an error
-              path.unlink
+              path.unlink rescue nil
               raise Error, "Error executing puppet module install:\n#{command.join(" ")}\nError:\n#{e.message}"
             end
 
