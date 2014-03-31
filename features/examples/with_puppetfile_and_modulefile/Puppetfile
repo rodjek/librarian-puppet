@@ -1,3 +1,6 @@
 forge 'http://forge.puppetlabs.com'
 
-mod 'maestrodev/test'
+mod 'maestrodev/test', :git => "https://github.com/maestrodev/puppet-test.git", :ref => "1.0.8"
+mod 'pupetlabs/stdlib', '>=4.0.0'
+mod 'pupetlabs/apt'
+mod 'puppetlabs/concat', '<=1.0.2'

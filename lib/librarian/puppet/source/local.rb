@@ -43,23 +43,35 @@ module Librarian
         end
 
         def fetch_dependencies(name, version, extra)
-          dependencies = Set.new
+          dependencies = {}
 
           if modulefile?
             evaluate_modulefile(modulefile).dependencies.each do |dependency|
               dependency_name = dependency.instance_variable_get(:@full_module_name)
               version = dependency.instance_variable_get(:@version_requirement)
               gem_requirement = Requirement.new(version).gem_requirement
-              dependencies << Dependency.new(dependency_name, gem_requirement, forge_source)
+              dependencies[dependency_name] = Dependency.new(dependency_name, gem_requirement, forge_source)
             end
           end
 
           if specfile?
             spec = environment.dsl(Pathname(specfile))
-            dependencies.merge spec.dependencies
+            spec.dependencies.each do |dependency|
+              module_dependency = dependencies[dependency.name]
+              if module_dependency.nil?
+                warn { "Module #{name}: its dependency #{dependency.name} only found in Puppetfile and not in Modulefile" }
+                dependencies[dependency.name] = dependency
+              else
+                if module_dependency == dependency
+                  dependencies[dependency.name] = dependency
+                else
+                  warn { "Module #{name}: its dependency #{dependency.name} was found in Puppetfile with different requirements than in Modulefile, ignoring the Puppetfile one" }
+                end
+              end
+            end
           end
 
-          dependencies
+          dependencies.values
         end
 
         def forge_source

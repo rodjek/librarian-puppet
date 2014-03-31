@@ -75,15 +75,21 @@ Feature: cli/install/git
     And the file "modules/test/Modulefile" should match /name *'librarian-test'/
 
   @slow
+  @announce
   Scenario: Install a module with dependencies specified in a Puppetfile and Modulefile
     Given a file named "Puppetfile" with:
     """
-    mod 'with_puppetfile', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/with_puppetfile_and_modulefile'
+    mod 'with_puppetfile', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/with_puppetfile_and_modulefile', :ref => 'issue-180'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
     And the file "modules/with_puppetfile/Modulefile" should match /name *'with-puppetfile-and-modulefile'/
     And the file "modules/test/Modulefile" should match /name *'maestrodev-test'/
+    And the file "modules/test/Modulefile" should match /version *'1\.0\.8'/
+    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
+    And the file "modules/stdlib/Modulefile" should match /version *'3\.2\.1'/
+    And the file "modules/concat/Modulefile" should match /name *'puppetlabs-concat'/
+    And the file "modules/concat/Modulefile" should match /version *'1\.0\.2'/
 
   @slow
   Scenario: Install a module using modulefile syntax
@@ -129,7 +135,7 @@ Feature: cli/install/git
     """
     mod 'duritong/munin', :git => 'https://github.com/2ndquadrant-it/puppet-munin.git', :ref => '0bb71e'
     """
-    When PENDING I run `librarian-puppet install --verbose`
+    When I run `librarian-puppet install --verbose`
     Then the exit status should be 0
     And the file "modules/munin/Modulefile" should match /name *'duritong-munin'/
     And the file "modules/concat/Modulefile" should match /name *'puppetlabs-concat'/
