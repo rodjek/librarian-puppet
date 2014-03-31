@@ -119,6 +119,7 @@ module Librarian
         end
 
         def manifest?(name, path)
+          return true if path.join('Modulefile').exist?
           return true if path.join('manifests').exist?
           return true if path.join('lib').join('puppet').exist?
           return true if path.join('lib').join('facter').exist?
