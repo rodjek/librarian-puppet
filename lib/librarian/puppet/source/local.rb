@@ -62,10 +62,10 @@ module Librarian
                 warn { "Module #{name}: its dependency #{dependency.name} only found in Puppetfile and not in Modulefile" }
                 dependencies[dependency.name] = dependency
               else
-                if module_dependency == dependency
+                if module_dependency.requirement == dependency.requirement
                   dependencies[dependency.name] = dependency
                 else
-                  warn { "Module #{name}: its dependency #{dependency.name} was found in Puppetfile with different requirements than in Modulefile, ignoring the Puppetfile one" }
+                  warn { "Module #{name}: its dependency #{dependency.name} was found in Puppetfile [#{dependency.requirement}] with different requirements than in Modulefile [#{module_dependency.requirement}], ignoring the Puppetfile one" }
                 end
               end
             end
