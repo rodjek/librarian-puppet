@@ -2,6 +2,7 @@ Feature: cli/install/github_tarball
   Puppet librarian needs to install tarballed modules from github repositories
 
   @slow
+  @github
   Scenario: Installing a module from github tarballs
     Given a file named "Puppetfile" with:
     """
