@@ -112,8 +112,18 @@ module Librarian
               Librarian::Posix.run!(command)
             rescue Posix::CommandFailure => e
               # Rollback the directory if the puppet module had an error
-              path.unlink rescue nil
-              raise Error, "Error executing puppet module install:\n#{command.join(" ")}\nError:\n#{e.message}"
+              begin
+                path.unlink
+              rescue => u
+                warn("Unable to rollback path #{path}: #{u}")
+              end
+              tar = Dir[File.join(path.to_s, "**/*.tar.gz")]
+              msg = ""
+              if e.message =~ /Unexpected EOF in archive/ and !tar.empty?
+                file = tar.first
+                msg = " (looks like an incomplete download of #{file})"
+              end
+              raise Error, "Error executing puppet module install#{msg}:\n#{command.join(" ")}\nError:\n#{e.message}"
             end
 
           end
