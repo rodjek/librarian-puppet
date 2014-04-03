@@ -104,9 +104,15 @@ module Librarian
 
             target = vendored?(name, version) ? vendored_path(name, version).to_s : name
 
+            # TODO can't pass the default forge url (http://forge.puppetlabs.com) to clients that use the v3 API (https://forgeapi.puppetlabs.com)
+            module_repository = source.to_s
+            if Forge.client_api_version() > 1 and source =~ %r{^http(s)?://forge\.puppetlabs\.com}
+              warn("Your Puppet client uses the Forge API v3, you should use this URL: #{s}")
+              module_repository = "https://forgeapi.puppetlabs.com"
+            end
 
             command = %W{puppet module install --version #{version} --target-dir}
-            command.push(*[path.to_s, "--module_repository", source.to_s, "--modulepath", path.to_s, "--module_working_dir", path.to_s, "--ignore-dependencies", target])
+            command.push(*[path.to_s, "--module_repository", module_repository, "--modulepath", path.to_s, "--module_working_dir", path.to_s, "--ignore-dependencies", target])
             debug { "Executing puppet module install for #{name} #{version}" }
 
             begin
