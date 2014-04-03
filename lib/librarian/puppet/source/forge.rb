@@ -233,7 +233,7 @@ module Librarian
             pe_version = Librarian::Puppet.puppet_version.match(/\(Puppet Enterprise (.+)\)/)
 
             # Puppet enterprise 3.2.0+ uses api v3
-            if pe_version and Gem::Version.create(pe_version[1].strip) > Gem::Version.create('3.2.0')
+            if pe_version and Gem::Version.create(pe_version[1].strip) >= Gem::Version.create('3.2.0')
               version = 3
             end
             return version
