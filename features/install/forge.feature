@@ -7,11 +7,11 @@ Feature: cli/install/forge
     """
     forge "http://forge.puppetlabs.com"
 
-    mod 'puppetlabs/apt'
+    mod 'puppetlabs/ntp'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/apt/Modulefile" should match /name *'puppetlabs-apt'/
+    And the file "modules/ntp/Modulefile" should match /name *'puppetlabs-ntp'/
     And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
 
   @veryveryslow
@@ -36,6 +36,7 @@ Feature: cli/install/forge
 
     mod 'puppetlabs/apache', '0.4.0'
     mod 'puppetlabs/postgresql', '2.0.1'
+    mod 'puppetlabs/apt', '< 1.4.2' # 1.4.2 causes trouble in travis
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
@@ -65,13 +66,13 @@ Feature: cli/install/forge
     """
     forge "http://forge.puppetlabs.com"
 
-    mod 'puppetlabs/apt'
+    mod 'puppetlabs/ntp'
     """
     When I run `librarian-puppet install --path puppet/modules`
     And I run `librarian-puppet config`
     Then the exit status should be 0
     And the output from "librarian-puppet config" should contain "path: puppet/modules"
-    And the file "puppet/modules/apt/Modulefile" should match /name *'puppetlabs-apt'/
+    And the file "puppet/modules/ntp/Modulefile" should match /name *'puppetlabs-ntp'/
     And the file "puppet/modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
 
   @veryslow
@@ -81,6 +82,7 @@ Feature: cli/install/forge
     forge "http://forge.puppetlabs.com"
 
     mod 'puppetlabs/postgresql', '3.2.0'
+    mod 'puppetlabs/apt', '< 1.4.2' # 1.4.2 causes trouble in travis
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
