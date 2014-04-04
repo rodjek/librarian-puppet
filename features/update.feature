@@ -24,7 +24,6 @@ Feature: cli/update
     And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
     And the file "modules/stdlib/Modulefile" should match /version *'3\.1\.1'/
 
-  @slow
   Scenario: Updating a module from git with a branch ref
     Given a file named "Puppetfile" with:
     """
@@ -52,7 +51,6 @@ Feature: cli/update
     Then the exit status should be 0
     And the file "modules/stdlib/.git/HEAD" should match /a3c600d5f277f0c9d91c98ef67daf7efc9eed3c5/
 
-  @slow
   Scenario: Updating a module with invalid versions in git
     Given a file named "Puppetfile" with:
     """
