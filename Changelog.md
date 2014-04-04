@@ -1,5 +1,9 @@
 ## Changelog
 
+### 1.0.0
+
+ * Support Puppet 3.5.0
+
 ### 0.9.16
 
  * [Issue #181](https://github.com/rodjek/librarian-puppet/issues/181) Should use qualified module names for resolution to work correctly
