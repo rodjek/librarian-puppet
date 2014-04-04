@@ -1,8 +1,8 @@
 ## Changelog
 
-### 1.0.0
+### 0.9.17
 
- * Support Puppet 3.5.0
+ * [Issue #193](https://github.com/rodjek/librarian-puppet/issues/193) Support Puppet 3.5.0
 
 ### 0.9.16
 
