@@ -13,11 +13,24 @@ env:
   - PUPPET_VERSION=3.1.1
   - PUPPET_VERSION=3.2.4
   - PUPPET_VERSION=3.3.2
-  - PUPPET_VERSION=3.4.2
+  - PUPPET_VERSION=3.4.3
+  - PUPPET_VERSION=3.5.0
 
 before_script:
   - puppet --version
 
 matrix:
-  allow_failures:
-    - rvm: 2.1.0 # broken in puppet < 3.5.0 https://tickets.puppetlabs.com/browse/PUP-1243
+  # Puppet < 3.5.0 is broken under ruby 2.1 https://tickets.puppetlabs.com/browse/PUP-1243
+  exclude:
+    - rvm: 2.1.0
+      env: PUPPET_VERSION=2.7.25
+    - rvm: 2.1.0
+      env: PUPPET_VERSION=3.0.2
+    - rvm: 2.1.0
+      env: PUPPET_VERSION=3.1.1
+    - rvm: 2.1.0
+      env: PUPPET_VERSION=3.2.4
+    - rvm: 2.1.0
+      env: PUPPET_VERSION=3.3.2
+    - rvm: 2.1.0
+      env: PUPPET_VERSION=3.4.3
