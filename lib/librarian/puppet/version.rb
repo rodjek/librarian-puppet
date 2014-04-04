@@ -1,5 +1,5 @@
 module Librarian
   module Puppet
-    VERSION = "0.9.17"
+    VERSION = "1.0.0"
   end
 end
