@@ -2,6 +2,7 @@
 
 ### 0.9.16
 
+ * [Issue #181](https://github.com/rodjek/librarian-puppet/issues/181) Should use qualified module names for resolution to work correctly
  * Deprecate github_tarball sources
  * Reduce number of API calls for github_tarball sources
 
