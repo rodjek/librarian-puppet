@@ -5,10 +5,15 @@
 ## Introduction
 
 Librarian-puppet is a bundler for your puppet infrastructure.  You can use
-librarian-puppet to manage the puppet modules your infrastructure depends on.
-It is based on [Librarian](https://github.com/applicationsonline/librarian), a
-framework for writing bundlers, which are tools that resolve, fetch, install,
-and isolate a project's dependencies.
+librarian-puppet to manage the puppet modules your infrastructure depends on,
+whether the modules come from the [Puppet Forge](http://forge.puppetlabs.com/),
+Git repositories or a just a path.
+
+* Librarian-puppet can reuse the dependencies listed in your Modulefile
+* Forge modules can be installed from [Puppetlabs Forge](http://forge.puppetlabs.com/) or an internal Forge such as [Pulp](http://www.pulpproject.org/)
+* Git modules can be installed from a branch, tag or specific commit, optionally using a path inside the repository
+* Module dependencies are resolved transitively without neededing to list all the modules explicitly
+
 
 Librarian-puppet manages your `modules/` directory for you based on your
 `Puppetfile`.  Your `Puppetfile` becomes the authoritative source for what
@@ -17,6 +22,10 @@ modules you require and at what version, tag or branch.
 Once using Librarian-puppet you should not modify the contents of your `modules`
 directory.  The individual modules' repos should be updated, tagged with a new
 release and the version bumped in your Puppetfile.
+
+It is based on [Librarian](https://github.com/applicationsonline/librarian), a
+framework for writing bundlers, which are tools that resolve, fetch, install,
+and isolate a project's dependencies.
 
 ## The Puppetfile
 
@@ -47,7 +56,7 @@ This Puppetfile will download all the dependencies listed in your Modulefile fro
       :git => "git://github.com/puppetlabs/puppetlabs-stdlib.git"
 
 
-### Recursive module dependency resolving
+### Recursive module dependency resolution
 
 When fetching a module all dependencies specified in its
 `Modulefile` and `Puppetfile` will be resolved and installed.
