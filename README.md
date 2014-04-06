@@ -46,8 +46,6 @@ This Puppetfile will download all the dependencies listed in your Modulefile fro
     mod "puppetlabs/stdlib",
       :git => "git://github.com/puppetlabs/puppetlabs-stdlib.git"
 
-*See [jenkins-appliance](https://github.com/aussielunix/jenkins-appliance) for
-a puppet repo already setup to use librarian-puppet.*
 
 ### Recursive module dependency resolving
 
