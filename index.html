@@ -33,10 +33,17 @@
 <h2>Introduction</h2>
 
 <p>Librarian-puppet is a bundler for your puppet infrastructure.  You can use
-librarian-puppet to manage the puppet modules your infrastructure depends on.
-It is based on <a href="https://github.com/applicationsonline/librarian">Librarian</a>, a
-framework for writing bundlers, which are tools that resolve, fetch, install,
-and isolate a project's dependencies.</p>
+librarian-puppet to manage the puppet modules your infrastructure depends on,
+whether the modules come from the <a href="http://forge.puppetlabs.com/">Puppet Forge</a>,
+Git repositories or a just a path.</p>
+
+<ul>
+<li>Librarian-puppet can reuse the dependencies listed in your Modulefile</li>
+<li>Forge modules can be installed from <a href="http://forge.puppetlabs.com/">Puppetlabs Forge</a> or an internal Forge such as <a href="http://www.pulpproject.org/">Pulp</a></li>
+<li>Git modules can be installed from a branch, tag or specific commit, optionally using a path inside the repository</li>
+<li>Module dependencies are resolved transitively without neededing to list all the modules explicitly</li>
+</ul>
+
 
 <p>Librarian-puppet manages your <code>modules/</code> directory for you based on your
 <code>Puppetfile</code>.  Your <code>Puppetfile</code> becomes the authoritative source for what
@@ -45,6 +52,10 @@ modules you require and at what version, tag or branch.</p>
 <p>Once using Librarian-puppet you should not modify the contents of your <code>modules</code>
 directory.  The individual modules' repos should be updated, tagged with a new
 release and the version bumped in your Puppetfile.</p>
+
+<p>It is based on <a href="https://github.com/applicationsonline/librarian">Librarian</a>, a
+framework for writing bundlers, which are tools that resolve, fetch, install,
+and isolate a project's dependencies.</p>
 
 <h2>The Puppetfile</h2>
 
@@ -75,7 +86,7 @@ mod "puppetlabs/stdlib",
   :git =&gt; "git://github.com/puppetlabs/puppetlabs-stdlib.git"
 </code></pre>
 
-<h3>Recursive module dependency resolving</h3>
+<h3>Recursive module dependency resolution</h3>
 
 <p>When fetching a module all dependencies specified in its
 <code>Modulefile</code> and <code>Puppetfile</code> will be resolved and installed.</p>
