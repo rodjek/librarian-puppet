@@ -20,18 +20,17 @@
 
           <h1 id="project_title">librarian-puppet</h1>
           <h2 id="project_tagline">You can all stop using git submodules now</h2>
-
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/rodjek/librarian-puppet/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/rodjek/librarian-puppet/tarball/master">Download this project as a tar.gz file</a>
-            </section>
         </header>
     </div>
 
     <!-- MAIN CONTENT -->
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
-        <h2>Introduction</h2>
+
+
+<p><a href="https://travis-ci.org/rodjek/librarian-puppet"><img src="https://travis-ci.org/rodjek/librarian-puppet.png?branch=master" alt="Build Status" /></a></p>
+
+<h2>Introduction</h2>
 
 <p>Librarian-puppet is a bundler for your puppet infrastructure.  You can use
 librarian-puppet to manage the puppet modules your infrastructure depends on.
@@ -69,19 +68,17 @@ modulefile
 mod "puppetlabs/razor"
 mod "puppetlabs/ntp", "0.0.3"
 
-mod "apt",
+mod "puppetlabs/apt",
   :git =&gt; "git://github.com/puppetlabs/puppetlabs-apt.git"
 
-mod "stdlib",
+mod "puppetlabs/stdlib",
   :git =&gt; "git://github.com/puppetlabs/puppetlabs-stdlib.git"
 </code></pre>
 
-<p><em>See <a href="https://github.com/aussielunix/jenkins-appliance">jenkins-appliance</a> for
-a puppet repo already setup to use librarian-puppet.</em></p>
-
 <h3>Recursive module dependency resolving</h3>
 
-<p>When fetching a module from a <code>:git-source</code> all dependencies specified in its Modulefile and Puppetfile will be resolved and installed.</p>
+<p>When fetching a module all dependencies specified in its
+<code>Modulefile</code> and <code>Puppetfile</code> will be resolved and installed.</p>
 
 <h3>Puppetfile Breakdown</h3>
 
@@ -103,14 +100,14 @@ source.</p>
 
 <p>Pull in version 0.0.3 of the Puppet Labs NTP module from the default source.</p>
 
-<pre><code>mod "apt",
+<pre><code>mod "puppetlabs/apt",
   :git =&gt; "git://github.com/puppetlabs/puppetlabs-apt.git"
 </code></pre>
 
 <p>Our puppet infrastructure repository depends on the <code>apt</code> module from the
 Puppet Labs GitHub repos and checks out the <code>master</code> branch.</p>
 
-<pre><code>mod "apt",
+<pre><code>mod "puppetlabs/apt",
   :git =&gt; "git://github.com/puppetlabs/puppetlabs-apt.git",
   :ref =&gt; '0.0.3'
 </code></pre>
@@ -118,7 +115,7 @@ Puppet Labs GitHub repos and checks out the <code>master</code> branch.</p>
 <p>Our puppet infrastructure repository depends on the <code>apt</code> module from the
 Puppet Labs GitHub repos and checks out a tag of <code>0.0.3</code>.</p>
 
-<pre><code>mod "apt",
+<pre><code>mod "puppetlabs/apt",
   :git =&gt; "git://github.com/puppetlabs/puppetlabs-apt.git",
   :ref =&gt; 'feature/master/dans_refactor'
 </code></pre>
@@ -141,7 +138,7 @@ with many modules in it. If we need a module from such a repository, we can
 use the <code>:path =&gt;</code> option here to help Librarian-puppet drill down and find the
 module subdirectory.</p>
 
-<pre><code>mod "apt",
+<pre><code>mod "puppetlabs/apt",
   :git =&gt; "git://github.com/fake/puppet-modules.git",
   :path =&gt; "modules/apt"
 </code></pre>
@@ -205,34 +202,119 @@ $ git add Puppetfile.lock
 $ git commit -m "bumped the version of apt up to 0.0.4."
 </code></pre>
 
+<h2>Configuration</h2>
+
+<p>Configuration comes from three sources with the following highest-to-lowest
+precedence:</p>
+
+<ul>
+<li>The local config (<code>./.librarian/puppet/config</code>)</li>
+<li>The environment</li>
+<li>The global config (<code>~/.librarian/puppet/config</code>)</li>
+</ul>
+
+
+<p>You can inspect the final configuration with:</p>
+
+<pre><code>$ librarian-puppet config
+</code></pre>
+
+<p>You can find out where a particular key is set with:</p>
+
+<pre><code>$ librarian-puppet config KEY
+</code></pre>
+
+<p>You can set a key at the global level with:</p>
+
+<pre><code>$ librarian-puppet config KEY VALUE --global
+</code></pre>
+
+<p>And remove it with:</p>
+
+<pre><code>$ librarian-puppet config KEY --global --delete
+</code></pre>
+
+<p>You can set a key at the local level with:</p>
+
+<pre><code>$ librarian-puppet config KEY VALUE --local
+</code></pre>
+
+<p>And remove it with:</p>
+
+<pre><code>$ librarian-puppet config KEY --local --delete
+</code></pre>
+
+<p>You cannot set or delete environment-level config keys with the CLI.</p>
+
+<p>Configuration set at either the global or local level will affect subsequent
+invocations of <code>librarian-puppet</code>. Configurations set at the environment level are
+not saved and will not affect subsequent invocations of <code>librarian-puppet</code>.</p>
+
+<p>You can pass a config at the environment level by taking the original config key
+and transforming it: replace hyphens (<code>-</code>) with underscores (<code>_</code>) and periods
+(<code>.</code>) with doubled underscores (<code>__</code>), uppercase, and finally prefix with
+<code>LIBRARIAN_PUPPET_</code>. For example, to pass a config in the environment for the key
+<code>part-one.part-two</code>, set the environment variable
+<code>LIBRARIAN_PUPPET_PART_ONE__PART_TWO</code>.</p>
+
+<p>Configuration affects how various commands operate.</p>
+
+<ul>
+<li><p>The <code>path</code> config sets the cookbooks directory to install to. If a relative
+path, it is relative to the directory containing the <code>Puppetfile</code>. The
+equivalent environment variable is <code>LIBRARIAN_PUPPET_PATH</code>.</p></li>
+<li><p>The <code>tmp</code> config sets the cache directory for librarian. If a relative
+path, it is relative to the directory containing the <code>Puppetfile</code>. The
+equivalent environment variable is <code>LIBRARIAN_PUPPET_TMP</code>.</p></li>
+</ul>
+
+
+<p>Configuration can be set by passing specific options to other commands.</p>
+
+<ul>
+<li>The <code>path</code> config can be set at the local level by passing the <code>--path</code> option
+to the <code>install</code> command. It can be unset at the local level by passing the
+<code>--no-path</code> option to the <code>install</code> command. Note that if this is set at the
+environment or global level then, even if <code>--no-path</code> is given as an option,
+the environment or global config will be used.</li>
+</ul>
+
+
 <h2>How to Contribute</h2>
 
 <ul>
 <li>Pull requests please.</li>
 <li>Bonus points for feature branches.</li>
-</ul><h2>Reporting Issues</h2>
+</ul>
+
+
+<h2>Reporting Issues</h2>
 
 <p>Bug reports to the github issue tracker please.
 Please include:</p>
 
 <ul>
-<li>relevant <code>Puppetfile</code> and <code>Puppetfile.lock</code> files.</li>
-<li>version of ruby, librarian-puppet</li>
+<li>Relevant <code>Puppetfile</code> and <code>Puppetfile.lock</code> files</li>
+<li>Version of ruby, librarian-puppet</li>
 <li>What distro</li>
 <li>Please run the <code>librarian-puppet</code> commands in verbose mode by using the
 <code>--verbose</code> flag, and include the verbose output in the bug report as well.</li>
-</ul><h2>License</h2>
+</ul>
+
+
+<h2>License</h2>
 
 <p>Please see the <a href="https://github.com/rodjek/librarian-puppet/blob/master/LICENSE">LICENSE</a>
 file.</p>
+
+
       </section>
     </div>
 
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">librarian-puppet maintained by <a href="https://github.com/rodjek">rodjek</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+        <p class="copyright">librarian-puppet maintained by <a href="https://github.com/rodjek">rodjek</a> and <a href="http://csanchez.org">Carlos Sanchez</a></p>
       </footer>
     </div>
 
