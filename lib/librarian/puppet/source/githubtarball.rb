@@ -22,7 +22,6 @@ module Librarian
           def initialize(source, name)
             self.source = source
             self.name = name
-            warn { "githubtarball sources are deprecated: #{name} [#{source}]" }
           end
 
           def versions
