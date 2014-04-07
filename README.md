@@ -12,7 +12,8 @@ Git repositories or a just a path.
 * Librarian-puppet can reuse the dependencies listed in your Modulefile
 * Forge modules can be installed from [Puppetlabs Forge](http://forge.puppetlabs.com/) or an internal Forge such as [Pulp](http://www.pulpproject.org/)
 * Git modules can be installed from a branch, tag or specific commit, optionally using a path inside the repository
-* Module dependencies are resolved transitively without neededing to list all the modules explicitly
+* Modules can be installed from GitHub using tarballs, without needing Git installed
+* Module dependencies are resolved transitively without needing to list all the modules explicitly
 
 
 Librarian-puppet manages your `modules/` directory for you based on your
@@ -54,6 +55,9 @@ This Puppetfile will download all the dependencies listed in your Modulefile fro
 
     mod "puppetlabs/stdlib",
       :git => "git://github.com/puppetlabs/puppetlabs-stdlib.git"
+
+    mod 'puppetlabs/apache', '0.6.0',
+      :github_tarball => 'puppetlabs/puppetlabs-apache'
 
 
 ### Recursive module dependency resolution
