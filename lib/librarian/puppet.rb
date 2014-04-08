@@ -8,23 +8,26 @@ require 'librarian/action/install'
 
 module Librarian
   module Puppet
+    @@puppet_version = nil
 
-    def self.puppet_version
-      out = nil
+    def puppet_version
+      return @@puppet_version unless @@puppet_version.nil?
+
       begin
-        out = Librarian::Posix.run!(%W{puppet --version})
+        @@puppet_version = Librarian::Posix.run!(%W{puppet --version})
       rescue Librarian::Posix::CommandFailure => error
-
-        $stderr.puts <<-EOF
-      Unable to load puppet. Please install it using native packages for your platform (eg .deb, .rpm, .dmg, etc).
-      puppet --version returned #{error.status}
-      #{error.message unless error.message.nil?}
-      EOF
+        msg = "Unable to load puppet. Please install it using native packages for your platform (eg .deb, .rpm, .dmg, etc)."
+        msg += "\npuppet --version returned #{error.status}"
+        msg += "\n#{error.message}" unless error.message.nil?
+        $stderr.puts msg
         exit 1
       end
-      out
+      return @@puppet_version
     end
+
+    def puppet_gem_version
+      Gem::Version.create(puppet_version.split(' ').first.strip.gsub('-', '.'))
+    end
+
   end
 end
-
-PUPPET_VERSION=Librarian::Puppet::puppet_version
