@@ -1,7 +1,16 @@
 ## Changelog
 
+### 1.0.0
+
+ * Remove deprecation warning for github_tarball sources, some people are actually using it
+
+### 0.9.17
+
+ * [Issue #193](https://github.com/rodjek/librarian-puppet/issues/193) Support Puppet 3.5.0
+
 ### 0.9.16
 
+ * [Issue #181](https://github.com/rodjek/librarian-puppet/issues/181) Should use qualified module names for resolution to work correctly
  * Deprecate github_tarball sources
  * Reduce number of API calls for github_tarball sources
 

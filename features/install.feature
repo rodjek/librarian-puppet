@@ -8,7 +8,6 @@ Feature: cli/install
     Then the output should contain "Could not find Puppetfile"
     And the exit status should be 1
 
-  @slow
   Scenario: Install a module dependency from git and forge should be deterministic
     Given a file named "Puppetfile" with:
     """
@@ -22,7 +21,6 @@ Feature: cli/install
     And the file "modules/stdlib/Modulefile" should match /version *'3\.0\.0'/
     And the output should not contain "Executing puppet module install for puppetlabs/stdlib"
 
-  @slow
   Scenario: Install a module dependency from git and forge should be deterministic
     Given a file named "Puppetfile" with:
     """

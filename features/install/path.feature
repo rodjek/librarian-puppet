@@ -1,7 +1,6 @@
 Feature: cli/install/path
   Puppet librarian needs to install modules from local paths
 
-  @slow
   Scenario: Install a module with dependencies specified in a Puppetfile
     Given a file named "Puppetfile" with:
     """
@@ -12,7 +11,6 @@ Feature: cli/install/path
     And the file "modules/with_puppetfile/Modulefile" should match /name *'with-puppetfile'/
     And the file "modules/test/Modulefile" should match /name *'librarian-test'/
 
-  @slow
   Scenario: Install a module with dependencies specified in a Puppetfile and Modulefile
     Given a file named "Puppetfile" with:
     """
@@ -23,7 +21,6 @@ Feature: cli/install/path
     And the file "modules/with_puppetfile/Modulefile" should match /name *'with-puppetfile-and-modulefile'/
     And the file "modules/test/Modulefile" should match /name *'maestrodev-test'/
 
-  @veryslow
   Scenario: Install a module from path without version
     Given a file named "Puppetfile" with:
     """

@@ -2,6 +2,7 @@ require 'librarian/puppet/util'
 
 begin
   require 'puppet'
+  require 'puppet/module_tool'
 rescue LoadError
   $stderr.puts <<-EOF
 Unable to load puppet, the puppet gem is required for :git and :path source.

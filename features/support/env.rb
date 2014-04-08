@@ -1,19 +1,7 @@
 require 'aruba/cucumber'
 
 Before do
-  @aruba_timeout_seconds = 15
-end
-
-Before('@slow') do
-  @aruba_timeout_seconds = 30
-end
-
-Before('@veryslow') do
-  @aruba_timeout_seconds = 60
-end
-
-Before('@veryveryslow') do
-  @aruba_timeout_seconds = 90
+  @aruba_timeout_seconds = 120
 end
 
 Given /^PENDING/ do
