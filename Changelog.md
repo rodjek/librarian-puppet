@@ -1,5 +1,9 @@
 ## Changelog
 
+### 1.0.1
+
+ * [Issue #196](https://github.com/rodjek/librarian-puppet/issues/196) Fix error in error handling when puppet is not installed
+
 ### 1.0.0
 
  * Remove deprecation warning for github_tarball sources, some people are actually using it
