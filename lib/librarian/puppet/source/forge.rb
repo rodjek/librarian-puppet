@@ -106,7 +106,7 @@ module Librarian
 
             # TODO can't pass the default forge url (http://forge.puppetlabs.com) to clients that use the v3 API (https://forgeapi.puppetlabs.com)
             module_repository = source.to_s
-            if Forge.client_api_version() > 1 and source =~ %r{^http(s)?://forge\.puppetlabs\.com}
+            if Forge.client_api_version() > 1 and module_repository =~ %r{^http(s)?://forge\.puppetlabs\.com}
               module_repository = "https://forgeapi.puppetlabs.com"
               warn("Your Puppet client uses the Forge API v3, you should use this Forge URL: #{module_repository}")
             end
