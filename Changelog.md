@@ -1,5 +1,10 @@
 ## Changelog
 
+### 1.0.2
+
+ * [Issue #204](https://github.com/rodjek/librarian-puppet/issues/204) Fix regex to detect Forge API v3 url
+ * [Issue #199](https://github.com/rodjek/librarian-puppet/issues/199) undefined method run! packaging a git source
+
 ### 1.0.1
 
  * [Issue #190](https://github.com/rodjek/librarian-puppet/issues/190) Pass the PuppetLabs Forge API v3 endpoint to `puppet module` when running on Puppet Enterprise >= 3.2
