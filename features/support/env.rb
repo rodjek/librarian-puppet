@@ -1,7 +1,13 @@
 require 'aruba/cucumber'
+require 'fileutils'
 
 Before do
   @aruba_timeout_seconds = 120
+end
+
+Before('@spaces') do
+  @dirs = ["tmp/aruba with spaces"]
+  @dirs.each {|dir| FileUtils.rm_rf dir}
 end
 
 Given /^PENDING/ do

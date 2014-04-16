@@ -32,3 +32,14 @@ Feature: cli/install/path
     Then the exit status should be 0
     And the file "modules/test/Modulefile" should match /version *'0\.0\.1'/
     And a file named "modules/stdlib/Modulefile" should exist
+
+  @spaces
+  Scenario: Installing a module in a path with spaces
+    Given a file named "Puppetfile" with:
+    """
+    mod 'librarian/test', :path => '../../features/examples/test'
+    mod 'puppetlabs/stdlib', :git => 'https://github.com/puppetlabs/puppetlabs-stdlib'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/test/Modulefile" should match /name *'librarian-test'/

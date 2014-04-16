@@ -26,6 +26,20 @@ Feature: cli/install/forge
     And the file "modules/apt/Modulefile" should match /version *'0\.0\.4'/
     And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
 
+  # Puppet Module tool does not support spaces
+  # https://github.com/rodjek/librarian-puppet/issues/201
+  # https://tickets.puppetlabs.com/browse/PUP-2278
+  @spaces
+  Scenario: Installing a module in a path with spaces
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+    mod 'puppetlabs/stdlib', '4.1.0'
+    """
+    When PENDING I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
+
   Scenario: Installing a module with invalid versions in the forge
     Given a file named "Puppetfile" with:
     """

@@ -18,3 +18,13 @@ Feature: cli/install/github_tarball
     And the file "modules/apache/Modulefile" should match /version *'0\.6\.0'/
     And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
     And the file "modules/stdlib/Modulefile" should match /version *'2\.3\.0'/
+
+  @spaces
+  Scenario: Installing a module in a path with spaces
+    Given a file named "Puppetfile" with:
+    """
+    mod 'puppetlabs/stdlib', '4.1.0', :github_tarball => 'puppetlabs/puppetlabs-stdlib'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/

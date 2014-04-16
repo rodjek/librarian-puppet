@@ -21,6 +21,16 @@ Feature: cli/install/git
     And the file "modules/stdlib/Modulefile" should match /version *'2\.2\.1'/
     And the file "modules/stdlib/.git/HEAD" should match /a70b09d5de035de5254ebe6ad6e1519a6d7cf588/
 
+  @spaces
+  Scenario: Installing a module in a path with spaces
+    Given a file named "Puppetfile" with:
+    """
+    mod 'puppetlabs/stdlib', '4.1.0', :git => 'https://github.com/puppetlabs/puppetlabs-stdlib.git', :ref => '4.1.0'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
+
   Scenario: Installing a module with invalid versions in git
     Given a file named "Puppetfile" with:
     """
