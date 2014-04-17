@@ -14,7 +14,7 @@ env:
   - PUPPET_VERSION=3.2.4
   - PUPPET_VERSION=3.3.2
   - PUPPET_VERSION=3.4.3
-  - PUPPET_VERSION=3.5.0.rc3
+  - PUPPET_VERSION=3.5.1
 
 before_script:
   - puppet --version
