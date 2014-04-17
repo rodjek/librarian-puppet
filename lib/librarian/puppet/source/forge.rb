@@ -122,7 +122,7 @@ module Librarian
               begin
                 path.unlink
               rescue => u
-                warn("Unable to rollback path #{path}: #{u}")
+                debug("Unable to rollback path #{path}: #{u}")
               end
               tar = Dir[File.join(path.to_s, "**/*.tar.gz")]
               msg = ""
@@ -130,7 +130,7 @@ module Librarian
                 file = tar.first
                 msg = " (looks like an incomplete download of #{file})"
               end
-              raise Error, "Error executing puppet module install#{msg}:\n#{command.join(" ")}\nError:\n#{e.message}"
+              raise Error, "Error executing puppet module install#{msg}. Check that this command succeeds:\n#{command.join(" ")}\nError:\n#{e.message}"
             end
 
           end
