@@ -6,11 +6,11 @@
 
 Librarian-puppet is a bundler for your puppet infrastructure.  You can use
 librarian-puppet to manage the puppet modules your infrastructure depends on,
-whether the modules come from the [Puppet Forge](http://forge.puppetlabs.com/),
+whether the modules come from the [Puppet Forge](https://forge.puppetlabs.com/),
 Git repositories or a just a path.
 
 * Librarian-puppet can reuse the dependencies listed in your Modulefile
-* Forge modules can be installed from [Puppetlabs Forge](http://forge.puppetlabs.com/) or an internal Forge such as [Pulp](http://www.pulpproject.org/)
+* Forge modules can be installed from [Puppetlabs Forge](https://forge.puppetlabs.com/) or an internal Forge such as [Pulp](http://www.pulpproject.org/)
 * Git modules can be installed from a branch, tag or specific commit, optionally using a path inside the repository
 * Modules can be installed from GitHub using tarballs, without needing Git installed
 * Module dependencies are resolved transitively without needing to list all the modules explicitly
@@ -38,14 +38,14 @@ for which modules your puppet infrastructure repository  depends goes in here.
 
 This Puppetfile will download all the dependencies listed in your Modulefile from the Puppet Forge
 
-    forge "http://forge.puppetlabs.com"
+    forge "https://forge.puppetlabs.com"
 
     modulefile
 
 
 ### Example Puppetfile
 
-    forge "http://forge.puppetlabs.com"
+    forge "https://forge.puppetlabs.com"
 
     mod "puppetlabs/razor"
     mod "puppetlabs/ntp", "0.0.3"
@@ -67,7 +67,7 @@ When fetching a module all dependencies specified in its
 
 ### Puppetfile Breakdown
 
-    forge "http://forge.puppetlabs.com"
+    forge "https://forge.puppetlabs.com"
 
 This declares that we want to use the official Puppet Labs Forge as our default
 source when pulling down modules.  If you run your own local forge, you may
