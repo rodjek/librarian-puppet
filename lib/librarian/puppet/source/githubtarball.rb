@@ -131,24 +131,40 @@ module Librarian
         private
 
           def api_call(path)
-            url = "https://api.github.com#{path}"
-            url << "?access_token=#{ENV[TOKEN_KEY]}" if ENV[TOKEN_KEY]
-            code, data = http_get(url, :headers => {
-              "User-Agent" => "librarian-puppet v#{Librarian::Puppet::VERSION}"
-            })
+            tags = []
+            url = "https://api.github.com#{path}?page=1&per_page=100"
+            while true do
+              debug { "  Module #{name} getting tags at: #{url}" }
+              url << "&access_token=#{ENV[TOKEN_KEY]}" if ENV[TOKEN_KEY]
+              response = http_get(url, :headers => {
+                "User-Agent" => "librarian-puppet v#{Librarian::Puppet::VERSION}"
+              })
 
-            if code == 200
-              JSON.parse(data)
-            elsif code == 403
-              begin
-                message = JSON.parse(data)['message']
-                if message && message.include?('API rate limit exceeded')
-                  raise Error, message + " -- increase limit by authenticating via #{TOKEN_KEY}=your-token"
+              code, data = response.code.to_i, response.body
+
+              if code == 200
+                tags.concat JSON.parse(data)
+              else
+                begin
+                  message = JSON.parse(data)['message']
+                  if code == 403 && message && message.include?('API rate limit exceeded')
+                    raise Error, message + " -- increase limit by authenticating via #{TOKEN_KEY}=your-token"
+                  elsif message
+                    raise Error, "Error fetching #{url}: [#{code}] #{message}"
+                  end
+                rescue JSON::ParserError
+                  # response does not return json
                 end
-              rescue JSON::ParserError
-                # 403 response does not return json, skip.
+                raise Error, "Error fetching #{url}: [#{code}] #{response.body}"
               end
+
+              # next page
+              break if response["link"].nil?
+              next_link = response["link"].split(",").select{|l| l.match /rel=.*next.*/}
+              break if next_link.empty?
+              url = next_link.first.match(/<(.*)>/)[1]
             end
+            return tags
           end
 
           def http_get(url, options)
@@ -157,8 +173,7 @@ module Librarian
             http.use_ssl = true
             request = Net::HTTP::Get.new(uri.request_uri)
             options[:headers].each { |k, v| request.add_field k, v }
-            resp = http.request(request)
-            [resp.code.to_i, resp.body]
+            http.request(request)
           end
         end
 
