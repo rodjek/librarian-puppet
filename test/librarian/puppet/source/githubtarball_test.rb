@@ -12,7 +12,7 @@ describe Librarian::Puppet::Source::GitHubTarball::Repo do
   end
 
   class FakeResponse
-    attr :code,:body
+    attr_accessor :code,:body
     def initialize(code,body)
       @code = code
       @body = body
