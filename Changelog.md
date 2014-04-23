@@ -4,6 +4,7 @@
 
  * [Issue #204](https://github.com/rodjek/librarian-puppet/issues/204) Fix regex to detect Forge API v3 url
  * [Issue #199](https://github.com/rodjek/librarian-puppet/issues/199) undefined method run! packaging a git source
+ * Verify SSL certificates in github calls
 
 ### 1.0.1
 
