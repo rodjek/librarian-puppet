@@ -108,7 +108,6 @@ module Librarian
             module_repository = source.to_s
             if Forge.client_api_version() > 1 and module_repository =~ %r{^http(s)?://forge\.puppetlabs\.com}
               module_repository = "https://forgeapi.puppetlabs.com"
-              warn("Your Puppet client uses the Forge API v3, you should use this Forge URL: #{module_repository}")
             end
 
             command = %W{puppet module install --version #{version} --target-dir}
@@ -231,8 +230,11 @@ module Librarian
             version = 1
             pe_version = Librarian::Puppet.puppet_version.match(/\(Puppet Enterprise (.+)\)/)
 
+            # Puppet 3.6.0+ uses api v3
+            if Librarian::Puppet::puppet_gem_version >= Gem::Version.create('3.6.0.a')
+              version = 3
             # Puppet enterprise 3.2.0+ uses api v3
-            if pe_version and Gem::Version.create(pe_version[1].strip) >= Gem::Version.create('3.2.0')
+            elsif pe_version and Gem::Version.create(pe_version[1].strip) >= Gem::Version.create('3.2.0')
               version = 3
             end
             return version
