@@ -72,11 +72,7 @@ module Librarian
           end
 
           def version_unpacked_cache_path(version)
-            cache_path.join('version').join(hexdigest(version.to_s))
-          end
-
-          def hexdigest(value)
-            Digest::MD5.hexdigest(value)
+            cache_path.join(version.to_s)
           end
 
           def cache_version_unpacked!(version)

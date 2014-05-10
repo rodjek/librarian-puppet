@@ -106,7 +106,7 @@ module Librarian
 
         def cache_path
           @cache_path ||= begin
-            dir = Digest::MD5.hexdigest(uri.to_s)
+            dir = "#{uri.host}#{uri.path}".gsub(/[^0-9a-z\-_]/i, '_')
             environment.cache_path.join("source/puppet/forge/#{dir}")
           end
         end

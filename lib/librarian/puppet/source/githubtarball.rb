@@ -91,8 +91,7 @@ module Librarian
 
         def cache_path
           @cache_path ||= begin
-            dir = Digest::MD5.hexdigest(uri.to_s)
-            environment.cache_path.join("source/puppet/githubtarball/#{dir}")
+            environment.cache_path.join("source/puppet/githubtarball/#{uri.host}#{uri.path}")
           end
         end
 
