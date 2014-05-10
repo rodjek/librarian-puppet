@@ -4,23 +4,16 @@ require 'open-uri'
 require 'json'
 
 require 'librarian/puppet/version'
+require 'librarian/puppet/source/repo'
 
 module Librarian
   module Puppet
     module Source
       class GitHubTarball
-        class Repo
+        class Repo < Librarian::Puppet::Source::Repo
           include Librarian::Puppet::Util
 
           TOKEN_KEY = 'GITHUB_API_TOKEN'
-
-          attr_accessor :source, :name
-          private :source=, :name=
-
-          def initialize(source, name)
-            self.source = source
-            self.name = name
-          end
 
           def versions
             return @versions if @versions
@@ -63,18 +56,6 @@ module Librarian
             cp_r(unpacked_path, install_path)
           end
 
-          def environment
-            source.environment
-          end
-
-          def cache_path
-            @cache_path ||= source.cache_path.join(name)
-          end
-
-          def version_unpacked_cache_path(version)
-            cache_path.join(version.to_s)
-          end
-
           def cache_version_unpacked!(version)
             path = version_unpacked_cache_path(version)
             return if path.directory?
@@ -86,21 +67,13 @@ module Librarian
             Librarian::Posix.run!(%W{tar xzf #{target} -C #{path}})
           end
 
-          def vendored?(name, version)
-            vendored_path(name, version).exist?
-          end
-
-          def vendored_path(name, version)
-            environment.vendor_cache.mkpath
-            environment.vendor_cache.join("#{name.sub("/", "-")}-#{version}.tar.gz")
-          end
-
           def vendor_cache(name, version)
             clean_up_old_cached_versions(name)
 
             url = "https://api.github.com/repos/#{name}/tarball/#{version}"
             url << "?access_token=#{ENV['GITHUB_API_TOKEN']}" if ENV['GITHUB_API_TOKEN']
 
+            environment.vendor!
             File.open(vendored_path(name, version).to_s, 'wb') do |f|
               begin
                 debug { "Downloading <#{url}> to <#{f.path}>" }

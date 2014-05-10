@@ -1,20 +1,17 @@
 require 'json'
 require 'open-uri'
 require 'librarian/puppet/util'
+require 'librarian/puppet/source/repo'
 
 module Librarian
   module Puppet
     module Source
       class Forge
-        class Repo
+        class Repo < Librarian::Puppet::Source::Repo
           include Librarian::Puppet::Util
 
-          attr_accessor :source, :name
-          private :source=, :name=
-
           def initialize(source, name)
-            self.source = source
-            self.name = name
+            super(source, name)
             # API returned data for this module including all versions and dependencies, indexed by module name
             # from http://forge.puppetlabs.com/api/v1/releases.json?module=#{name}
             @api_data = nil
@@ -67,18 +64,6 @@ module Librarian
               cp_r(unpacked_path, install_path)
             end
 
-          end
-
-          def environment
-            source.environment
-          end
-
-          def cache_path
-            @cache_path ||= source.cache_path.join(name)
-          end
-
-          def version_unpacked_cache_path(version)
-            cache_path.join(version.to_s)
           end
 
           def cache_version_unpacked!(version)
@@ -136,19 +121,12 @@ module Librarian
             end
           end
 
-          def vendored?(name, version)
-            vendored_path(name, version).exist?
-          end
-
-          def vendored_path(name, version)
-            environment.vendor_cache.join("#{name.sub("/", "-")}-#{version}.tar.gz")
-          end
-
           def vendor_cache(name, version)
             info = api_version_data(name, version)
             url = "#{source}#{info[name].first['file']}"
             path = vendored_path(name, version).to_s
             debug { "Downloading #{url} into #{path}"}
+            environment.vendor!
             File.open(path, 'wb') do |f|
               open(url, "rb") do |input|
                 f.write(input.read)
