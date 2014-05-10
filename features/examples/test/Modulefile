@@ -1,4 +1,4 @@
-name 'librarian-test'
+name 'librarian_test'
 version '0.0.1'
 
 author 'librarian'

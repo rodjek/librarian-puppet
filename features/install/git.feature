@@ -77,7 +77,7 @@ Feature: cli/install/git
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/with_puppetfile/Modulefile" should match /name *'with-puppetfile'/
+    And the file "modules/with_puppetfile/Modulefile" should match /name *'with_puppetfile'/
     And the file "modules/test/Modulefile" should match /name *'librarian-test'/
 
   Scenario: Install a module with dependencies specified in a Puppetfile and Modulefile
@@ -87,7 +87,7 @@ Feature: cli/install/git
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/with_puppetfile/Modulefile" should match /name *'with-puppetfile-and-modulefile'/
+    And the file "modules/with_puppetfile/Modulefile" should match /name *'with_puppetfile_and_modulefile'/
     And the file "modules/test/Modulefile" should match /name *'maestrodev-test'/
 
   Scenario: Install a module using modulefile syntax
@@ -97,7 +97,7 @@ Feature: cli/install/git
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/modulefile_syntax/Modulefile" should match /name *'modulefile-syntax'/
+    And the file "modules/modulefile_syntax/Modulefile" should match /name *'modulefile_syntax'/
     And the file "modules/test/Modulefile" should match /name *'maestrodev-test'/
 
   Scenario: Install a module from git and using path

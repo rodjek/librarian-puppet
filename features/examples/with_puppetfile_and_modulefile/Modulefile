@@ -1,4 +1,4 @@
-name 'with-puppetfile-and-modulefile'
+name 'with_puppetfile_and_modulefile'
 version '0.0.1'
 
 author 'librarian'
