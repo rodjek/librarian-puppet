@@ -33,6 +33,7 @@ Feature: cli/package
       | vendor/puppet/source/924e89289b93db60ef0f16a4e71579fa88e037a6.tar.gz |
       | vendor/puppet/cache/puppetlabs-stdlib-4.1.0.tar.gz                   |
 
+  @github
   Scenario: Packaging a github tarball module
     Given a file named "Puppetfile" with:
     """

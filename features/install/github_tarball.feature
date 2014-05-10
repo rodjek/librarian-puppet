@@ -20,6 +20,7 @@ Feature: cli/install/github_tarball
     And the file "modules/stdlib/Modulefile" should match /version *'2\.3\.0'/
 
   @spaces
+  @github
   Scenario: Installing a module in a path with spaces
     Given a file named "Puppetfile" with:
     """
