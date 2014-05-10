@@ -183,10 +183,10 @@ module Librarian
           end
 
           def api_call(module_name, version=nil)
-            base_url = source.uri
-            path = "api/v1/releases.json?module=#{module_name}"
-            path = "#{path}&version=#{version}" unless version.nil?
-            url = "#{base_url}/#{path}"
+            url = source.uri.clone
+            url.path += "#{'/' if url.path.empty? or url.path[-1] != '/'}api/v1/releases.json"
+            url.query = "module=#{module_name}"
+            url.query += "&version=#{version}" unless version.nil?
             debug { "Querying Forge API for module #{name}#{" and version #{version}" unless version.nil?}: #{url}" }
 
             begin
@@ -197,7 +197,7 @@ module Librarian
               when 404,410
                 nil
               else
-                raise e, "Error requesting #{base_url}/#{path}: #{e.to_s}"
+                raise e, "Error requesting #{url}: #{e.to_s}"
               end
             end
           end

@@ -1,3 +1,4 @@
+require 'uri'
 require 'librarian/puppet/util'
 require 'librarian/puppet/source/forge/repo'
 
@@ -50,12 +51,12 @@ module Librarian
 
         def initialize(environment, uri, options = {})
           self.environment = environment
-          @uri = uri
+          @uri = URI::parse(uri)
           @cache_path = nil
         end
 
         def to_s
-          uri
+          clean_uri(uri).to_s
         end
 
         def ==(other)
@@ -71,11 +72,11 @@ module Librarian
         end
 
         def to_spec_args
-          [uri, {}]
+          [clean_uri(uri).to_s, {}]
         end
 
         def to_lock_options
-          {:remote => uri}
+          {:remote => clean_uri(uri).to_s}
         end
 
         def pinned?
@@ -105,7 +106,7 @@ module Librarian
 
         def cache_path
           @cache_path ||= begin
-            dir = Digest::MD5.hexdigest(uri)
+            dir = Digest::MD5.hexdigest(uri.to_s)
             environment.cache_path.join("source/puppet/forge/#{dir}")
           end
         end

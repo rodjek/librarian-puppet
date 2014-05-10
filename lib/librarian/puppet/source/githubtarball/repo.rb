@@ -47,11 +47,11 @@ module Librarian
           end
 
           def install_version!(version, install_path)
-            if environment.local? && !vendored?(source.uri, version)
+            if environment.local? && !vendored?(source.uri.to_s, version)
               raise Error, "Could not find a local copy of #{source.uri} at #{version}."
             end
 
-            vendor_cache(source.uri, version) unless vendored?(source.uri, version)
+            vendor_cache(source.uri.to_s, version) unless vendored?(source.uri.to_s, version)
 
             cache_version_unpacked! version
 
@@ -85,7 +85,7 @@ module Librarian
 
             path.mkpath
 
-            target = vendored?(source.uri, version) ? vendored_path(source.uri, version) : name
+            target = vendored?(source.uri.to_s, version) ? vendored_path(source.uri.to_s, version) : name
 
             Librarian::Posix.run!(%W{tar xzf #{target} -C #{path}})
           end
