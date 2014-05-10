@@ -2,6 +2,7 @@
 
 ### 1.0.2
 
+ * [Issue #211](https://github.com/rodjek/librarian-puppet/issues/211) Pass the PuppetLabs Forge API v3 endpoint to `puppet module` when running on Puppet >= 3.6.0
  * [Issue #198](https://github.com/rodjek/librarian-puppet/issues/198) Reduce the length of tmp dirs to avoid issues in windows
  * [Issue #206](https://github.com/rodjek/librarian-puppet/issues/206) githubtarball call for released versions does not consider pagination
  * [Issue #204](https://github.com/rodjek/librarian-puppet/issues/204) Fix regex to detect Forge API v3 url

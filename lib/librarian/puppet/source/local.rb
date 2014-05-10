@@ -83,7 +83,11 @@ module Librarian
             ::Puppet::ModuleTool::ModulefileReader.evaluate(metadata, modulefile)
           rescue ArgumentError, SyntaxError => error
             warn { "Unable to parse #{modulefile}, ignoring: #{error}" }
-            metadata.version = '0.0.1'
+            if metadata.respond_to? :version=
+              metadata.version = '0.0.1' # puppet < 3.6
+            else
+              metadata.update({'version' => '0.0.1'}) # puppet >= 3.6
+            end
           end
           metadata
         end
