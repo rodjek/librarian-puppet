@@ -73,31 +73,31 @@ Feature: cli/install/git
   Scenario: Install a module with dependencies specified in a Puppetfile
     Given a file named "Puppetfile" with:
     """
-    mod 'with_puppetfile', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/with_puppetfile'
+    mod 'librarian/with_puppetfile', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/with_puppetfile'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/with_puppetfile/Modulefile" should match /name *'with_puppetfile'/
+    And the file "modules/with_puppetfile/Modulefile" should match /name *'librarian-with_puppetfile'/
     And the file "modules/test/Modulefile" should match /name *'librarian-test'/
 
   Scenario: Install a module with dependencies specified in a Puppetfile and Modulefile
     Given a file named "Puppetfile" with:
     """
-    mod 'with_puppetfile', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/with_puppetfile_and_modulefile'
+    mod 'librarian/with_puppetfile', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/with_puppetfile_and_modulefile'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/with_puppetfile/Modulefile" should match /name *'with_puppetfile_and_modulefile'/
+    And the file "modules/with_puppetfile/Modulefile" should match /name *'librarian-with_puppetfile_and_modulefile'/
     And the file "modules/test/Modulefile" should match /name *'maestrodev-test'/
 
   Scenario: Install a module using modulefile syntax
     Given a file named "Puppetfile" with:
     """
-    mod 'modulefile_syntax', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/modulefile_syntax'
+    mod 'librarian/modulefile_syntax', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/modulefile_syntax'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/modulefile_syntax/Modulefile" should match /name *'modulefile_syntax'/
+    And the file "modules/modulefile_syntax/Modulefile" should match /name *'librarian-modulefile_syntax'/
     And the file "modules/test/Modulefile" should match /name *'maestrodev-test'/
 
   Scenario: Install a module from git and using path

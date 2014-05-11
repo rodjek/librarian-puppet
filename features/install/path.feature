@@ -4,21 +4,21 @@ Feature: cli/install/path
   Scenario: Install a module with dependencies specified in a Puppetfile
     Given a file named "Puppetfile" with:
     """
-    mod 'with_puppetfile', :path => '../../features/examples/with_puppetfile'
+    mod 'librarian/with_puppetfile', :path => '../../features/examples/with_puppetfile'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/with_puppetfile/Modulefile" should match /name *'with_puppetfile'/
-    And the file "modules/test/Modulefile" should match /name *'librarian_test'/
+    And the file "modules/with_puppetfile/Modulefile" should match /name *'librarian-with_puppetfile'/
+    And the file "modules/test/Modulefile" should match /name *'librarian-test'/
 
   Scenario: Install a module with dependencies specified in a Puppetfile and Modulefile
     Given a file named "Puppetfile" with:
     """
-    mod 'with_puppetfile', :path => '../../features/examples/with_puppetfile_and_modulefile'
+    mod 'librarian/with_puppetfile', :path => '../../features/examples/with_puppetfile_and_modulefile'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/with_puppetfile/Modulefile" should match /name *'with_puppetfile_and_modulefile'/
+    And the file "modules/with_puppetfile/Modulefile" should match /name *'librarian-with_puppetfile_and_modulefile'/
     And the file "modules/test/Modulefile" should match /name *'maestrodev-test'/
 
   Scenario: Install a module from path without version
@@ -42,4 +42,4 @@ Feature: cli/install/path
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/test/Modulefile" should match /name *'librarian_test'/
+    And the file "modules/test/Modulefile" should match /name *'librarian-test'/

@@ -1,4 +1,4 @@
-name 'modulefile_syntax'
+name 'librarian-modulefile_syntax'
 version '0.0.1'
 
 author 'librarian'
