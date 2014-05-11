@@ -89,6 +89,8 @@ module Librarian
         def install!(manifest)
           manifest.source == self or raise ArgumentError
 
+          debug { "Installing #{manifest}" }
+
           name = manifest.name
           version = manifest.version
           install_path = install_path(name)
