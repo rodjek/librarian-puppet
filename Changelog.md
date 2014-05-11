@@ -1,5 +1,7 @@
 ## Changelog
 
+### 1.0.3
+
 ### 1.0.2
 
  * [Issue #211](https://github.com/rodjek/librarian-puppet/issues/211) Pass the PuppetLabs Forge API v3 endpoint to `puppet module` when running on Puppet >= 3.6.0
