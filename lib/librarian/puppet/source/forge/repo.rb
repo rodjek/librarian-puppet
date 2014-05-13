@@ -91,7 +91,7 @@ module Librarian
 
             command = %W{puppet module install --version #{version} --target-dir}
             command.push(*[path.to_s, "--module_repository", module_repository, "--modulepath", path.to_s, "--module_working_dir", path.to_s, "--ignore-dependencies", target])
-            debug { "Executing puppet module install for #{name} #{version}" }
+            debug { "Executing puppet module install for #{name} #{version}: #{command.join(" ")}" }
 
             begin
               Librarian::Posix.run!(command)
