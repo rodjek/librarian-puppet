@@ -225,4 +225,29 @@ module Librarian
       ui.warn(string || yield)
     end
   end
+
+  # Fix execution on windows, Issue #208
+  require 'open3'
+  module Posix
+    class << self
+
+      if !defined?(JRuby) and RUBY_VERSION > "1.9"
+        def run!(command, options = { })
+          o, e, status = nil
+          opts = { }
+          opts[:chdir] = options[:chdir].to_s if options[:chdir]
+          Open3.popen3(options[:env] || { }, *command, opts) { |stdin, stdout, stderr, wait_thr|
+            pid = wait_thr.pid # pid of the started process.
+            o = stdout.read
+            e = stderr.read
+            status = wait_thr.value # Process::Status object returned.
+          }
+          status.success? or CommandFailure.raise! command, status.exitstatus, e
+          o
+        end
+
+      end
+    end
+
+  end
 end
