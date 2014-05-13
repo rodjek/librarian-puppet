@@ -236,7 +236,10 @@ module Librarian
           o, e, status = nil
           opts = { }
           opts[:chdir] = options[:chdir].to_s if options[:chdir]
-          Open3.popen3(options[:env] || { }, *command, opts) { |stdin, stdout, stderr, wait_thr|
+          command = command.dup
+          command.unshift options[:env] || { }
+          command.push opts
+          Open3.popen3(*command) { |stdin, stdout, stderr, wait_thr|
             pid = wait_thr.pid # pid of the started process.
             o = stdout.read
             e = stderr.read
