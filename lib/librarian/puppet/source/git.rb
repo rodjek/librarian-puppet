@@ -28,10 +28,14 @@ module Librarian
           return vendor_checkout! if vendor_cached?
 
           if environment.local?
-            raise Error, "Could not find a local copy of #{uri} at #{sha}."
+            raise Error, "Could not find a local copy of #{uri}#{" at #{sha}" unless sha.nil?}."
           end
 
-          super
+          begin
+            super
+          rescue Librarian::Posix::CommandFailure => e
+            raise Error, "Could not checkout #{uri}#{" at #{sha}" unless sha.nil?}: #{e}"
+          end
 
           cache_in_vendor(repository.path) if environment.vendor?
         end
