@@ -1,21 +1,21 @@
 rvm:
-  - 1.8.7
-  - 1.9.3
-  - 2.0.0
   - 2.1.0
+  - 2.0.0
+  - 1.9.3
+  - 1.8.7
 notifications:
   email:
     - carlos@apache.org
     - tim@github.com
 env:
-  - PUPPET_VERSION=2.7.25
-  - PUPPET_VERSION=3.0.2
-  - PUPPET_VERSION=3.1.1
-  - PUPPET_VERSION=3.2.4
-  - PUPPET_VERSION=3.3.2
-  - PUPPET_VERSION=3.4.3
-  - PUPPET_VERSION=3.5.1
   - PUPPET_VERSION=3.6.0.rc1
+  - PUPPET_VERSION=3.5.1
+  - PUPPET_VERSION=3.4.3
+  - PUPPET_VERSION=3.3.2
+  - PUPPET_VERSION=3.2.4
+  - PUPPET_VERSION=3.1.1
+  - PUPPET_VERSION=3.0.2
+  - PUPPET_VERSION=2.7.25
 
 before_script:
   - puppet --version
