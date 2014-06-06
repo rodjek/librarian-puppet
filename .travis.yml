@@ -8,7 +8,7 @@ notifications:
     - carlos@apache.org
     - tim@github.com
 env:
-  - PUPPET_VERSION=3.6.0.rc1
+  - PUPPET_VERSION=3.6.1
   - PUPPET_VERSION=3.5.1
   - PUPPET_VERSION=3.4.3
   - PUPPET_VERSION=3.3.2
