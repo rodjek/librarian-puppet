@@ -157,3 +157,15 @@ Feature: cli/install/forge
     When I run `librarian-puppet install`
     Then the exit status should be 0
     And the file "modules/postgresql/Modulefile" should match /name *'puppetlabs-postgresql'/
+
+  Scenario: Installing a module with duplicated dependencies
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'pdxcat/collectd', '2.1.0'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/collectd/Modulefile" should match /name *'pdxcat-collectd'/
+    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
