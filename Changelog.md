@@ -1,5 +1,8 @@
 ## Changelog
 
+### 1.0.4
+
+
 ### 1.0.3
 
  * [Issue #223](https://github.com/rodjek/librarian-puppet/issues/223) `Cannot bounce Puppetfile.lock!` error when Forge modules contain duplicated dependencies
