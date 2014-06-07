@@ -6,7 +6,7 @@ Feature: cli/install/forge
     """
     forge "http://forge.puppetlabs.com"
 
-    mod 'puppetlabs/ntp'
+    mod 'puppetlabs/ntp', '3.0.3'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
@@ -75,7 +75,7 @@ Feature: cli/install/forge
     """
     forge "http://forge.puppetlabs.com"
 
-    mod 'puppetlabs/ntp'
+    mod 'puppetlabs/ntp', '3.0.3'
     """
     When I run `librarian-puppet install --path puppet/modules`
     And I run `librarian-puppet config`
