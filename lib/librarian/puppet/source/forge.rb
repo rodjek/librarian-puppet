@@ -1,6 +1,7 @@
 require 'uri'
 require 'librarian/puppet/util'
-require 'librarian/puppet/source/forge/repo'
+require 'librarian/puppet/source/forge/repo_v1'
+require 'librarian/puppet/source/forge/repo_v3'
 
 module Librarian
   module Puppet
@@ -51,6 +52,12 @@ module Librarian
 
         def initialize(environment, uri, options = {})
           self.environment = environment
+
+          if uri =~ %r{^http(s)?://forge\.puppetlabs\.com}
+            uri = "https://forgeapi.puppetlabs.com"
+            debug { "Replacing Puppet Forge API URL to use v3 #{uri}. You should update your Puppetfile" }
+          end
+
           @uri = URI::parse(uri)
           @cache_path = nil
         end
@@ -141,7 +148,15 @@ module Librarian
 
         def repo(name)
           @repo ||= {}
-          @repo[name] ||= Repo.new(self, name)
+          unless @repo[name]
+            # if we are using the official Forge then use API v3, otherwise stick to v1 for now
+            if uri.hostname =~ /\.puppetlabs\.com$/
+              @repo[name] = RepoV3.new(self, name)
+            else
+              @repo[name] = RepoV1.new(self, name)
+            end
+          end
+          @repo[name]
         end
       end
     end
