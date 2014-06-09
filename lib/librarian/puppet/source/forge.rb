@@ -148,7 +148,15 @@ module Librarian
 
         def repo(name)
           @repo ||= {}
-          @repo[name] ||= RepoV3.new(self, name)
+          unless @repo[name]
+            # if we are using the official Forge then use API v3, otherwise stick to v1 for now
+            if uri.hostname =~ /\.puppetlabs\.com$/
+              @repo[name] = RepoV3.new(self, name)
+            else
+              @repo[name] = RepoV1.new(self, name)
+            end
+          end
+          @repo[name]
         end
       end
     end
