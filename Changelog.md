@@ -3,6 +3,7 @@
 ### 1.1.0
 
  * [Issue #210](https://github.com/rodjek/librarian-puppet/issues/210) Use forgeapi.puppetlabs.com and API v3
+   * Accesing the v3 API requires Ruby 1.9 due to the puppet_forge library used
 
 ### 1.0.3
 
