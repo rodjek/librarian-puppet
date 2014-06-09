@@ -88,8 +88,15 @@ module Librarian
 
             # TODO can't pass the default v3 forge url (http://forgeapi.puppetlabs.com) to clients that use the v1 API (https://forge.puppetlabs.com)
             module_repository = source.to_s
-            if Forge.client_api_version() == 1 and module_repository =~ %r{^http(s)?://forgeapi\.puppetlabs\.com}
-              module_repository = "https://forge.puppetlabs.com"
+            m = module_repository.match(%r{^http(s)?://forgeapi\.puppetlabs\.com})
+            if Forge.client_api_version() == 1 and m
+              ssl = m[1]
+              # Puppet 2.7 can't handle the 302 returned by the https url, so stick to http
+              if ssl and Librarian::Puppet::puppet_gem_version < Gem::Version.create('3.0.0')
+                warn { "Using plain http as your version of Puppet #{Librarian::Puppet::puppet_gem_version} can't download from forge.puppetlabs.com using https" }
+                ssl = nil
+              end
+              module_repository = "http#{ssl}://forge.puppetlabs.com"
             end
 
             command = %W{puppet module install --version #{version} --target-dir}
