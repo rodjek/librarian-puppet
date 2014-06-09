@@ -1,7 +1,8 @@
 ## Changelog
 
-### 1.0.4
+### 1.1.0
 
+ * [Issue #210](https://github.com/rodjek/librarian-puppet/issues/210) Use forgeapi.puppetlabs.com and API v3
 
 ### 1.0.3
 
