@@ -1,5 +1,7 @@
 ## Changelog
 
+### 1.1.2
+
 ### 1.1.1
 
  * [Issue #227](https://github.com/rodjek/librarian-puppet/issues/227) Fix Librarian::Puppet::VERSION undefined
