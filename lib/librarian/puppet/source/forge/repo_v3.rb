@@ -1,13 +1,14 @@
 require 'librarian/puppet/source/forge/repo'
 require 'puppet_forge'
-
-PuppetForge.user_agent = "librarian-puppet/#{Librarian::Puppet::VERSION}"
+require 'librarian/puppet/version'
 
 module Librarian
   module Puppet
     module Source
       class Forge
         class RepoV3 < Librarian::Puppet::Source::Forge::Repo
+
+          PuppetForge.user_agent = "librarian-puppet/#{Librarian::Puppet::VERSION}"
 
           def get_versions
             get_module.releases.map{|r| r.version}
