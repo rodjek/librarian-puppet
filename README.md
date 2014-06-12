@@ -38,7 +38,7 @@ for which modules your puppet infrastructure repository  depends goes in here.
 
 This Puppetfile will download all the dependencies listed in your Modulefile from the Puppet Forge
 
-    forge "https://forge.puppetlabs.com"
+    forge "https://forgeapi.puppetlabs.com"
 
     modulefile
 
