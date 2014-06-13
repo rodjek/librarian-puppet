@@ -28,11 +28,21 @@ describe Librarian::Puppet::Source::GitHubTarball::Repo do
     let(:repo) { Librarian::Puppet::Source::GitHubTarball::Repo.new(source, "bar") }
     let(:headers) { {'User-Agent' => "librarian-puppet v#{Librarian::Puppet::VERSION}"} }
     let(:url) { "https://api.github.com/foo?page=1&per_page=100" }
+    let(:url_with_token) { "https://api.github.com/foo?page=1&per_page=100?access_token=bar" }
+    ENV['GITHUB_API_TOKEN'] = ''
 
     it "succeeds" do
       response = []
       repo.expects(:http_get).with(url, {:headers => headers}).returns(FakeResponse.new(200, JSON.dump(response)))
       repo.send(:api_call, "/foo").must_equal(response)
+    end
+
+    it "adds GITHUB_API_TOKEN if present" do
+      ENV['GITHUB_API_TOKEN'] = 'bar'
+      response = []
+      repo.expects(:http_get).with(url_with_token, {:headers => headers}).returns(FakeResponse.new(200, JSON.dump(response)))
+      repo.send(:api_call, "/foo").must_equal(response)
+      ENV['GITHUB_API_TOKEN'] = ''
     end
 
     it "fails when we hit api limit" do

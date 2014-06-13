@@ -71,7 +71,7 @@ module Librarian
             clean_up_old_cached_versions(name)
 
             url = "https://api.github.com/repos/#{name}/tarball/#{version}"
-            url << "?access_token=#{ENV['GITHUB_API_TOKEN']}" if ENV['GITHUB_API_TOKEN']
+            add_api_token_to_url(url)
 
             environment.vendor!
             File.open(vendored_path(name, version).to_s, 'wb') do |f|
@@ -95,6 +95,23 @@ module Librarian
             end
           end
 
+          def token_key_value
+            ENV[TOKEN_KEY]
+          end
+
+          def token_key_nil?
+            token_key_value.nil? || token_key_value.empty?
+          end
+
+          def add_api_token_to_url url
+            if token_key_nil?
+              debug { "#{TOKEN_KEY} environment value is empty or missing" }
+            else
+              url << "?access_token=#{ENV[TOKEN_KEY]}"
+            end
+            url
+          end
+
         private
 
           def api_call(path)
@@ -102,7 +119,7 @@ module Librarian
             url = "https://api.github.com#{path}?page=1&per_page=100"
             while true do
               debug { "  Module #{name} getting tags at: #{url}" }
-              url << "&access_token=#{ENV[TOKEN_KEY]}" if ENV[TOKEN_KEY]
+              add_api_token_to_url(url)
               response = http_get(url, :headers => {
                 "User-Agent" => "librarian-puppet v#{Librarian::Puppet::VERSION}"
               })
