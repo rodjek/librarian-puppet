@@ -2,6 +2,8 @@
 
 ### 1.1.2
 
+ * [Issue #231](https://github.com/rodjek/librarian-puppet/issues/231) Only use the GITHUB_API_TOKEN if it's not empty
+
 ### 1.1.1
 
  * [Issue #227](https://github.com/rodjek/librarian-puppet/issues/227) Fix Librarian::Puppet::VERSION undefined
