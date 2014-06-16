@@ -6,9 +6,9 @@ Gem::Specification.new do |s|
   s.name = 'librarian-puppet'
   s.version = Librarian::Puppet::VERSION
   s.platform = Gem::Platform::RUBY
-  s.authors = ['Tim Sharpe']
+  s.authors = ['Tim Sharpe', 'Carlos Sanchez']
   s.license = 'MIT'
-  s.email = ['tim@sharpe.id.au']
+  s.email = ['tim@sharpe.id.au', 'carlos@apache.org']
   s.homepage = 'https://github.com/rodjek/librarian-puppet'
   s.summary = 'Bundler for your Puppet modules'
   s.description = 'Simplify deployment of your Puppet infrastructure by
@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   s.executables = ['librarian-puppet']
 
   s.add_dependency "librarian", ">=0.1.2"
+  # s.add_dependency "puppet_forge"
 
   # only needed for ruby 1.8
   s.add_dependency "json"

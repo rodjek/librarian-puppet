@@ -1,16 +1,17 @@
 Feature: cli/install/forge
   Puppet librarian needs to install modules from the Puppet Forge
 
+  @v1.1
   Scenario: Installing a module and its dependencies
     Given a file named "Puppetfile" with:
     """
-    forge "http://forge.puppetlabs.com"
+    forge "https://forgeapi.puppetlabs.com"
 
     mod 'puppetlabs/ntp'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/ntp/Modulefile" should match /name *'puppetlabs-ntp'/
+    And the file "modules/ntp/metadata.json" should match /"name": "puppetlabs-ntp"/
     And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
 
   Scenario: Installing an exact version of a module
@@ -75,7 +76,7 @@ Feature: cli/install/forge
     """
     forge "http://forge.puppetlabs.com"
 
-    mod 'puppetlabs/ntp'
+    mod 'puppetlabs/ntp', '3.0.3'
     """
     When I run `librarian-puppet install --path puppet/modules`
     And I run `librarian-puppet config`
@@ -117,7 +118,7 @@ Feature: cli/install/forge
     """
     When I run `librarian-puppet install`
     Then the exit status should be 1
-    And the output should contain "Unable to find module 'puppetlabs/xxxxx' on http://forge.puppetlabs.com"
+    And the output should contain "Unable to find module 'puppetlabs/xxxxx' on https://forgeapi.puppetlabs.com"
 
   Scenario: Install a module with conflicts
     Given a file named "Puppetfile" with:

@@ -1,7 +1,17 @@
 ## Changelog
 
-### 1.0.4
+### 1.1.2
 
+ * [Issue #231](https://github.com/rodjek/librarian-puppet/issues/231) Only use the GITHUB_API_TOKEN if it's not empty
+
+### 1.1.1
+
+ * [Issue #227](https://github.com/rodjek/librarian-puppet/issues/227) Fix Librarian::Puppet::VERSION undefined
+
+### 1.1.0
+
+ * [Issue #210](https://github.com/rodjek/librarian-puppet/issues/210) Use forgeapi.puppetlabs.com and API v3
+   * Accesing the v3 API requires Ruby 1.9 due to the puppet_forge library used
 
 ### 1.0.3
 

@@ -11,7 +11,7 @@ CLOBBER.include('Gemfile.lock')
 RSpec::Core::RakeTask.new
 Cucumber::Rake::Task.new(:features) do |t|
   # don't run githubtarball scenarios in Travis, they easily fail with rate limit exceeded
-  t.cucumber_opts = "--tags ~@github" if ENV['TRAVIS']=='true'
+  t.cucumber_opts = "--tags ~@v1.1 #{'--tags ~@github' if ENV['TRAVIS']=='true'}"
 end
 
 Rake::TestTask.new do |test|
