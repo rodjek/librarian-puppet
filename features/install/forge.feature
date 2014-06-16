@@ -118,7 +118,10 @@ Feature: cli/install/forge
     """
     When I run `librarian-puppet install`
     Then the exit status should be 1
-    And the output should contain "Unable to find module 'puppetlabs/xxxxx' on https://forgeapi.puppetlabs.com"
+    And the output should match:
+      """
+      Unable to find module 'puppetlabs/xxxxx' on http(s)?://forge(api)?.puppetlabs.com
+      """
 
   Scenario: Install a module with conflicts
     Given a file named "Puppetfile" with:
