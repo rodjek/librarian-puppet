@@ -4,6 +4,7 @@
 
  * [Issue #231](https://github.com/rodjek/librarian-puppet/issues/231) Only use the GITHUB_API_TOKEN if it's not empty
  * [Issue #233](https://github.com/rodjek/librarian-puppet/issues/233) Fix version regex to match e.g. 1.99.15
+ * Can't pass the Puppet Forge v1 api url to clients using v3 (3.6.0+ and PE 3.2.0+)
 
 ### 1.1.1
 
@@ -14,10 +15,12 @@
  * [Issue #210](https://github.com/rodjek/librarian-puppet/issues/210) Use forgeapi.puppetlabs.com and API v3
    * Accesing the v3 API requires Ruby 1.9 due to the puppet_forge library used
 
+
 ### 1.0.4
 
  * [Issue #231](https://github.com/rodjek/librarian-puppet/issues/231) Only use the GITHUB_API_TOKEN if it's not empty
  * [Issue #233](https://github.com/rodjek/librarian-puppet/issues/233) Fix version regex to match e.g. 1.99.15
+ * Can't pass the Puppet Forge v1 api url to clients using v3 (3.6.0+ and PE 3.2.0+)
 
 ### 1.0.3
 

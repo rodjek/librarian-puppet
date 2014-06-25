@@ -86,8 +86,16 @@ module Librarian
 
             target = vendored?(name, version) ? vendored_path(name, version).to_s : name
 
-            # TODO can't pass the default v3 forge url (http://forgeapi.puppetlabs.com) to clients that use the v1 API (https://forge.puppetlabs.com)
+            # can't pass the default v3 forge url (http://forgeapi.puppetlabs.com)
+            # to clients that use the v1 API (https://forge.puppetlabs.com)
+            # nor the other way around
             module_repository = source.to_s
+
+            if Forge.client_api_version() > 1 and module_repository =~ %r{^http(s)?://forge\.puppetlabs\.com}
+              module_repository = "https://forgeapi.puppetlabs.com"
+              warn { "Replacing Puppet Forge API URL to use v3 #{module_repository} as required by your client version #{Librarian::Puppet.puppet_version}" }
+            end
+
             m = module_repository.match(%r{^http(s)?://forgeapi\.puppetlabs\.com})
             if Forge.client_api_version() == 1 and m
               ssl = m[1]
