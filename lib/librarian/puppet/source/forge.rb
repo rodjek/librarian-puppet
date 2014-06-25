@@ -55,7 +55,7 @@ module Librarian
 
           # if uri =~ %r{^http(s)?://forge\.puppetlabs\.com}
           #   uri = "https://forgeapi.puppetlabs.com"
-          #   debug { "Replacing Puppet Forge API URL to use v3 #{uri}. You should update your Puppetfile" }
+          #   warn { "Replacing Puppet Forge API URL to use v3 #{uri}. You should update your Puppetfile" }
           # end
 
           @uri = URI::parse(uri)

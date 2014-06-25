@@ -25,7 +25,7 @@ module Librarian
             all_versions = data.map { |r| r['name'].gsub(/^v/, '') }.sort.reverse
 
             all_versions.delete_if do |version|
-              version !~ /\A\d\.\d(\.\d.*)?\z/
+              version !~ /\A\d+\.\d+(\.\d+.*)?\z/
             end
 
             @versions = all_versions.compact
