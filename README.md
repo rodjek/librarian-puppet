@@ -28,6 +28,13 @@ It is based on [Librarian](https://github.com/applicationsonline/librarian), a
 framework for writing bundlers, which are tools that resolve, fetch, install,
 and isolate a project's dependencies.
 
+## Versions
+
+Librarian-puppet >= 1.1.0 requires Ruby 1.9 and uses the Puppet Forge API v3.
+Versions < 1.1.0 works on Ruby 1.8.
+
+See the [Changelog](Changelog.md) for more details.
+
 ## The Puppetfile
 
 Every Puppet repository that uses Librarian-puppet will have a file named
