@@ -40,11 +40,11 @@ module Librarian
           end
 
           def install_version!(version, install_path)
-            if environment.local? && !vendored?(source.uri.to_s, version)
+            if environment.local? && !vendored?(vendored_name, version)
               raise Error, "Could not find a local copy of #{source.uri} at #{version}."
             end
 
-            vendor_cache(source.uri.to_s, version) unless vendored?(source.uri.to_s, version)
+            vendor_cache(source.uri.to_s, version) unless vendored?(vendored_name, version)
 
             cache_version_unpacked! version
 
@@ -62,19 +62,19 @@ module Librarian
 
             path.mkpath
 
-            target = vendored?(source.uri.to_s, version) ? vendored_path(source.uri.to_s, version) : name
+            target = vendored?(vendored_name, version) ? vendored_path(vendored_name, version) : name
 
             Librarian::Posix.run!(%W{tar xzf #{target} -C #{path}})
           end
 
           def vendor_cache(name, version)
-            clean_up_old_cached_versions(name)
+            clean_up_old_cached_versions(vendored_name(name))
 
             url = "https://api.github.com/repos/#{name}/tarball/#{version}"
             add_api_token_to_url(url)
 
             environment.vendor!
-            File.open(vendored_path(name, version).to_s, 'wb') do |f|
+            File.open(vendored_path(vendored_name(name), version).to_s, 'wb') do |f|
               begin
                 debug { "Downloading <#{url}> to <#{f.path}>" }
                 open(url,
@@ -90,7 +90,7 @@ module Librarian
           end
 
           def clean_up_old_cached_versions(name)
-            Dir["#{environment.vendor_cache}/#{name.sub('/', '-')}*.tar.gz"].each do |old_version|
+            Dir["#{environment.vendor_cache}/#{name}*.tar.gz"].each do |old_version|
               FileUtils.rm old_version
             end
           end
@@ -158,6 +158,10 @@ module Librarian
             request = Net::HTTP::Get.new(uri.request_uri)
             options[:headers].each { |k, v| request.add_field k, v }
             http.request(request)
+          end
+
+          def vendored_name(name = source.uri.to_s)
+            name.sub('/','-')
           end
         end
       end

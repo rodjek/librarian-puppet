@@ -25,7 +25,7 @@ module Librarian
             else
               # should never get here as we use one repo object for each module (to be changed in the future)
               debug { "Looking up url for #{name}@#{version}" }
-              release = PuppetForge::Release.find("#{name.sub('/','-')}-#{version}")
+              release = PuppetForge::Release.find("#{name}-#{version}")
             end
             "#{source}#{release.file_uri}"
           end
@@ -33,7 +33,7 @@ module Librarian
         private
 
           def get_module
-            @module ||= PuppetForge::Module.find(name.sub('/','-'))
+            @module ||= PuppetForge::Module.find(name)
             raise(Error, "Unable to find module '#{name}' on #{source}") unless @module
             @module
           end

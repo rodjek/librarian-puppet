@@ -2,6 +2,10 @@
 
 ## 1.1.x: Requires Ruby >= 1.9, uses Puppet Forge API v3
 
+### 1.1.3
+
+ * [Issue #234](https://github.com/rodjek/librarian-puppet/issues/234) Use organization-module instead of organization/module
+
 ### 1.1.2
 
  * [Issue #231](https://github.com/rodjek/librarian-puppet/issues/231) Only use the GITHUB_API_TOKEN if it's not empty
@@ -19,6 +23,10 @@
 
 
 ## 1.0.x: Works on Ruby 1.8, using Puppet Forge API v1
+
+### 1.0.5
+
+ * [Issue #234](https://github.com/rodjek/librarian-puppet/issues/234) Use organization-module instead of organization/module
 
 ### 1.0.4
 

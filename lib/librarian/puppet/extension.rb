@@ -8,6 +8,19 @@ module Librarian
   end
 
   class Dependency
+    include Librarian::Puppet::Util
+
+    def initialize(name, requirement, source)
+      assert_name_valid! name
+
+      # let's settle on provider-module syntax instead of provider/module
+      self.name = normalize_name(name)
+      self.requirement = Requirement.new(requirement)
+      self.source = source
+
+      @manifests = nil
+    end
+
     class Requirement
       def initialize(*args)
         args = initialize_normalize_args(args)
@@ -84,6 +97,8 @@ module Librarian
   end
 
   class ManifestSet
+    include Librarian::Puppet::Util
+
     private
 
     # Check if module doesn't exist and fail fast
@@ -93,7 +108,7 @@ module Librarian
 
       deps = Set.new
       until names.empty?
-        name = names.shift
+        name = normalize_name(names.shift)
         next if deps.include?(name)
 
         deps << name
@@ -105,7 +120,6 @@ module Librarian
   end
 
   class Manifest
-
     class PreReleaseVersion
 
       # Compares pre-release component ids using Semver 2.0.0 spec

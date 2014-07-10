@@ -22,7 +22,7 @@ Feature: cli/outdated
     Then the exit status should be 0
     And the output should match:
     """
-    ^puppetlabs/stdlib \(3\.1\.0 -> [\.\d]+\)$
+    ^puppetlabs-stdlib \(3\.1\.0 -> [\.\d]+\)$
     """
 
   Scenario: Running outdated with git modules
@@ -55,6 +55,6 @@ Feature: cli/outdated
     Then the exit status should be 0
     And PENDING the output should match:
     # """
-    # ^puppetlabs/stdlib \(3\.1\.0 -> [\.\d]+\)$
+    # ^puppetlabs-stdlib \(3\.1\.0 -> [\.\d]+\)$
     # ^test .*$
     # """
