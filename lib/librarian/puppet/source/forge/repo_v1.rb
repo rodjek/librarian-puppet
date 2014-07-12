@@ -34,11 +34,15 @@ module Librarian
         private
 
           # Issue #223 dependencies may be duplicated
+          # and convert organization/modulename to organization-modulename
           def clear_duplicated_dependencies(data)
             return nil if data.nil?
             data.each do |m,versions|
               versions.each do |v|
                 if v["dependencies"] and !v["dependencies"].empty?
+                  # convert organization/modulename to organization-modulename
+                  v["dependencies"].each {|d| d[0] = normalize_name(d[0])}
+
                   dependency_names = v["dependencies"].map {|d| d[0]}
                   duplicated = dependency_names.select{ |e| dependency_names.count(e) > 1 }
                   unless duplicated.empty?
@@ -51,6 +55,13 @@ module Librarian
                     end
                   end
                 end
+              end
+            end
+            # convert organization/modulename to organization-modulename
+            data.keys.each do |m|
+              if m =~ %r{.*/.*}
+                data[normalize_name(m)] = data[m]
+                data.delete(m)
               end
             end
             data
@@ -79,7 +90,7 @@ module Librarian
           def api_call(module_name, version=nil)
             url = source.uri.clone
             url.path += "#{'/' if url.path.empty? or url.path[-1] != '/'}api/v1/releases.json"
-            url.query = "module=#{module_name}"
+            url.query = "module=#{module_name.sub('-','/')}" # v1 API expects "organization/module"
             url.query += "&version=#{version}" unless version.nil?
             debug { "Querying Forge API for module #{name}#{" and version #{version}" unless version.nil?}: #{url}" }
 
