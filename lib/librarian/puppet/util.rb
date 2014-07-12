@@ -33,6 +33,11 @@ module Librarian
         new_uri.password = nil
         new_uri
       end
+
+      # normalize module name to use organization-module instead of organization/module
+      def normalize_name(name)
+        name.sub('/','-')
+      end
     end
   end
 end

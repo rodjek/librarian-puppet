@@ -29,7 +29,7 @@ module Librarian
         end
 
         def vendored_path(name, version)
-          environment.vendor_cache.join("#{name.sub("/", "-")}-#{version}.tar.gz")
+          environment.vendor_cache.join("#{name}-#{version}.tar.gz")
         end
 
       end

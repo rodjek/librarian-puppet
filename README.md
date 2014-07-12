@@ -28,6 +28,13 @@ It is based on [Librarian](https://github.com/applicationsonline/librarian), a
 framework for writing bundlers, which are tools that resolve, fetch, install,
 and isolate a project's dependencies.
 
+## Versions
+
+Librarian-puppet >= 1.1.0 requires Ruby 1.9 and uses the Puppet Forge API v3.
+Versions < 1.1.0 works on Ruby 1.8.
+
+See the [Changelog](Changelog.md) for more details.
+
 ## The Puppetfile
 
 Every Puppet repository that uses Librarian-puppet will have a file named
@@ -47,16 +54,16 @@ This Puppetfile will download all the dependencies listed in your Modulefile fro
 
     forge "https://forge.puppetlabs.com"
 
-    mod "puppetlabs/razor"
-    mod "puppetlabs/ntp", "0.0.3"
+    mod 'puppetlabs-razor'
+    mod 'puppetlabs-ntp', "0.0.3"
 
-    mod "puppetlabs/apt",
+    mod 'puppetlabs-apt',
       :git => "git://github.com/puppetlabs/puppetlabs-apt.git"
 
-    mod "puppetlabs/stdlib",
+    mod 'puppetlabs-stdlib',
       :git => "git://github.com/puppetlabs/puppetlabs-stdlib.git"
 
-    mod 'puppetlabs/apache', '0.6.0',
+    mod 'puppetlabs-apache', '0.6.0',
       :github_tarball => 'puppetlabs/puppetlabs-apache'
 
 
@@ -73,29 +80,29 @@ This declares that we want to use the official Puppet Labs Forge as our default
 source when pulling down modules.  If you run your own local forge, you may
 want to change this.
 
-    mod "puppetlabs/razor"
+    mod 'puppetlabs-razor'
 
 Pull in the latest version of the Puppet Labs Razor module from the default
 source.
 
-    mod "puppetlabs/ntp", "0.0.3"
+    mod 'puppetlabs-ntp', "0.0.3"
 
 Pull in version 0.0.3 of the Puppet Labs NTP module from the default source.
 
-    mod "puppetlabs/apt",
+    mod 'puppetlabs-apt',
       :git => "git://github.com/puppetlabs/puppetlabs-apt.git"
 
 Our puppet infrastructure repository depends on the `apt` module from the
 Puppet Labs GitHub repos and checks out the `master` branch.
 
-    mod "puppetlabs/apt",
+    mod 'puppetlabs-apt',
       :git => "git://github.com/puppetlabs/puppetlabs-apt.git",
       :ref => '0.0.3'
 
 Our puppet infrastructure repository depends on the `apt` module from the
 Puppet Labs GitHub repos and checks out a tag of `0.0.3`.
 
-    mod "puppetlabs/apt",
+    mod 'puppetlabs-apt',
       :git => "git://github.com/puppetlabs/puppetlabs-apt.git",
       :ref => 'feature/master/dans_refactor'
 
@@ -117,7 +124,7 @@ with many modules in it. If we need a module from such a repository, we can
 use the `:path =>` option here to help Librarian-puppet drill down and find the
 module subdirectory.
 
-    mod "puppetlabs/apt",
+    mod 'puppetlabs-apt',
       :git => "git://github.com/fake/puppet-modules.git",
       :path => "modules/apt"
 

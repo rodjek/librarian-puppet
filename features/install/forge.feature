@@ -120,7 +120,7 @@ Feature: cli/install/forge
     Then the exit status should be 1
     And the output should match:
       """
-      Unable to find module 'puppetlabs/xxxxx' on http(s)?://forge(api)?.puppetlabs.com
+      Unable to find module 'puppetlabs-xxxxx' on http(s)?://forge(api)?.puppetlabs.com
       """
 
   Scenario: Install a module with conflicts
@@ -157,6 +157,22 @@ Feature: cli/install/forge
     """
     name "random name"
     dependency "puppetlabs/postgresql", "2.4.1"
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/postgresql/Modulefile" should match /name *'puppetlabs-postgresql'/
+
+  Scenario: Source dependencies from Modulefile using dash instead of slash
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    modulefile
+    """
+    And a file named "Modulefile" with:
+    """
+    name "random name"
+    dependency "puppetlabs-postgresql", "2.4.1"
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0

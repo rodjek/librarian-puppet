@@ -26,11 +26,11 @@ module Librarian
           found_path = found_path(name)
           raise Error, "Path for #{name} doesn't contain a puppet module" if found_path.nil?
 
-          unless name.include? '/'
-            warn { "Invalid module name '#{name}', you should qualify it with 'ORGANIZATION/#{name}' for resolution to work correctly" }
+          unless name.include? '/' or name.include? '-'
+            warn { "Invalid module name '#{name}', you should qualify it with 'ORGANIZATION-#{name}' for resolution to work correctly" }
           end
 
-          install_path = environment.install_path.join(name.split('/').last)
+          install_path = environment.install_path.join(name.split('-').last)
           if install_path.exist?
             debug { "Deleting #{relative_path_to(install_path)}" }
             install_path.rmtree

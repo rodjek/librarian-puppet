@@ -20,3 +20,4 @@ Feature: cli/install
     Then the exit status should be 0
     And the file "modules/stdlib/Modulefile" should match /version *'3\.0\.0'/
     And the output should not contain "Executing puppet module install for puppetlabs/stdlib"
+    And the output should not contain "Executing puppet module install for puppetlabs-stdlib"

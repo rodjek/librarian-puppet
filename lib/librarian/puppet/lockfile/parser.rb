@@ -5,6 +5,7 @@ require 'librarian/manifest_set'
 module Librarian
   class Lockfile
     class Parser
+      include Librarian::Puppet::Util
 
       def parse(string)
         string = string.dup
@@ -26,8 +27,8 @@ module Librarian
           manifests = {}
           while lines.first =~ /^ {4}([\w\-\/]+) \((.*)\)$/ # This change allows forward slash
             lines.shift
-            name = $1
-            manifests[name] = {:version => $2, :dependencies => {}}
+            name, version = normalize_name($1), $2
+            manifests[name] = {:version => version, :dependencies => {}}
             while lines.first =~ /^ {6}([\w\-\/]+) \((.*)\)$/
               lines.shift
               manifests[name][:dependencies][$1] = $2.split(/,\s*/)
@@ -42,9 +43,10 @@ module Librarian
         dependencies = []
         while lines.first =~ /^ {2}([\w\-\/]+)(?: \((.*)\))?$/ # This change allows forward slash
           lines.shift
-          name, requirement = $1, $2.split(/,\s*/)
+          name, requirement = normalize_name($1), $2.split(/,\s*/)
           dependencies << Dependency.new(name, requirement, manifests_index[name].source)
         end
+
         Resolution.new(dependencies, manifests)
       end
 
