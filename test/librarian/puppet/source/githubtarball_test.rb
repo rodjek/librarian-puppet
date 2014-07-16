@@ -28,7 +28,7 @@ describe Librarian::Puppet::Source::GitHubTarball::Repo do
     let(:repo) { Librarian::Puppet::Source::GitHubTarball::Repo.new(source, "bar") }
     let(:headers) { {'User-Agent' => "librarian-puppet v#{Librarian::Puppet::VERSION}"} }
     let(:url) { "https://api.github.com/foo?page=1&per_page=100" }
-    let(:url_with_token) { "https://api.github.com/foo?page=1&per_page=100?access_token=bar" }
+    let(:url_with_token) { "https://api.github.com/foo?page=1&per_page=100&access_token=bar" }
     ENV['GITHUB_API_TOKEN'] = ''
 
     it "succeeds" do
