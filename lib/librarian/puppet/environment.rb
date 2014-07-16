@@ -46,6 +46,9 @@ module Librarian
         config_db['mode'] == 'local'
       end
 
+      def use_v3_api
+        config_db['use-v3-api']
+      end
     end
   end
 end
