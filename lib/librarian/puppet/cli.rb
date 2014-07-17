@@ -44,7 +44,7 @@ module Librarian
       option "path", :type => :string
       option "destructive", :type => :boolean, :default => false
       option "local", :type => :boolean, :default => false
-      option "use-v3-api", :type => :boolean, :default => false
+      option "use-v1-api", :type => :boolean, :default => true
       def install
 
         unless File.exist?('Puppetfile')
@@ -65,7 +65,7 @@ module Librarian
           environment.config_db.local["path"] = options["path"]
         end
 
-        environment.config_db.local['use-v3-api'] = options['use-v3-api'] ? '1' : nil
+        environment.config_db.local['use-v1-api'] = options['use-v1-api'] ? '1' : nil
         environment.config_db.local['mode'] = options['local'] ? 'local' : nil
 
         resolve!
