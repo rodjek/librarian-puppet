@@ -11,7 +11,7 @@ Feature: cli/install/forge
     When I run `librarian-puppet install`
     Then the exit status should be 0
     And the file "modules/ntp/metadata.json" should match /"name": "puppetlabs-ntp"/
-    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
+    And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
 
   Scenario: Installing an exact version of a module
     Given a file named "Puppetfile" with:
@@ -24,7 +24,7 @@ Feature: cli/install/forge
     Then the exit status should be 0
     And the file "modules/apt/Modulefile" should match /name *'puppetlabs-apt'/
     And the file "modules/apt/Modulefile" should match /version *'0\.0\.4'/
-    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
+    And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
 
   # Puppet Module tool does not support spaces
   # https://github.com/rodjek/librarian-puppet/issues/201
@@ -38,7 +38,7 @@ Feature: cli/install/forge
     """
     When PENDING I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
+    And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
 
   Scenario: Installing a module with invalid versions in the forge
     Given a file named "Puppetfile" with:
@@ -67,7 +67,7 @@ Feature: cli/install/forge
     Then the exit status should be 0
     And the file "modules/apt/Modulefile" should match /name *'puppetlabs-apt'/
     And the file "modules/apt/Modulefile" should match /version *'1\.0\.0'/
-    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
+    And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
 
   Scenario: Changing the path
     Given a directory named "puppet"
@@ -82,7 +82,7 @@ Feature: cli/install/forge
     Then the exit status should be 0
     And the output from "librarian-puppet config" should contain "path: puppet/modules"
     And the file "puppet/modules/ntp/Modulefile" should match /name *'puppetlabs-ntp'/
-    And the file "puppet/modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
+    And the file "puppet/modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
 
   Scenario: Handle range version numbers
     Given a file named "Puppetfile" with:
@@ -187,4 +187,4 @@ Feature: cli/install/forge
     When I run `librarian-puppet install`
     Then the exit status should be 0
     And the file "modules/collectd/Modulefile" should match /name *'pdxcat-collectd'/
-    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
+    And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
