@@ -161,6 +161,14 @@ source specified.  This command writes the complete resolution into
 `Puppetfile.lock` and then copies all of the fetched modules into your
 `modules/` directory, overwriting whatever was there before.
 
+Librarian-puppet support both v1 and v3 of the Puppet Forge API.
+Specify a specific API version when installing modules:
+
+    $ librarian-puppet install --use-v1-api # this is default
+    $ librarian-puppet install --no-use-v1-api # use the v3 API
+
+Please note that this does not apply for the official Puppet Forge where v3 is used by default.
+
 Get an overview of your `Puppetfile.lock` with:
 
     $ librarian-puppet show
