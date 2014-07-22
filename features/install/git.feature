@@ -55,7 +55,7 @@ Feature: cli/install/git
     Then the exit status should be 0
     And the file "modules/postgresql/Modulefile" should match /name *'puppetlabs-postgresql'/
     And the file "modules/postgresql/Modulefile" should match /version *'1\.0\.0'/
-    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
+    And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
     When I overwrite "Puppetfile" with:
     """
     forge "http://forge.puppetlabs.com"
@@ -68,7 +68,7 @@ Feature: cli/install/git
     And the file "modules/postgresql/Modulefile" should match /name *'puppetlabs-postgresql'/
     And the file "modules/postgresql/Modulefile" should match /version *'1\.0\.0'/
     And the file "modules/postgresql/.git/HEAD" should match /183d401a3ffeb2e83372dfcc05f5b6bab25034b1/
-    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
+    And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
 
   Scenario: Install a module with dependencies specified in a Puppetfile
     Given a file named "Puppetfile" with:
@@ -110,7 +110,7 @@ Feature: cli/install/git
     When I run `librarian-puppet install`
     Then the exit status should be 0
     And the file "modules/test/Modulefile" should match /version *'0\.0\.1'/
-    And a file named "modules/stdlib/Modulefile" should exist
+    And a file named "modules/stdlib/metadata.json" should exist
 
   Scenario: Install a module from git without version
     Given a file named "Puppetfile" with:
@@ -122,7 +122,7 @@ Feature: cli/install/git
     When I run `librarian-puppet install`
     Then the exit status should be 0
     And the file "modules/test/Modulefile" should match /version *'0\.0\.1'/
-    And a file named "modules/stdlib/Modulefile" should exist
+    And a file named "modules/stdlib/metadata.json" should exist
 
   @announce
   Scenario: Install a module with mismatching Puppetfile and Modulefile
@@ -147,4 +147,4 @@ Feature: cli/install/git
     """
     When PENDING I run `librarian-puppet install --verbose`
     Then the exit status should be 0
-    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
+    And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/

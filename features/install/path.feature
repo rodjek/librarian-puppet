@@ -31,7 +31,7 @@ Feature: cli/install/path
     When I run `librarian-puppet install`
     Then the exit status should be 0
     And the file "modules/test/Modulefile" should match /version *'0\.0\.1'/
-    And a file named "modules/stdlib/Modulefile" should exist
+    And a file named "modules/stdlib/metadata.json" should exist
 
   @spaces
   Scenario: Installing a module in a path with spaces

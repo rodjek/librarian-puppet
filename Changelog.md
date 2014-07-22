@@ -4,11 +4,13 @@
 
 ### 1.1.3
 
- * [Issue #234](https://github.com/rodjek/librarian-puppet/issues/234) Use organization-module instead of organization/module
+ * [Issue #237](https://github.com/rodjek/librarian-puppet/issues/237)[Issue #238](https://github.com/rodjek/librarian-puppet/issues/238) Unable to use a custom v3 forge: add flags `--use-v1-api` and `--no-use-v1-api`
+ * [Issue #239](https://github.com/rodjek/librarian-puppet/issues/239) GitHub tarball: add access_token correctly to url's which are already having query parameters
+ * [Issue #234](https://github.com/rodjek/librarian-puppet/issues/234) Use organization-module instead of organization/module by default
 
 ### 1.1.2
 
- * [Issue #231](https://github.com/rodjek/librarian-puppet/issues/231) Only use the GITHUB_API_TOKEN if it's not empty
+ * [Issue #231](https://github.com/rodjek/librarian-puppet/issues/231) Only use the `GITHUB_API_TOKEN` if it's not empty
  * [Issue #233](https://github.com/rodjek/librarian-puppet/issues/233) Fix version regex to match e.g. 1.99.15
  * Can't pass the Puppet Forge v1 api url to clients using v3 (3.6.0+ and PE 3.2.0+)
 
@@ -26,11 +28,13 @@
 
 ### 1.0.5
 
- * [Issue #234](https://github.com/rodjek/librarian-puppet/issues/234) Use organization-module instead of organization/module
+ * [Issue #237](https://github.com/rodjek/librarian-puppet/issues/237)[Issue #238](https://github.com/rodjek/librarian-puppet/issues/238) Unable to use a custom v3 forge: add flags `--use-v1-api` and `--no-use-v1-api`
+ * [Issue #239](https://github.com/rodjek/librarian-puppet/issues/239) GitHub tarball: add access_token correctly to url's which are already having query parameters
+ * [Issue #234](https://github.com/rodjek/librarian-puppet/issues/234) Use organization-module instead of organization/module by default
 
 ### 1.0.4
 
- * [Issue #231](https://github.com/rodjek/librarian-puppet/issues/231) Only use the GITHUB_API_TOKEN if it's not empty
+ * [Issue #231](https://github.com/rodjek/librarian-puppet/issues/231) Only use the `GITHUB_API_TOKEN` if it's not empty
  * [Issue #233](https://github.com/rodjek/librarian-puppet/issues/233) Fix version regex to match e.g. 1.99.15
  * Can't pass the Puppet Forge v1 api url to clients using v3 (3.6.0+ and PE 3.2.0+)
 

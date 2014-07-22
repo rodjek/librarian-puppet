@@ -106,6 +106,8 @@ module Librarian
           def add_api_token_to_url url
             if token_key_nil?
               debug { "#{TOKEN_KEY} environment value is empty or missing" }
+            elsif url.include? "?"
+              url << "&access_token=#{ENV[TOKEN_KEY]}"
             else
               url << "?access_token=#{ENV[TOKEN_KEY]}"
             end

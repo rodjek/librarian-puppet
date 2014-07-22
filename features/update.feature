@@ -21,7 +21,7 @@ Feature: cli/update
     When I run `librarian-puppet update puppetlabs-stdlib`
     Then the exit status should be 0
     And the file "Puppetfile.lock" should match /puppetlabs.stdlib \(3\.1\.1\)/
-    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
+    And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
     And the file "modules/stdlib/Modulefile" should match /version *'3\.1\.1'/
 
   Scenario: Updating a module using organization/module
@@ -44,7 +44,7 @@ Feature: cli/update
     When I run `librarian-puppet update --verbose puppetlabs/stdlib`
     Then the exit status should be 0
     And the file "Puppetfile.lock" should match /puppetlabs.stdlib \(3\.1\.1\)/
-    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
+    And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
     And the file "modules/stdlib/Modulefile" should match /version *'3\.1\.1'/
 
   Scenario: Updating a module from git with a branch ref
