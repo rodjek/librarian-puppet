@@ -30,16 +30,18 @@
 
 <p><a href="https://travis-ci.org/rodjek/librarian-puppet"><img src="https://travis-ci.org/rodjek/librarian-puppet.png?branch=master" alt="Build Status" /></a></p>
 
+<p><a href="https://travis-ci.org/rodjek/librarian-puppet"><img src="https://travis-ci.org/rodjek/librarian-puppet.png?branch=master" alt="Build Status" /></a></p>
+
 <h2>Introduction</h2>
 
 <p>Librarian-puppet is a bundler for your puppet infrastructure.  You can use
 librarian-puppet to manage the puppet modules your infrastructure depends on,
-whether the modules come from the <a href="http://forge.puppetlabs.com/">Puppet Forge</a>,
+whether the modules come from the <a href="https://forge.puppetlabs.com/">Puppet Forge</a>,
 Git repositories or a just a path.</p>
 
 <ul>
 <li>Librarian-puppet can reuse the dependencies listed in your Modulefile</li>
-<li>Forge modules can be installed from <a href="http://forge.puppetlabs.com/">Puppetlabs Forge</a> or an internal Forge such as <a href="http://www.pulpproject.org/">Pulp</a></li>
+<li>Forge modules can be installed from <a href="https://forge.puppetlabs.com/">Puppetlabs Forge</a> or an internal Forge such as <a href="http://www.pulpproject.org/">Pulp</a></li>
 <li>Git modules can be installed from a branch, tag or specific commit, optionally using a path inside the repository</li>
 <li>Modules can be installed from GitHub using tarballs, without needing Git installed</li>
 <li>Module dependencies are resolved transitively without needing to list all the modules explicitly</li>
@@ -58,6 +60,13 @@ release and the version bumped in your Puppetfile.</p>
 framework for writing bundlers, which are tools that resolve, fetch, install,
 and isolate a project's dependencies.</p>
 
+<h2>Versions</h2>
+
+<p>Librarian-puppet >= 1.1.0 requires Ruby 1.9 and uses the Puppet Forge API v3.
+Versions &lt; 1.1.0 works on Ruby 1.8.</p>
+
+<p>See the <a href="Changelog.md">Changelog</a> for more details.</p>
+
 <h2>The Puppetfile</h2>
 
 <p>Every Puppet repository that uses Librarian-puppet will have a file named
@@ -68,25 +77,25 @@ for which modules your puppet infrastructure repository  depends goes in here.</
 
 <p>This Puppetfile will download all the dependencies listed in your Modulefile from the Puppet Forge</p>
 
-<pre><code>forge "http://forge.puppetlabs.com"
+<pre><code>forge "https://forgeapi.puppetlabs.com"
 
 modulefile
 </code></pre>
 
 <h3>Example Puppetfile</h3>
 
-<pre><code>forge "http://forge.puppetlabs.com"
+<pre><code>forge "https://forge.puppetlabs.com"
 
-mod "puppetlabs/razor"
-mod "puppetlabs/ntp", "0.0.3"
+mod 'puppetlabs-razor'
+mod 'puppetlabs-ntp', "0.0.3"
 
-mod "puppetlabs/apt",
+mod 'puppetlabs-apt',
   :git =&gt; "git://github.com/puppetlabs/puppetlabs-apt.git"
 
-mod "puppetlabs/stdlib",
+mod 'puppetlabs-stdlib',
   :git =&gt; "git://github.com/puppetlabs/puppetlabs-stdlib.git"
 
-mod 'puppetlabs/apache', '0.6.0',
+mod 'puppetlabs-apache', '0.6.0',
   :github_tarball =&gt; 'puppetlabs/puppetlabs-apache'
 </code></pre>
 
@@ -97,32 +106,32 @@ mod 'puppetlabs/apache', '0.6.0',
 
 <h3>Puppetfile Breakdown</h3>
 
-<pre><code>forge "http://forge.puppetlabs.com"
+<pre><code>forge "https://forge.puppetlabs.com"
 </code></pre>
 
 <p>This declares that we want to use the official Puppet Labs Forge as our default
 source when pulling down modules.  If you run your own local forge, you may
 want to change this.</p>
 
-<pre><code>mod "puppetlabs/razor"
+<pre><code>mod 'puppetlabs-razor'
 </code></pre>
 
 <p>Pull in the latest version of the Puppet Labs Razor module from the default
 source.</p>
 
-<pre><code>mod "puppetlabs/ntp", "0.0.3"
+<pre><code>mod 'puppetlabs-ntp', "0.0.3"
 </code></pre>
 
 <p>Pull in version 0.0.3 of the Puppet Labs NTP module from the default source.</p>
 
-<pre><code>mod "puppetlabs/apt",
+<pre><code>mod 'puppetlabs-apt',
   :git =&gt; "git://github.com/puppetlabs/puppetlabs-apt.git"
 </code></pre>
 
 <p>Our puppet infrastructure repository depends on the <code>apt</code> module from the
 Puppet Labs GitHub repos and checks out the <code>master</code> branch.</p>
 
-<pre><code>mod "puppetlabs/apt",
+<pre><code>mod 'puppetlabs-apt',
   :git =&gt; "git://github.com/puppetlabs/puppetlabs-apt.git",
   :ref =&gt; '0.0.3'
 </code></pre>
@@ -130,7 +139,7 @@ Puppet Labs GitHub repos and checks out the <code>master</code> branch.</p>
 <p>Our puppet infrastructure repository depends on the <code>apt</code> module from the
 Puppet Labs GitHub repos and checks out a tag of <code>0.0.3</code>.</p>
 
-<pre><code>mod "puppetlabs/apt",
+<pre><code>mod 'puppetlabs-apt',
   :git =&gt; "git://github.com/puppetlabs/puppetlabs-apt.git",
   :ref =&gt; 'feature/master/dans_refactor'
 </code></pre>
@@ -153,7 +162,7 @@ with many modules in it. If we need a module from such a repository, we can
 use the <code>:path =&gt;</code> option here to help Librarian-puppet drill down and find the
 module subdirectory.</p>
 
-<pre><code>mod "puppetlabs/apt",
+<pre><code>mod 'puppetlabs-apt',
   :git =&gt; "git://github.com/fake/puppet-modules.git",
   :path =&gt; "modules/apt"
 </code></pre>
@@ -193,6 +202,15 @@ well as adding <code>tmp/</code> and <code>modules/</code> to your <code>.gitign
 source specified.  This command writes the complete resolution into
 <code>Puppetfile.lock</code> and then copies all of the fetched modules into your
 <code>modules/</code> directory, overwriting whatever was there before.</p>
+
+<p>Librarian-puppet support both v1 and v3 of the Puppet Forge API.
+Specify a specific API version when installing modules:</p>
+
+<pre><code>$ librarian-puppet install --use-v1-api # this is default
+$ librarian-puppet install --no-use-v1-api # use the v3 API
+</code></pre>
+
+<p>Please note that this does not apply for the official Puppet Forge where v3 is used by default.</p>
 
 <p>Get an overview of your <code>Puppetfile.lock</code> with:</p>
 
@@ -310,7 +328,7 @@ Please include:</p>
 
 <ul>
 <li>Relevant <code>Puppetfile</code> and <code>Puppetfile.lock</code> files</li>
-<li>Version of ruby, librarian-puppet</li>
+<li>Version of ruby, librarian-puppet, and puppet</li>
 <li>What distro</li>
 <li>Please run the <code>librarian-puppet</code> commands in verbose mode by using the
 <code>--verbose</code> flag, and include the verbose output in the bug report as well.</li>
