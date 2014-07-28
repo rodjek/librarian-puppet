@@ -1,9 +1,10 @@
 # Changelog
 
-## 1.1.x: Requires Ruby >= 1.9, uses Puppet Forge API v3
+## From 1.1.x Librarian-Puppet requires Ruby >= 1.9, uses Puppet Forge API v3. For Ruby 1.8 use 1.0.x
 
-### 1.1.4
+### 1.2.0
 
+ * [Issue #220](https://github.com/rodjek/librarian-puppet/issues/220) Add support for metadata.json
  * [Issue #242](https://github.com/rodjek/librarian-puppet/issues/242) Get organization from name correctly if name has multiple dashes
 
 ### 1.1.3
@@ -32,6 +33,7 @@
 
 ### 1.0.6
 
+ * [Issue #220](https://github.com/rodjek/librarian-puppet/issues/220) Add support for metadata.json
  * [Issue #242](https://github.com/rodjek/librarian-puppet/issues/242) Get organization from name correctly if name has multiple dashes
 
 ### 1.0.5

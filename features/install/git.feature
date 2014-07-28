@@ -70,6 +70,16 @@ Feature: cli/install/git
     And the file "modules/postgresql/.git/HEAD" should match /183d401a3ffeb2e83372dfcc05f5b6bab25034b1/
     And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
 
+  Scenario: Install a module with dependencies specified in metadata.json
+    Given a file named "Puppetfile" with:
+    """
+    mod 'puppetlabs-apt', :git => 'https://github.com/puppetlabs/puppetlabs-apt.git', :ref => '1.5.2'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
+    And the file "modules/apt/metadata.json" should match /"name": "puppetlabs-apt"/
+
   Scenario: Install a module with dependencies specified in a Puppetfile
     Given a file named "Puppetfile" with:
     """
@@ -105,7 +115,7 @@ Feature: cli/install/git
     """
     forge "http://forge.puppetlabs.com"
 
-    mod 'test', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/test'
+    mod 'librarian-test', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/test'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0

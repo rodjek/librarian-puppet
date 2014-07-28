@@ -1,16 +1,5 @@
 require 'librarian/puppet/util'
 
-begin
-  require 'puppet'
-  require 'puppet/module_tool'
-rescue LoadError
-  $stderr.puts <<-EOF
-Unable to load puppet, the puppet gem is required for :git and :path source.
-Install it with: gem install puppet
-  EOF
-  exit 1
-end
-
 module Librarian
   module Puppet
     module Source
@@ -48,13 +37,21 @@ module Librarian
         def fetch_dependencies(name, version, extra)
           dependencies = Set.new
 
-          if modulefile?
-            evaluate_modulefile(modulefile).dependencies.each do |dependency|
-              dependency_name = dependency.instance_variable_get(:@full_module_name)
-              version = dependency.instance_variable_get(:@version_requirement)
-              gem_requirement = Requirement.new(version).gem_requirement
-              dependencies << Dependency.new(dependency_name, gem_requirement, forge_source)
+          dependencyList = if metadata?
+            JSON.parse(File.read(metadata))['dependencies']
+          elsif modulefile?
+            evaluate_modulefile(modulefile).dependencies.map do |dependency|
+              {
+                'name' => dependency.instance_variable_get(:@full_module_name),
+                'version_requirement' => dependency.instance_variable_get(:@version_requirement)
+              }
             end
+          else []
+          end
+
+          dependencyList.each do |d|
+            gem_requirement = Requirement.new(d['version_requirement']).gem_requirement
+            dependencies << Dependency.new(d['name'], gem_requirement, forge_source)
           end
 
           if specfile?
@@ -77,7 +74,23 @@ module Librarian
           evaluate_modulefile(modulefile).version
         end
 
+        def require_puppet
+          begin
+            require 'puppet'
+            require 'puppet/module_tool'
+          rescue LoadError
+            $stderr.puts <<-EOF
+          Unable to load puppet, the puppet gem is required for :git and :path source.
+          Install it with: gem install puppet
+            EOF
+            exit 1
+          end
+          true
+        end
+
         def evaluate_modulefile(modulefile)
+          @@require_puppet ||= require_puppet
+
           metadata = ::Puppet::ModuleTool::Metadata.new
           begin
             ::Puppet::ModuleTool::ModulefileReader.evaluate(metadata, modulefile)
@@ -98,6 +111,14 @@ module Librarian
 
         def modulefile?
           File.exists?(modulefile)
+        end
+
+        def metadata
+          File.join(filesystem_path, 'metadata.json')
+        end
+
+        def metadata?
+          File.exists?(metadata)
         end
 
         def specfile
