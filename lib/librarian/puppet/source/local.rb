@@ -30,7 +30,7 @@ module Librarian
             warn { "Invalid module name '#{name}', you should qualify it with 'ORGANIZATION-#{name}' for resolution to work correctly" }
           end
 
-          install_path = environment.install_path.join(name.split('-').last)
+          install_path = environment.install_path.join(organization_name(name))
           if install_path.exist?
             debug { "Deleting #{relative_path_to(install_path)}" }
             install_path.rmtree
