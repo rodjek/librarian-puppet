@@ -38,6 +38,11 @@ module Librarian
       def normalize_name(name)
         name.sub('/','-')
       end
+
+      # get the organization name from organization-module
+      def organization_name(name)
+        name.split('-',2).last
+      end
     end
   end
 end

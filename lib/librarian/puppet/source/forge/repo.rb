@@ -59,7 +59,7 @@ module Librarian
               install_path.rmtree
             end
 
-            unpacked_path = version_unpacked_cache_path(version).join(name.split('-').last)
+            unpacked_path = version_unpacked_cache_path(version).join(organization_name(name))
 
             unless unpacked_path.exist?
               raise Error, "#{unpacked_path} does not exist, something went wrong. Try removing it manually"

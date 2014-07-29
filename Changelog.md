@@ -1,10 +1,15 @@
 # Changelog
 
-## 1.1.x: Requires Ruby >= 1.9, uses Puppet Forge API v3
+## From 1.1.x Librarian-Puppet requires Ruby >= 1.9, uses Puppet Forge API v3. For Ruby 1.8 use 1.0.x
+
+### 1.2.0
+
+ * [Issue #220](https://github.com/rodjek/librarian-puppet/issues/220) Add support for metadata.json
+ * [Issue #242](https://github.com/rodjek/librarian-puppet/issues/242) Get organization from name correctly if name has multiple dashes
 
 ### 1.1.3
 
- * [Issue #237](https://github.com/rodjek/librarian-puppet/issues/237)[Issue #238](https://github.com/rodjek/librarian-puppet/issues/238) Unable to use a custom v3 forge: add flags `--use-v1-api` and `--no-use-v1-api`
+ * [Issue #237](https://github.com/rodjek/librarian-puppet/issues/237) [Issue #238](https://github.com/rodjek/librarian-puppet/issues/238) Unable to use a custom v3 forge: add flags `--use-v1-api` and `--no-use-v1-api`
  * [Issue #239](https://github.com/rodjek/librarian-puppet/issues/239) GitHub tarball: add access_token correctly to url's which are already having query parameters
  * [Issue #234](https://github.com/rodjek/librarian-puppet/issues/234) Use organization-module instead of organization/module by default
 
@@ -25,6 +30,11 @@
 
 
 ## 1.0.x: Works on Ruby 1.8, using Puppet Forge API v1
+
+### 1.0.6
+
+ * [Issue #220](https://github.com/rodjek/librarian-puppet/issues/220) Add support for metadata.json
+ * [Issue #242](https://github.com/rodjek/librarian-puppet/issues/242) Get organization from name correctly if name has multiple dashes
 
 ### 1.0.5
 
