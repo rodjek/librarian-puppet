@@ -161,6 +161,29 @@ Feature: cli/install/forge
     Then the exit status should be 0
     And the file "modules/postgresql/Modulefile" should match /name *'puppetlabs-postgresql'/
 
+  Scenario: Source dependencies from metadata.json
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    metadata
+    """
+    And a file named "metadata.json" with:
+    """
+    {
+      "name": "random name",
+      "dependencies": [
+        {
+          "name": "puppetlabs/postgresql",
+          "version_requirement": "2.4.1"
+        }
+      ]
+    }
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/postgresql/Modulefile" should match /name *'puppetlabs-postgresql'/
+
   Scenario: Source dependencies from Modulefile using dash instead of slash
     Given a file named "Puppetfile" with:
     """

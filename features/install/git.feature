@@ -110,6 +110,16 @@ Feature: cli/install/git
     And the file "modules/modulefile_syntax/Modulefile" should match /name *'librarian-modulefile_syntax'/
     And the file "modules/test/Modulefile" should match /name *'maestrodev-test'/
 
+  Scenario: Install a module using metadata syntax
+    Given a file named "Puppetfile" with:
+    """
+    mod 'librarian/modulefile_syntax', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/metadata_syntax'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/metadata_syntax/Modulefile" should match /name *'librarian-metadata_syntax'/
+    And the file "modules/test/Modulefile" should match /name *'maestrodev-test'/
+
   Scenario: Install a module from git and using path
     Given a file named "Puppetfile" with:
     """

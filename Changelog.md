@@ -4,6 +4,7 @@
 
 ### 1.2.0
 
+ * Implement `metadata` syntax for `Puppetfile`
  * [Issue #220](https://github.com/rodjek/librarian-puppet/issues/220) Add support for metadata.json
  * [Issue #242](https://github.com/rodjek/librarian-puppet/issues/242) Get organization from name correctly if name has multiple dashes
 
@@ -33,6 +34,7 @@
 
 ### 1.0.6
 
+ * Implement `metadata` syntax for `Puppetfile`
  * [Issue #220](https://github.com/rodjek/librarian-puppet/issues/220) Add support for metadata.json
  * [Issue #242](https://github.com/rodjek/librarian-puppet/issues/242) Get organization from name correctly if name has multiple dashes
 
