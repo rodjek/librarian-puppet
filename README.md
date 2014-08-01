@@ -9,7 +9,7 @@ librarian-puppet to manage the puppet modules your infrastructure depends on,
 whether the modules come from the [Puppet Forge](https://forge.puppetlabs.com/),
 Git repositories or a just a path.
 
-* Librarian-puppet can reuse the dependencies listed in your Modulefile
+* Librarian-puppet can reuse the dependencies listed in your `Modulefile` or `metadata.json`
 * Forge modules can be installed from [Puppetlabs Forge](https://forge.puppetlabs.com/) or an internal Forge such as [Pulp](http://www.pulpproject.org/)
 * Git modules can be installed from a branch, tag or specific commit, optionally using a path inside the repository
 * Modules can be installed from GitHub using tarballs, without needing Git installed
@@ -70,7 +70,7 @@ This Puppetfile will download all the dependencies listed in your Modulefile fro
 ### Recursive module dependency resolution
 
 When fetching a module all dependencies specified in its
-`Modulefile` and `Puppetfile` will be resolved and installed.
+`Modulefile`, `metadata.json` and `Puppetfile` will be resolved and installed.
 
 ### Puppetfile Breakdown
 

@@ -45,6 +45,14 @@ module Librarian
             regexp =~ line && mod($2, $4)
           end
         end
+
+        # implement the 'metadata' syntax for Puppetfile
+        def metadata
+          dependencyList = JSON.parse(File.read(Pathname.new(specfile).parent.join('metadata.json')))['dependencies']
+          dependencyList.each do |d|
+            mod(d['name'], d['version_requirement'])
+          end
+        end
       end
     end
   end
