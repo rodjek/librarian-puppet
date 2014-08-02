@@ -20,7 +20,7 @@ module Librarian
         if specfile.kind_of?(Pathname) and !File.exists?(specfile)
           debug { "Specfile not found, using defaults: #{specfile}" }
           specfile = Proc.new do
-            forge "https://forgeapi.puppetlabs.com"
+            forge "http://forge.puppetlabs.com"
             metadata
           end
         end
