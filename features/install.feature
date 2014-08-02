@@ -21,3 +21,22 @@ Feature: cli/install
     And the file "modules/stdlib/Modulefile" should match /version *'3\.0\.0'/
     And the output should not contain "Executing puppet module install for puppetlabs/stdlib"
     And the output should not contain "Executing puppet module install for puppetlabs-stdlib"
+
+  Scenario: Install a module with Modulefile without version
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'librarian-bad_modulefile', :path => 'bad_modulefile'
+    """
+    And a directory named "bad_modulefile/manifests"
+    And a file named "bad_modulefile/Modulefile" with:
+    """
+    # bad Modulefile
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the output should match:
+    """
+    Unable to parse .*/bad_modulefile/Modulefile, ignoring: Missing version
+    """

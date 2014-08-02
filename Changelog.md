@@ -6,6 +6,7 @@
 
  * If no Puppetfile is present default to use the `metadata.json` or `Modulefile`
  * [Issue #235](https://github.com/rodjek/librarian-puppet/issues/235) Error when forge is not defined in `Puppetfile`
+ * [Issue #243](https://github.com/rodjek/librarian-puppet/issues/243) Warn if `Modulefile` doesn't contain a version
 
 ### 1.2.0
 
@@ -41,6 +42,7 @@
 
  * If no Puppetfile is present default to use the `metadata.json` or `Modulefile`
  * [Issue #235](https://github.com/rodjek/librarian-puppet/issues/235) Error when forge is not defined in `Puppetfile`
+ * [Issue #243](https://github.com/rodjek/librarian-puppet/issues/243) Warn if `Modulefile` doesn't contain a version
 
 
 ### 1.0.6
