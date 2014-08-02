@@ -2,6 +2,11 @@
 
 ## From 1.1.x Librarian-Puppet requires Ruby >= 1.9, uses Puppet Forge API v3. For Ruby 1.8 use 1.0.x
 
+### 1.3.0
+
+ * If no Puppetfile is present default to use the `metadata.json` or `Modulefile`
+ * [Issue #235](https://github.com/rodjek/librarian-puppet/issues/235) Error when forge is not defined in `Puppetfile`
+
 ### 1.2.0
 
  * Implement `metadata` syntax for `Puppetfile`
@@ -31,6 +36,12 @@
 
 
 ## 1.0.x: Works on Ruby 1.8, using Puppet Forge API v1
+
+### 1.0.7
+
+ * If no Puppetfile is present default to use the `metadata.json` or `Modulefile`
+ * [Issue #235](https://github.com/rodjek/librarian-puppet/issues/235) Error when forge is not defined in `Puppetfile`
+
 
 ### 1.0.6
 
