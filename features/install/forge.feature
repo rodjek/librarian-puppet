@@ -42,6 +42,15 @@ Feature: cli/install/forge
     Then the exit status should be 0
     And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
 
+  Scenario: Installing a module without forge
+    Given a file named "Puppetfile" with:
+    """
+    mod 'puppetlabs/stdlib', '4.1.0'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 1
+    And the output should contain "forge entry is not defined in Puppetfile"
+
   Scenario: Installing an exact version of a module
     Given a file named "Puppetfile" with:
     """
