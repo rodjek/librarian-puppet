@@ -13,6 +13,9 @@ module Librarian
     def initialize(name, requirement, source)
       assert_name_valid! name
 
+      # Issue #235 fail if forge source is not defined
+      raise Error, "forge entry is not defined in Puppetfile" if source.instance_of?(Array) && source.empty?
+
       # let's settle on provider-module syntax instead of provider/module
       self.name = normalize_name(name)
       self.requirement = Requirement.new(requirement)
@@ -76,22 +79,6 @@ module Librarian
 
       def hash
         self.to_s.hash
-      end
-    end
-  end
-
-  module Action
-    class Install < Base
-
-    private
-
-      def create_install_path
-        install_path.rmtree if install_path.exist? && destructive?
-        install_path.mkpath
-      end
-
-      def destructive?
-        environment.config_db.local['destructive'] == 'true'
       end
     end
   end

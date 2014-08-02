@@ -2,6 +2,7 @@ require 'librarian/helpers'
 
 require 'librarian/cli'
 require 'librarian/puppet'
+require 'librarian/puppet/action'
 
 module Librarian
   module Puppet
@@ -47,11 +48,6 @@ module Librarian
       option "use-v1-api", :type => :boolean, :default => true
       def install
 
-        unless File.exist?('Puppetfile')
-          say "Could not find Puppetfile in #{Dir.pwd}", :red
-          exit 1
-        end
-
         ensure!
         clean! if options["clean"]
         unless options["destructive"].nil?
@@ -88,6 +84,14 @@ module Librarian
 
       def version
         say "librarian-puppet v#{Librarian::Puppet::VERSION}"
+      end
+
+      private
+
+      # override the actions to use our own
+
+      def install!(options = { })
+        Action::Install.new(environment, options).run
       end
     end
   end

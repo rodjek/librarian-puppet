@@ -37,17 +37,20 @@ See the [Changelog](Changelog.md) for more details.
 
 ## The Puppetfile
 
-Every Puppet repository that uses Librarian-puppet will have a file named
-`Puppetfile` in the root directory of that repository.  The full specification
-for which modules your puppet infrastructure repository  depends goes in here.
+Every Puppet repository that uses Librarian-puppet may have a file named
+`Puppetfile`, `metadata.json` or `Modulefile` in the root directory of that repository.
+The full specification
+for which modules your puppet infrastructure repository depends goes in here.
 
-### Simple Puppetfile
+### Simple usage
 
-This Puppetfile will download all the dependencies listed in your Modulefile from the Puppet Forge
+If no Puppetfile is present, `librarian-puppet` will download all the dependencies
+listed in your `metadata.json` or `Modulefile` from the Puppet Forge,
+as if the Puppetfile contained
 
     forge "https://forgeapi.puppetlabs.com"
 
-    modulefile
+    metadata
 
 
 ### Example Puppetfile

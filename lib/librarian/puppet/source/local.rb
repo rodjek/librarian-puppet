@@ -94,6 +94,7 @@ module Librarian
           metadata = ::Puppet::ModuleTool::Metadata.new
           begin
             ::Puppet::ModuleTool::ModulefileReader.evaluate(metadata, modulefile)
+            raise SyntaxError, "Missing version" unless metadata.version
           rescue ArgumentError, SyntaxError => error
             warn { "Unable to parse #{modulefile}, ignoring: #{error}" }
             if metadata.respond_to? :version=
