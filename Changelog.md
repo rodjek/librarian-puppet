@@ -2,6 +2,10 @@
 
 ## From 1.1.x Librarian-Puppet requires Ruby >= 1.9, uses Puppet Forge API v3. For Ruby 1.8 use 1.0.x
 
+### 1.3.1
+
+ * Version in dependencies with `metadata.json` is ignored
+
 ### 1.3.0
 
  * If no Puppetfile is present default to use the `metadata.json` or `Modulefile`
@@ -37,6 +41,11 @@
 
 
 ## 1.0.x: Works on Ruby 1.8, using Puppet Forge API v1
+
+
+### 1.0.8
+
+ * Version in dependencies with `metadata.json` is ignored
 
 ### 1.0.7
 
