@@ -22,7 +22,7 @@ Feature: cli/package
     """
     forge "http://forge.puppetlabs.com"
 
-    mod 'puppetlabs/apt', '1.4.0', :git => 'https://github.com/puppetlabs/puppetlabs-apt.git', :ref => '1.4.0'
+    mod 'puppetlabs/apt', '1.5.0', :git => 'https://github.com/puppetlabs/puppetlabs-apt.git', :ref => '1.5.0'
     mod 'puppetlabs/stdlib', '4.1.0'
     """
     When I run `librarian-puppet package --verbose`
@@ -30,7 +30,7 @@ Feature: cli/package
     And the file "modules/apt/Modulefile" should match /name *'puppetlabs-apt'/
     And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
     And the following files should exist:
-      | vendor/puppet/source/924e89289b93db60ef0f16a4e71579fa88e037a6.tar.gz |
+      | vendor/puppet/source/e5657a61b9ac0dd3c00002c777b0d3c615bb98a5.tar.gz |
       | vendor/puppet/cache/puppetlabs-stdlib-4.1.0.tar.gz                   |
 
   @github

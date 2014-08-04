@@ -37,19 +37,7 @@ module Librarian
         def fetch_dependencies(name, version, extra)
           dependencies = Set.new
 
-          dependencyList = if metadata?
-            JSON.parse(File.read(metadata))['dependencies']
-          elsif modulefile?
-            evaluate_modulefile(modulefile).dependencies.map do |dependency|
-              {
-                'name' => dependency.instance_variable_get(:@full_module_name),
-                'version_requirement' => dependency.instance_variable_get(:@version_requirement)
-              }
-            end
-          else []
-          end
-
-          dependencyList.each do |d|
+          parsed_metadata['dependencies'].each do |d|
             gem_requirement = Requirement.new(d['version_requirement']).gem_requirement
             dependencies << Dependency.new(d['name'], gem_requirement, forge_source)
           end
@@ -63,15 +51,19 @@ module Librarian
         end
 
         def forge_source
-          Forge.from_lock_options(environment, :remote=>"http://forge.puppetlabs.com")
+          Forge.from_lock_options(environment, :remote => "https://forgeapi.puppetlabs.com")
         end
 
         private
 
         # Naming this method 'version' causes an exception to be raised.
         def module_version
-          return '0.0.1' unless modulefile?
-          evaluate_modulefile(modulefile).version
+          if parsed_metadata['version']
+            parsed_metadata['version']
+          else
+            warn { "Module #{to_s} does not have version, defaulting to 0.0.1" }
+            '0.0.1'
+          end
         end
 
         def require_puppet
@@ -104,6 +96,28 @@ module Librarian
             end
           end
           metadata
+        end
+
+        def parsed_metadata
+          @metadata ||= if metadata?
+            JSON.parse(File.read(metadata))
+          elsif modulefile?
+            # translate Modulefile to metadata.json
+            evaluated = evaluate_modulefile(modulefile)
+            {
+              'version' => evaluated.version,
+              'dependencies' => evaluated.dependencies.map do |dependency|
+                {
+                  'name' => dependency.instance_variable_get(:@full_module_name),
+                  'version_requirement' => dependency.instance_variable_get(:@version_requirement)
+                }
+              end
+            }
+          else
+            warn { "Could not find metadata.json nor Modulefile at #{filesystem_path}" }
+            {}
+          end
+          @metadata
         end
 
         def modulefile
