@@ -37,14 +37,18 @@ module Librarian
         def fetch_dependencies(name, version, extra)
           dependencies = Set.new
 
-          parsed_metadata['dependencies'].each do |d|
-            gem_requirement = Requirement.new(d['version_requirement']).gem_requirement
-            dependencies << Dependency.new(d['name'], gem_requirement, forge_source)
-          end
-
           if specfile?
             spec = environment.dsl(Pathname(specfile))
             dependencies.merge spec.dependencies
+          end
+
+          parsed_metadata['dependencies'].each do |d|
+            gem_requirement = Requirement.new(d['version_requirement']).gem_requirement
+            new_dependency = Dependency.new(d['name'], gem_requirement, forge_source)
+            # Avoid duplicated dependencies with different sources
+            unless dependencies.find { |spec_dependency| spec_dependency.name == new_dependency.name && spec_dependency.requirement == new_dependency.requirement }
+              dependencies << new_dependency
+            end
           end
 
           dependencies
