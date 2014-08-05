@@ -51,7 +51,7 @@ module Librarian
         end
 
         def forge_source
-          Forge.from_lock_options(environment, :remote => "https://forgeapi.puppetlabs.com")
+          Forge.from_lock_options(environment, :remote => "https://forge.puppetlabs.com")
         end
 
         private
