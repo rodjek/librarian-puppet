@@ -27,7 +27,6 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
 
-
 <p><a href="https://travis-ci.org/rodjek/librarian-puppet"><img src="https://travis-ci.org/rodjek/librarian-puppet.png?branch=master" alt="Build Status" /></a></p>
 
 <h2>Introduction</h2>
@@ -38,7 +37,7 @@ whether the modules come from the <a href="https://forge.puppetlabs.com/">Puppet
 Git repositories or a just a path.</p>
 
 <ul>
-<li>Librarian-puppet can reuse the dependencies listed in your Modulefile</li>
+<li>Librarian-puppet can reuse the dependencies listed in your <code>Modulefile</code> or <code>metadata.json</code></li>
 <li>Forge modules can be installed from <a href="https://forge.puppetlabs.com/">Puppetlabs Forge</a> or an internal Forge such as <a href="http://www.pulpproject.org/">Pulp</a></li>
 <li>Git modules can be installed from a branch, tag or specific commit, optionally using a path inside the repository</li>
 <li>Modules can be installed from GitHub using tarballs, without needing Git installed</li>
@@ -67,17 +66,20 @@ Versions &lt; 1.1.0 works on Ruby 1.8.</p>
 
 <h2>The Puppetfile</h2>
 
-<p>Every Puppet repository that uses Librarian-puppet will have a file named
-<code>Puppetfile</code> in the root directory of that repository.  The full specification
-for which modules your puppet infrastructure repository  depends goes in here.</p>
+<p>Every Puppet repository that uses Librarian-puppet may have a file named
+<code>Puppetfile</code>, <code>metadata.json</code> or <code>Modulefile</code> in the root directory of that repository.
+The full specification
+for which modules your puppet infrastructure repository depends goes in here.</p>
 
-<h3>Simple Puppetfile</h3>
+<h3>Simple usage</h3>
 
-<p>This Puppetfile will download all the dependencies listed in your Modulefile from the Puppet Forge</p>
+<p>If no Puppetfile is present, <code>librarian-puppet</code> will download all the dependencies
+listed in your <code>metadata.json</code> or <code>Modulefile</code> from the Puppet Forge,
+as if the Puppetfile contained</p>
 
 <pre><code>forge "https://forgeapi.puppetlabs.com"
 
-modulefile
+metadata
 </code></pre>
 
 <h3>Example Puppetfile</h3>
@@ -100,7 +102,7 @@ mod 'puppetlabs-apache', '0.6.0',
 <h3>Recursive module dependency resolution</h3>
 
 <p>When fetching a module all dependencies specified in its
-<code>Modulefile</code> and <code>Puppetfile</code> will be resolved and installed.</p>
+<code>Modulefile</code>, <code>metadata.json</code> and <code>Puppetfile</code> will be resolved and installed.</p>
 
 <h3>Puppetfile Breakdown</h3>
 
