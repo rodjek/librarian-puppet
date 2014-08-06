@@ -96,7 +96,7 @@ module Librarian
               warn { "Replacing Puppet Forge API URL to use v3 #{module_repository} as required by your client version #{Librarian::Puppet.puppet_version}" }
             end
 
-            m = module_repository.match(%r{^http(s)?://forgeapi\.puppetlabs\.com})
+            m = module_repository.match(%r{^http(s)?://forge(api)?\.puppetlabs\.com})
             if Forge.client_api_version() == 1 and m
               ssl = m[1]
               # Puppet 2.7 can't handle the 302 returned by the https url, so stick to http
