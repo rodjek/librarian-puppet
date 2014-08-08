@@ -118,8 +118,9 @@ module Librarian
               end
             }
           else
-            warn { "Could not find metadata.json nor Modulefile at #{filesystem_path}" }
-            {}
+            {
+              'dependencies' => []
+            }
           end
           @metadata
         end
