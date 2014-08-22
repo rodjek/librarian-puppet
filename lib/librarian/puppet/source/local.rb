@@ -103,24 +103,25 @@ module Librarian
         end
 
         def parsed_metadata
-          @metadata ||= if metadata?
-            JSON.parse(File.read(metadata))
-          elsif modulefile?
-            # translate Modulefile to metadata.json
-            evaluated = evaluate_modulefile(modulefile)
-            {
-              'version' => evaluated.version,
-              'dependencies' => evaluated.dependencies.map do |dependency|
-                {
-                  'name' => dependency.instance_variable_get(:@full_module_name),
-                  'version_requirement' => dependency.instance_variable_get(:@version_requirement)
-                }
-              end
-            }
-          else
-            {
-              'dependencies' => []
-            }
+          if @metadata.nil?
+            @metadata = if metadata?
+              JSON.parse(File.read(metadata))
+            elsif modulefile?
+              # translate Modulefile to metadata.json
+              evaluated = evaluate_modulefile(modulefile)
+              {
+                'version' => evaluated.version,
+                'dependencies' => evaluated.dependencies.map do |dependency|
+                  {
+                    'name' => dependency.instance_variable_get(:@full_module_name),
+                    'version_requirement' => dependency.instance_variable_get(:@version_requirement)
+                  }
+                end
+              }
+            else
+              {}
+            end
+            @metadata['dependencies'] ||= []
           end
           @metadata
         end

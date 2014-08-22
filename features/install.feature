@@ -40,13 +40,3 @@ Feature: cli/install
     """
     Unable to parse .*/bad_modulefile/Modulefile, ignoring: Missing version
     """
-
-  Scenario: Running install with no Modulefile nor metadata.json
-    Given a file named "Puppetfile" with:
-    """
-    forge "http://forge.puppetlabs.com"
-
-    mod 'puppetlabs/stdlib', :git => 'https://github.com/puppetlabs/puppetlabs-stdlib.git', :ref => '3.0.0'
-    """
-    When I run `librarian-puppet install`
-    Then the exit status should be 0
