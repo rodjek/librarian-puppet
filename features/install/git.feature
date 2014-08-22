@@ -100,6 +100,26 @@ Feature: cli/install/git
     And the file "modules/with_puppetfile/Modulefile" should match /name *'librarian-with_puppetfile_and_modulefile'/
     And the file "modules/test/Modulefile" should match /name *'maestrodev-test'/
 
+  Scenario: Running install with no Modulefile nor metadata.json
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'puppetlabs/stdlib', :git => 'https://github.com/puppetlabs/puppetlabs-stdlib.git', :ref => '3.0.0'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+
+  Scenario: Running install with metadata.json without dependencies
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'puppetlabs/sqlite', :git => 'https://github.com/puppetlabs/puppetlabs-sqlite.git', :ref => '84a0a6'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+
   Scenario: Install a module using modulefile syntax
     Given a file named "Puppetfile" with:
     """
