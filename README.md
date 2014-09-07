@@ -167,10 +167,10 @@ source specified.  This command writes the complete resolution into
 Librarian-puppet support both v1 and v3 of the Puppet Forge API.
 Specify a specific API version when installing modules:
 
-    $ librarian-puppet install --use-v1-api # this is default
-    $ librarian-puppet install --no-use-v1-api # use the v3 API
+    $ librarian-puppet install --use-v1-api # this is default; ignored for official Puppet Forge
+    $ librarian-puppet install --no-use-v1-api # use the v3 API; default for official Puppet Forge
 
-Please note that this does not apply for the official Puppet Forge where v3 is used by default.
+Please note that this does not apply for the official Puppet Forge, where v3 is used by default.
 
 Get an overview of your `Puppetfile.lock` with:
 
