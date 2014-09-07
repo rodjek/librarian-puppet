@@ -55,7 +55,7 @@ as if the Puppetfile contained
 
 ### Example Puppetfile
 
-    forge "https://forge.puppetlabs.com"
+    forge "https://forgeapi.puppetlabs.com"
 
     mod 'puppetlabs-razor'
     mod 'puppetlabs-ntp', "0.0.3"
@@ -77,7 +77,7 @@ When fetching a module all dependencies specified in its
 
 ### Puppetfile Breakdown
 
-    forge "https://forge.puppetlabs.com"
+    forge "https://forgeapi.puppetlabs.com"
 
 This declares that we want to use the official Puppet Labs Forge as our default
 source when pulling down modules.  If you run your own local forge, you may
