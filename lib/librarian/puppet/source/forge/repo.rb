@@ -55,7 +55,7 @@ module Librarian
 
             cache_version_unpacked! version
 
-            if install_path.exist?
+            if install_path.exist? && rsync? != true
               install_path.rmtree
             end
 

@@ -55,7 +55,7 @@ as if the Puppetfile contained
 
 ### Example Puppetfile
 
-    forge "https://forge.puppetlabs.com"
+    forge "https://forgeapi.puppetlabs.com"
 
     mod 'puppetlabs-razor'
     mod 'puppetlabs-ntp', "0.0.3"
@@ -77,7 +77,7 @@ When fetching a module all dependencies specified in its
 
 ### Puppetfile Breakdown
 
-    forge "https://forge.puppetlabs.com"
+    forge "https://forgeapi.puppetlabs.com"
 
 This declares that we want to use the official Puppet Labs Forge as our default
 source when pulling down modules.  If you run your own local forge, you may
@@ -167,10 +167,10 @@ source specified.  This command writes the complete resolution into
 Librarian-puppet support both v1 and v3 of the Puppet Forge API.
 Specify a specific API version when installing modules:
 
-    $ librarian-puppet install --use-v1-api # this is default
-    $ librarian-puppet install --no-use-v1-api # use the v3 API
+    $ librarian-puppet install --use-v1-api # this is default; ignored for official Puppet Forge
+    $ librarian-puppet install --no-use-v1-api # use the v3 API; default for official Puppet Forge
 
-Please note that this does not apply for the official Puppet Forge where v3 is used by default.
+Please note that this does not apply for the official Puppet Forge, where v3 is used by default.
 
 Get an overview of your `Puppetfile.lock` with:
 
@@ -256,6 +256,28 @@ Configuration can be set by passing specific options to other commands.
   the environment or global config will be used.
 
 
+## Rsync Option
+
+The default convergence strategy between the cache and the module directory is
+to execute an `rm -r` on the module directory and just `cp -r` from the cache.
+This causes the module to be removed from the module path every time librarian
+puppet updates, regardless of whether the content has changed. This can cause
+some problems in environments with lots of change. The problem arises when the
+module directory gets removed while Puppet is trying to read files inside it.
+The `puppet master` process will lose its CWD and the catalog will fail to
+compile. To avoid this, you can use `rsync` to implement a more conservative
+convergence strategy. This will use `rsync` with the `-avz` and `--delete`
+flags instead of a `rm -r` and `cp -r`. To use this feature, just set the
+`rsync` configuration setting to `true`.
+
+    $ librarian-puppet config rsync true --global
+
+Alternatively, using an environment variable:
+
+    LIBRARIAN_PUPPET_RSYNC='true'
+
+Note that the directories will still be purged if you run librarian-puppet with
+the --clean or --destructive flags.
 
 ## How to Contribute
 

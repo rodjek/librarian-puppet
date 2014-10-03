@@ -1,0 +1,1 @@
+mod 'librarian/test', :path => '../../features/examples/test'

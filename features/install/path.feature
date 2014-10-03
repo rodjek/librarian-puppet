@@ -11,6 +11,17 @@ Feature: cli/install/path
     And the file "modules/with_puppetfile/Modulefile" should match /name *'librarian-with_puppetfile'/
     And the file "modules/test/Modulefile" should match /name *'librarian-test'/
 
+  Scenario: Install a module with recursive path dependencies
+    Given a file named "Puppetfile" with:
+    """
+    mod 'librarian/path_dependencies', :path => '../../features/examples/path_dependencies'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/path_dependencies/metadata.json" should match /"name": "librarian-path_dependencies"/
+    And the file "modules/test/Modulefile" should match /name *'librarian-test'/
+    And a file named "modules/stdlib/metadata.json" should exist
+
   Scenario: Install a module with dependencies specified in a Puppetfile and Modulefile
     Given a file named "Puppetfile" with:
     """

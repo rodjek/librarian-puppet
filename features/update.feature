@@ -204,3 +204,80 @@ Feature: cli/update
     And the file "Puppetfile.lock" should match /maestrodev.test \(1\.0\.[1-9][0-9]\)/
     And the file "modules/test/Modulefile" should contain "name 'maestrodev-test'"
     And the file "modules/test/Modulefile" should match /version '1\.0\.[1-9][0-9]'/
+
+  Scenario: Updating a forge module with the rsync configuration
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'maestrodev/test'
+    """
+    And a file named "Puppetfile.lock" with:
+    """
+    FORGE
+      remote: http://forge.puppetlabs.com
+      specs:
+        maestrodev/test (1.0.2)
+
+    DEPENDENCIES
+      maestrodev/test (>= 0)
+      """
+    And a file named ".librarian/puppet/config" with:
+    """
+    ---
+    LIBRARIAN_PUPPET_RSYNC: 'true'
+    """
+    When I run `librarian-puppet config`
+    Then the exit status should be 0
+    And the output should contain "rsync: true"
+    When I run `librarian-puppet update --verbose`
+    Then the exit status should be 0
+    And a directory named "modules/test" should exist
+    And the file "modules/test" should have an inode and ctime
+    When I run `librarian-puppet update --verbose`
+    Then the exit status should be 0
+    And a directory named "modules/test" should exist
+    And the file "modules/test" should have the same inode and ctime as before
+
+  Scenario: Updating a git module with the rsync configuration
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod "stdlib",
+      :git => "https://github.com/puppetlabs/puppetlabs-stdlib.git", :ref => "3.1.x"
+    """
+    And a file named "Puppetfile.lock" with:
+    """
+    GIT
+      remote: https://github.com/puppetlabs/puppetlabs-stdlib.git
+      ref: 3.1.x
+      sha: 614b3fbf6c15893e89ed8654fb85596223b5b7c5
+      specs:
+        stdlib (3.1.1)
+
+    DEPENDENCIES
+      stdlib (>= 0)
+    """
+    And a file named ".librarian/puppet/config" with:
+    """
+    ---
+    LIBRARIAN_PUPPET_RSYNC: 'true'
+    """
+    When I run `librarian-puppet config`
+    Then the exit status should be 0
+    And the output should contain "rsync: true"
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/stdlib/.git/HEAD" should match /614b3fbf6c15893e89ed8654fb85596223b5b7c5/
+    And a directory named "modules/stdlib" should exist
+    When I run `librarian-puppet update`
+    Then the exit status should be 0
+    And a directory named "modules/stdlib" should exist
+    And the file "modules/stdlib" should have an inode and ctime
+    And the file "modules/stdlib/.git/HEAD" should match /a3c600d5f277f0c9d91c98ef67daf7efc9eed3c5/
+    When I run `librarian-puppet update`
+    Then the exit status should be 0
+    And a directory named "modules/stdlib" should exist
+    And the file "modules/stdlib" should have the same inode and ctime as before
+    And the file "modules/stdlib/.git/HEAD" should match /a3c600d5f277f0c9d91c98ef67daf7efc9eed3c5/
