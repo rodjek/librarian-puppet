@@ -26,3 +26,7 @@ Then /^the file "([^"]*)" should not have the same inode or ctime as before$/ do
         end
     end
 end
+
+Given /^I wait for (\d+) seconds?$/ do |n|
+  sleep(n.to_i)
+end
