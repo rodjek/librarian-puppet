@@ -1,6 +1,16 @@
 # Changelog
 
-## From 1.1.x Librarian-Puppet requires Ruby >= 1.9, uses Puppet Forge API v3. For Ruby 1.8 use 1.0.x
+## From 2.x Librarian-Puppet requires Ruby >= 1.9, uses Puppet Forge API v3. For Ruby 1.8 use 1.x
+
+### 2.0.0
+
+ * Jump from 1.3.x to 2.x to leave 1.x for Ruby 1.8 compatibility
+ * [Issue #254](https://github.com/rodjek/librarian-puppet/issues/254) Add a rsync option to prevent deleting directories
+
+### 1.4.0
+
+ * Jump from 1.0.x to 1.4.x to keep Ruby 1.8 compatibility in the 1.x series
+ * [Issue #254](https://github.com/rodjek/librarian-puppet/issues/254) Add a rsync option to prevent deleting directories
 
 ### 1.3.3
 
@@ -47,8 +57,6 @@
  * [Issue #210](https://github.com/rodjek/librarian-puppet/issues/210) Use forgeapi.puppetlabs.com and API v3
    * Accesing the v3 API requires Ruby 1.9 due to the puppet_forge library used
 
-
-## 1.0.x: Works on Ruby 1.8, using Puppet Forge API v1
 
 ### 1.0.10
 
