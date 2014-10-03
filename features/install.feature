@@ -40,3 +40,75 @@ Feature: cli/install
     """
     Unable to parse .*/bad_modulefile/Modulefile, ignoring: Missing version
     """
+
+    Scenario: Install a module with the rsync configuration using the --clean flag
+      Given a file named "Puppetfile" with:
+      """
+      forge "http://forge.puppetlabs.com"
+
+      mod 'maestrodev/test'
+      """
+      And a file named ".librarian/puppet/config" with:
+      """
+      ---
+      LIBRARIAN_PUPPET_RSYNC: 'true'
+      """
+      When I run `librarian-puppet config`
+      Then the exit status should be 0
+      And the output should contain "rsync: true"
+      When I run `librarian-puppet install`
+      Then the exit status should be 0
+      And a directory named "modules/test" should exist
+      And the file "modules/test" should have an inode and ctime
+      When I run `librarian-puppet install --clean`
+      Then the exit status should be 0
+      And a directory named "modules/test" should exist
+      And the file "modules/test" should not have the same inode or ctime as before
+
+    Scenario: Install a module with the rsync configuration using the --destructive flag
+      Given a file named "Puppetfile" with:
+      """
+      forge "http://forge.puppetlabs.com"
+
+      mod 'maestrodev/test'
+      """
+      And a file named ".librarian/puppet/config" with:
+      """
+      ---
+      LIBRARIAN_PUPPET_RSYNC: 'true'
+      """
+      When I run `librarian-puppet config`
+      Then the exit status should be 0
+      And the output should contain "rsync: true"
+      When I run `librarian-puppet install`
+      Then the exit status should be 0
+      And a directory named "modules/test" should exist
+      And the file "modules/test" should have an inode and ctime
+      When I run `librarian-puppet install --destructive`
+      Then the exit status should be 0
+      And a directory named "modules/test" should exist
+      And the file "modules/test" should not have the same inode or ctime as before
+
+    Scenario: Install a module with the rsync configuration
+      Given a file named "Puppetfile" with:
+      """
+      forge "http://forge.puppetlabs.com"
+
+      mod 'maestrodev/test'
+      """
+      And a file named ".librarian/puppet/config" with:
+      """
+      ---
+      LIBRARIAN_PUPPET_RSYNC: 'true'
+      """
+      When I run `librarian-puppet config`
+      Then the exit status should be 0
+      And the output should contain "rsync: true"
+      When I run `librarian-puppet install`
+      Then the exit status should be 0
+      And a directory named "modules/test" should exist
+      And the file "modules/test" should have an inode and ctime
+      When I run `librarian-puppet install`
+      Then the exit status should be 0
+      And a directory named "modules/test" should exist
+      And the file "modules/test" should have the same inode and ctime as before
