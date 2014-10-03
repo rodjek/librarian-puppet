@@ -28,10 +28,10 @@ Gem::Specification.new do |s|
 
   s.add_dependency "librarian", ">=0.1.2"
   # s.add_dependency "puppet_forge"
+  s.add_dependency "rsync"
 
   # only needed for ruby 1.8
   s.add_dependency "json"
-  s.add_dependency "rsync"
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
