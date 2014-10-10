@@ -40,4 +40,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency "puppet", ENV["PUPPET_VERSION"]
   s.add_development_dependency "minitest", "~> 5"
   s.add_development_dependency "mocha"
+  s.add_development_dependency "simplecov", ">= 0.9.0"
 end
