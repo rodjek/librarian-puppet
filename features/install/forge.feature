@@ -1,7 +1,7 @@
 Feature: cli/install/forge
   Puppet librarian needs to install modules from the Puppet Forge
 
-  @v1.1
+  @v2
   Scenario: Installing a module and its dependencies
     Given a file named "Puppetfile" with:
     """
