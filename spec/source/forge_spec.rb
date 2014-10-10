@@ -14,7 +14,7 @@ describe Forge do
   describe "#manifests" do
     let(:manifests) { [] }
     before do
-      expect_any_instance_of(Librarian::Puppet::Source::Forge::RepoV3).to receive(:get_versions).at_least(:once) { manifests }
+      expect_any_instance_of(Librarian::Puppet::Source::Forge::RepoV1).to receive(:get_versions).at_least(:once) { manifests }
     end
     it "should return the manifests" do
       expect(subject.manifests("x")).to eq(manifests)
