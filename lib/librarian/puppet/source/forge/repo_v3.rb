@@ -10,6 +10,11 @@ module Librarian
 
           PuppetForge.user_agent = "librarian-puppet/#{Librarian::Puppet::VERSION}"
 
+          def initialize(source, name)
+            PuppetForge.host = source.uri.clone
+            super(source, name)
+          end
+
           def get_versions
             get_module.releases.map{|r| r.version}
           end
