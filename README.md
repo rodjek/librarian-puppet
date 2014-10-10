@@ -30,7 +30,7 @@ and isolate a project's dependencies.
 
 ## Versions
 
-Librarian-puppet >= 2.0 requires Ruby 1.9 and uses the Puppet Forge API v3.
+Librarian-puppet >= 2.0 (as well as 1.1, 1.2 and 1.3) requires Ruby 1.9 and uses the Puppet Forge API v3.
 Versions < 2.0 work on Ruby 1.8.
 
 See the [Changelog](Changelog.md) for more details.

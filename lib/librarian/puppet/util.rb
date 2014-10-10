@@ -51,10 +51,14 @@ module Librarian
         name.sub('/','-')
       end
 
-      # get the organization name from organization-module
-      def organization_name(name)
-        name.split('-',2).last
+      # get the module name from organization-module
+      def module_name(name)
+        # module name can't have dashes, so let's assume it is everything after the last dash
+        name.rpartition('-').last
       end
+
+      # deprecated
+      alias :organization_name :module_name
     end
   end
 end

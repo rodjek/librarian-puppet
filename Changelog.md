@@ -6,11 +6,13 @@
 
  * Jump from 1.3.x to 2.x to leave 1.x for Ruby 1.8 compatibility
  * [Issue #254](https://github.com/rodjek/librarian-puppet/issues/254) Add a rsync option to prevent deleting directories
+ * [Issue #261](https://github.com/rodjek/librarian-puppet/issues/261) Incorrect install directory is created if the organization name contains a dash
 
 ### 1.4.0
 
  * Jump from 1.0.x to 1.4.x to keep Ruby 1.8 compatibility in the 1.x series
  * [Issue #254](https://github.com/rodjek/librarian-puppet/issues/254) Add a rsync option to prevent deleting directories
+ * [Issue #261](https://github.com/rodjek/librarian-puppet/issues/261) Incorrect install directory is created if the organization name contains a dash
 
 ### 1.3.3
 
