@@ -98,7 +98,7 @@ module Librarian
         end
 
         def install_path(name)
-          environment.install_path.join(organization_name(name))
+          environment.install_path.join(module_name(name))
         end
 
         def fetch_version(name, version_uri)
