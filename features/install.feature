@@ -84,6 +84,7 @@ Feature: cli/install
       Then the exit status should be 0
       And a directory named "modules/test" should exist
       And the file "modules/test" should have an inode and ctime
+      Given I wait for 1 second
       When I run `librarian-puppet install --destructive`
       Then the exit status should be 0
       And a directory named "modules/test" should exist

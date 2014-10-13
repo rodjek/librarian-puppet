@@ -7,6 +7,7 @@
  * Jump from 1.3.x to 2.x to leave 1.x for Ruby 1.8 compatibility
  * [Issue #254](https://github.com/rodjek/librarian-puppet/issues/254) Add a rsync option to prevent deleting directories
  * [Issue #261](https://github.com/rodjek/librarian-puppet/issues/261) Incorrect install directory is created if the organization name contains a dash
+ * [Issue #255](https://github.com/rodjek/librarian-puppet/issues/255) Ignored forge URL when using API v3
 
 ### 1.4.0
 
