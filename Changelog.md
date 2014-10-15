@@ -2,12 +2,20 @@
 
 ## From 2.x Librarian-Puppet requires Ruby >= 1.9, uses Puppet Forge API v3. For Ruby 1.8 use 1.x
 
+### 2.1.0
+
+ * [Issue #264](https://github.com/rodjek/librarian-puppet/issues/264) Copying files can cause permission problems on Windows
+
 ### 2.0.0
 
  * Jump from 1.3.x to 2.x to leave 1.x for Ruby 1.8 compatibility
  * [Issue #254](https://github.com/rodjek/librarian-puppet/issues/254) Add a rsync option to prevent deleting directories
  * [Issue #261](https://github.com/rodjek/librarian-puppet/issues/261) Incorrect install directory is created if the organization name contains a dash
  * [Issue #255](https://github.com/rodjek/librarian-puppet/issues/255) Ignored forge URL when using API v3
+
+### 1.5.0
+
+ * [Issue #264](https://github.com/rodjek/librarian-puppet/issues/264) Copying files can cause permission problems on Windows
 
 ### 1.4.0
 
