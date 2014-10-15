@@ -30,7 +30,7 @@ module Librarian
         else
           begin
             FileUtils.cp_r(src, dest, :preserve => true)
-          rescue Errno::ENOENT
+          rescue Errno::ENOENT, Errno::EACCES
             debug { "Failed to copy from #{src} to #{dest} preserving file types, trying again without preserving them" }
             FileUtils.rm_rf(dest)
             FileUtils.cp_r(src, dest)
