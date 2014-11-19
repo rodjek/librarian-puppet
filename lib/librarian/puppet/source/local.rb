@@ -163,8 +163,8 @@ module Librarian
           return true if path.join('manifests').exist?
           return true if path.join('lib').join('puppet').exist?
           return true if path.join('lib').join('facter').exist?
-          debug { "Could not find manifests, lib/puppet or lib/facter under #{path}, assuming is not a puppet module" }
-          false
+          debug { "Could not find manifests, lib/puppet or lib/facter under #{path}, maybe it is not a puppet module" }
+          true
         end
       end
     end
