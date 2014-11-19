@@ -105,7 +105,11 @@ module Librarian
         def parsed_metadata
           if @metadata.nil?
             @metadata = if metadata?
-              JSON.parse(File.read(metadata))
+              begin
+                JSON.parse(File.read(metadata))
+              rescue JSON::ParserError => e
+                raise Error, "Unable to parse json file #{metadata}: #{e}"
+              end
             elsif modulefile?
               # translate Modulefile to metadata.json
               evaluated = evaluate_modulefile(modulefile)

@@ -70,7 +70,12 @@ module Librarian
               raise Error, msg
             end
           end
-          dependencyList = JSON.parse(File.read(f))['dependencies']
+          begin
+            json = JSON.parse(File.read(f))
+          rescue JSON::ParserError => e
+            raise Error, "Unable to parse json file #{f}: #{e}"
+          end
+          dependencyList = json['dependencies']
           dependencyList.each do |d|
             mod(d['name'], d['version_requirement'])
           end

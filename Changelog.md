@@ -4,6 +4,7 @@
 
 ### 2.1.0
 
+ * [Issue #269](https://github.com/rodjek/librarian-puppet/issues/269) Better error message if metadata.json is bad
  * [Issue #264](https://github.com/rodjek/librarian-puppet/issues/264) Copying files can cause permission problems on Windows
 
 ### 2.0.0
@@ -15,6 +16,7 @@
 
 ### 1.5.0
 
+ * [Issue #269](https://github.com/rodjek/librarian-puppet/issues/269) Better error message if metadata.json is bad
  * [Issue #264](https://github.com/rodjek/librarian-puppet/issues/264) Copying files can cause permission problems on Windows
 
 ### 1.4.0

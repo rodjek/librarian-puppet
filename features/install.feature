@@ -8,6 +8,14 @@ Feature: cli/install
     Then the output should match /^Metadata file does not exist: .*metadata.json$/
     And the exit status should be 1
 
+  Scenario: Running install with bad metadata.json
+    Given a file named "metadata.json" with:
+    """
+    """
+    When I run `librarian-puppet install`
+    Then the output should match /^Unable to parse json file .*metadata.json: .*$/
+    And the exit status should be 1
+
   Scenario: Install a module dependency from git and forge should be deterministic
     Given a file named "Puppetfile" with:
     """
