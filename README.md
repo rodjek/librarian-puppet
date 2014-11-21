@@ -7,7 +7,7 @@
 Librarian-puppet is a bundler for your puppet infrastructure.  You can use
 librarian-puppet to manage the puppet modules your infrastructure depends on,
 whether the modules come from the [Puppet Forge](https://forge.puppetlabs.com/),
-Git repositories or a just a path.
+Git repositories or just a path.
 
 * Librarian-puppet can reuse the dependencies listed in your `Modulefile` or `metadata.json`
 * Forge modules can be installed from [Puppetlabs Forge](https://forge.puppetlabs.com/) or an internal Forge such as [Pulp](http://www.pulpproject.org/)
