@@ -249,3 +249,31 @@ Feature: cli/install/forge
     Then the exit status should be 0
     And the file "modules/collectd/Modulefile" should match /name *'pdxcat-collectd'/
     And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
+
+@other-forge
+  Scenario: Installing from another forge with local reference should not try to download anything from the official forge
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://127.0.0.1"
+
+    mod 'tester/tester',
+      :path => './tester-tester'
+    """
+    And a file named "tester-tester/metadata.json" with:
+    """
+    {
+        "name": "tester-tester",
+        "version": "0.1.0",
+        "author": "Basilio Vera",
+        "summary": "Just our own test",
+        "license": "MIT",
+        "dependencies": [
+            { "name": "puppetlabs/inifile" },
+            { "name": "tester/tester_dependency1" }
+        ]
+    }    
+    """
+
+    When I run `librarian-puppet install`
+    Then the exit status should be 1
+    And the output should not contain "forgeapi.puppetlabs.com"
