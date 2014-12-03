@@ -6,6 +6,8 @@ module Librarian
   module Puppet
     class Dsl < Librarian::Dsl
 
+      FORGE_URL = "https://forgeapi.puppetlabs.com"
+
       dependency :mod
 
       source :forge => Source::Forge
@@ -20,7 +22,7 @@ module Librarian
         if specfile.kind_of?(Pathname) and !File.exists?(specfile)
           debug { "Specfile not found, using defaults: #{specfile}" }
           specfile = Proc.new do
-            forge "https://forgeapi.puppetlabs.com"
+            forge FORGE_URL
             metadata
           end
         end
@@ -32,6 +34,10 @@ module Librarian
           specfile ||= Proc.new if block_given?
           receiver = Receiver.new(target)
           receiver.run(specfile)
+
+          # save the default forge defined
+          default_forge = target.sources.select {|s| s.is_a? Librarian::Puppet::Source::Forge}.first
+          Librarian::Puppet::Source::Forge.default = default_forge || Librarian::Puppet::Source::Forge.from_lock_options(environment, :remote => FORGE_URL)
 
           debug_named_source_cache("Post-Cached Sources", target)
         end.to_spec
