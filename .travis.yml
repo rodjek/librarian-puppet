@@ -7,14 +7,15 @@ notifications:
     - carlos@apache.org
     - tim@github.com
 env:
-  - PUPPET_VERSION=3.6.1
-  - PUPPET_VERSION=3.5.1
-  - PUPPET_VERSION=3.4.3
-  - PUPPET_VERSION=3.3.2
-  - PUPPET_VERSION=3.2.4
-  - PUPPET_VERSION=3.1.1
-  - PUPPET_VERSION=3.0.2
-  - PUPPET_VERSION=2.7.25
+  - PUPPET_VERSION="~> 3.7.0"
+  - PUPPET_VERSION="~> 3.6.0"
+  - PUPPET_VERSION="~> 3.5.0"
+  - PUPPET_VERSION="~> 3.4.0"
+  - PUPPET_VERSION="~> 3.3.0"
+  - PUPPET_VERSION="~> 3.2.0"
+  - PUPPET_VERSION="~> 3.1.0"
+  - PUPPET_VERSION="~> 3.0.0"
+  - PUPPET_VERSION="~> 2.7.0"
 
 before_script:
   - puppet --version
@@ -23,14 +24,14 @@ matrix:
   # Puppet < 3.5.0 is broken under ruby 2.1 https://tickets.puppetlabs.com/browse/PUP-1243
   exclude:
     - rvm: 2.1.0
-      env: PUPPET_VERSION=2.7.25
+      env: PUPPET_VERSION="~> 2.7.0"
     - rvm: 2.1.0
-      env: PUPPET_VERSION=3.0.2
+      env: PUPPET_VERSION="~> 3.0.0"
     - rvm: 2.1.0
-      env: PUPPET_VERSION=3.1.1
+      env: PUPPET_VERSION="~> 3.1.0"
     - rvm: 2.1.0
-      env: PUPPET_VERSION=3.2.4
+      env: PUPPET_VERSION="~> 3.2.0"
     - rvm: 2.1.0
-      env: PUPPET_VERSION=3.3.2
+      env: PUPPET_VERSION="~> 3.3.0"
     - rvm: 2.1.0
-      env: PUPPET_VERSION=3.4.3
+      env: PUPPET_VERSION="~> 3.4.0"
