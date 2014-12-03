@@ -4,6 +4,7 @@
 
 ### 2.1.0
 
+ * [Issue #272](https://github.com/rodjek/librarian-puppet/issues/272) Defined forge is not used when resolving dependencies
  * [Issue #150](https://github.com/rodjek/librarian-puppet/issues/150) Allow dependencies other than Puppet modules
  * [Issue #269](https://github.com/rodjek/librarian-puppet/issues/269) Better error message if metadata.json is bad
  * [Issue #264](https://github.com/rodjek/librarian-puppet/issues/264) Copying files can cause permission problems on Windows
@@ -17,6 +18,7 @@
 
 ### 1.5.0
 
+ * [Issue #272](https://github.com/rodjek/librarian-puppet/issues/272) Defined forge is not used when resolving dependencies
  * [Issue #150](https://github.com/rodjek/librarian-puppet/issues/150) Allow dependencies other than Puppet modules
  * [Issue #269](https://github.com/rodjek/librarian-puppet/issues/269) Better error message if metadata.json is bad
  * [Issue #264](https://github.com/rodjek/librarian-puppet/issues/264) Copying files can cause permission problems on Windows
