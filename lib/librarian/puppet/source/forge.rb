@@ -12,6 +12,14 @@ module Librarian
         class << self
           LOCK_NAME = 'FORGE'
 
+          def default=(source)
+            @@default = source
+          end
+
+          def default
+            @@default
+          end
+
           def lock_name
             LOCK_NAME
           end

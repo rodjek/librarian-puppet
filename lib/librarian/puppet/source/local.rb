@@ -55,7 +55,7 @@ module Librarian
         end
 
         def forge_source
-          Forge.from_lock_options(environment, :remote => "https://forge.puppetlabs.com")
+          Forge.default
         end
 
         private
@@ -105,7 +105,11 @@ module Librarian
         def parsed_metadata
           if @metadata.nil?
             @metadata = if metadata?
-              JSON.parse(File.read(metadata))
+              begin
+                JSON.parse(File.read(metadata))
+              rescue JSON::ParserError => e
+                raise Error, "Unable to parse json file #{metadata}: #{e}"
+              end
             elsif modulefile?
               # translate Modulefile to metadata.json
               evaluated = evaluate_modulefile(modulefile)
@@ -159,8 +163,8 @@ module Librarian
           return true if path.join('manifests').exist?
           return true if path.join('lib').join('puppet').exist?
           return true if path.join('lib').join('facter').exist?
-          debug { "Could not find manifests, lib/puppet or lib/facter under #{path}, assuming is not a puppet module" }
-          false
+          debug { "Could not find manifests, lib/puppet or lib/facter under #{path}, maybe it is not a puppet module" }
+          true
         end
       end
     end
