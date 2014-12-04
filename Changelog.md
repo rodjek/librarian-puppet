@@ -2,7 +2,7 @@
 
 ## From 2.x Librarian-Puppet requires Ruby >= 1.9, uses Puppet Forge API v3. For Ruby 1.8 use 1.x
 
-### 2.1.0
+### 2.0.1
 
  * [Issue #272](https://github.com/rodjek/librarian-puppet/issues/272) Defined forge is not used when resolving dependencies
  * [Issue #150](https://github.com/rodjek/librarian-puppet/issues/150) Allow dependencies other than Puppet modules
@@ -16,7 +16,7 @@
  * [Issue #261](https://github.com/rodjek/librarian-puppet/issues/261) Incorrect install directory is created if the organization name contains a dash
  * [Issue #255](https://github.com/rodjek/librarian-puppet/issues/255) Ignored forge URL when using API v3
 
-### 1.5.0
+### 1.4.1
 
  * [Issue #272](https://github.com/rodjek/librarian-puppet/issues/272) Defined forge is not used when resolving dependencies
  * [Issue #150](https://github.com/rodjek/librarian-puppet/issues/150) Allow dependencies other than Puppet modules
