@@ -26,7 +26,7 @@ Gem::Specification.new do |s|
 
   s.executables = ['librarian-puppet']
 
-  s.add_dependency "librarian", ">=0.1.2"
+  s.add_dependency "librarianp", ">=0.2.0"
   s.add_dependency "rsync"
   s.add_dependency "puppet_forge"
 
