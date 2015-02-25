@@ -2,6 +2,11 @@
 
 ## From 2.x Librarian-Puppet requires Ruby >= 1.9, uses Puppet Forge API v3. For Ruby 1.8 use 1.x
 
+### 2.1.0
+
+ * [Issue #277](https://github.com/rodjek/librarian-puppet/issues/277) Warn when there are two dependencies with the same module name
+ * Use `librarianp` gem instead of `librarian`, a fork with the needed improvements and fixes.
+
 ### 2.0.1
 
  * [Issue #272](https://github.com/rodjek/librarian-puppet/issues/272) Defined forge is not used when resolving dependencies
