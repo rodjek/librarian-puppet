@@ -250,6 +250,19 @@ Feature: cli/install/forge
     And the file "modules/collectd/Modulefile" should match /name *'pdxcat-collectd'/
     And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
 
+  Scenario: Installing two modules with same name, alphabetical order wins
+    Given a file named "Puppetfile" with:
+    """
+    forge "http://forge.puppetlabs.com"
+
+    mod 'ripienaar-concat', '0.2.0'
+    mod 'puppetlabs-concat', '1.2.0'
+    """
+    When I run `librarian-puppet install --verbose`
+    Then the exit status should be 0
+    And the file "modules/concat/metadata.json" should match /"name": "ripienaar-concat"/
+    And the output should contain "Dependency on module 'concat' is fullfilled by multiple modules and only one will be used"
+
   @other-forge
   Scenario: Installing from another forge with local reference should not try to download anything from the official forge
     Given a file named "Puppetfile" with:

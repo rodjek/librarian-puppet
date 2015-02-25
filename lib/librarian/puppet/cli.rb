@@ -100,6 +100,9 @@ module Librarian
       def install!(options = { })
         Action::Install.new(environment, options).run
       end
+      def resolve!(options = { })
+        Action::Resolve.new(environment, options).run
+      end
     end
   end
 end
