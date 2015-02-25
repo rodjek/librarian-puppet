@@ -7,6 +7,7 @@ require 'librarian/puppet/action'
 module Librarian
   module Puppet
     class Cli < Librarian::Cli
+      include Librarian::Puppet::Util
 
       module Particularity
         def root_module
@@ -67,6 +68,12 @@ module Librarian
         resolve!
         debug { "Install: dependencies resolved"}
         install!
+      end
+
+      # only used to replace / to - in the module names
+      def update(*names)
+        warn("Usage of module/name is deprecated, use module-name") if names.any? {|n| n.include?("/")}
+        super(*names.map{|n| normalize_name(n)})
       end
 
       desc "package", "Cache the puppet modules in vendor/puppet/cache."
