@@ -175,16 +175,15 @@ Feature: cli/install/git
     And the file "modules/munin/Modulefile" should match /name *'duritong-munin'/
     And the file "modules/concat/Modulefile" should match /name *'puppetlabs-concat'/
 
-  @announce
   Scenario: Install from Puppetfile with duplicated entries
     Given a file named "Puppetfile" with:
     """
-    mod 'stdlib',
+    mod 'puppetlabs-stdlib',
       :git => 'git://github.com/puppetlabs/puppetlabs-stdlib.git'
 
-    mod 'stdlib',
+    mod 'puppetlabs-stdlib',
       :git => 'https://github.com/puppetlabs/puppetlabs-stdlib.git'
     """
-    When PENDING I run `librarian-puppet install --verbose`
-    Then the exit status should be 0
-    And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
+    When I run `librarian-puppet install`
+    Then the exit status should be 1
+    And the output should contain "Duplicated dependencies"
