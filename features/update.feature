@@ -271,12 +271,12 @@ Feature: cli/update
     Then the exit status should be 0
     And the file "modules/stdlib/.git/HEAD" should match /614b3fbf6c15893e89ed8654fb85596223b5b7c5/
     And a directory named "modules/stdlib" should exist
-    When I run `librarian-puppet update`
+    When I run `librarian-puppet update --verbose`
     Then the exit status should be 0
     And a directory named "modules/stdlib" should exist
     And the file "modules/stdlib" should have an inode and ctime
     And the file "modules/stdlib/.git/HEAD" should match /a3c600d5f277f0c9d91c98ef67daf7efc9eed3c5/
-    When I run `librarian-puppet update`
+    When I run `librarian-puppet update --verbose`
     Then the exit status should be 0
     And a directory named "modules/stdlib" should exist
     And the file "modules/stdlib" should have the same inode and ctime as before
