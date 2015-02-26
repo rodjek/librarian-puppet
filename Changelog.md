@@ -4,6 +4,8 @@
 
 ### 2.1.0
 
+ * [Issue #282](https://github.com/rodjek/librarian-puppet/issues/282) Merge duplicated dependencies and warn the user, no more `Cannot bounce Puppetfile.lock!` errors
+ * [Issue #217](https://github.com/rodjek/librarian-puppet/issues/217)[Issue #244](https://github.com/rodjek/librarian-puppet/issues/244) Use librarianp 0.4.0 that no longer uses recursion to avoid `stack level too deep` errors
  * [Issue #277](https://github.com/rodjek/librarian-puppet/issues/277) Warn when there are two dependencies with the same module name
  * Use `librarianp` gem instead of `librarian`, a fork with the needed improvements and fixes.
 

@@ -45,10 +45,7 @@ module Librarian
           parsed_metadata['dependencies'].each do |d|
             gem_requirement = Requirement.new(d['version_requirement']).gem_requirement
             new_dependency = Dependency.new(d['name'], gem_requirement, forge_source)
-            # Avoid duplicated dependencies with different sources
-            unless dependencies.find { |spec_dependency| spec_dependency.name == new_dependency.name && spec_dependency.requirement == new_dependency.requirement }
-              dependencies << new_dependency
-            end
+            dependencies << new_dependency
           end
 
           dependencies
