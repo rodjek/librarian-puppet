@@ -30,6 +30,30 @@ Feature: cli/install
     And the output should not contain "Executing puppet module install for puppetlabs/stdlib"
     And the output should not contain "Executing puppet module install for puppetlabs-stdlib"
 
+  Scenario: Installing two modules with same name and using exclusions
+    Given a file named "Puppetfile" with:
+    """
+    forge "https://forgeapi.puppetlabs.com"
+
+    mod 'librarian-duplicated_dependencies', :path => '../../features/examples/duplicated_dependencies'
+    exclusion 'ripienaar-concat'
+    """
+    When I run `librarian-puppet install --verbose`
+    Then the exit status should be 0
+    And the file "modules/concat/metadata.json" should match /"name": "puppetlabs-concat"/
+    And the output should contain "Excluding dependency ripienaar-concat from"
+
+  Scenario: Installing two modules with same name and using exclusions, apply transitively
+    Given a file named "Puppetfile" with:
+    """
+    forge "https://forgeapi.puppetlabs.com"
+
+    mod 'librarian-duplicated_dependencies_transitive', :path => '../../features/examples/duplicated_dependencies_transitive'
+    """
+    When PENDING I run `librarian-puppet install --verbose`
+    Then the exit status should be 0
+    And the file "modules/concat/metadata.json" should match /"name": "puppetlabs-concat"/
+
   Scenario: Install a module with Modulefile without version
     Given a file named "Puppetfile" with:
     """

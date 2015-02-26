@@ -72,6 +72,8 @@ as if the Puppetfile contained
 
     mod 'acme-mymodule', :path => './some_folder'
 
+    exclusion 'acme-bad_module'
+
 
 ### Recursive module dependency resolution
 
@@ -147,6 +149,10 @@ to be downloaded from GitHub tarball.
 
 Our puppet infrastructure repository depends on the `acme-mymodule` module,
 which is already in the filesystem.
+
+    exclusion 'acme-bad_module'
+
+Exclude the module `acme-bad_module` from resolution and installation.
 
 ## How to Use
 
