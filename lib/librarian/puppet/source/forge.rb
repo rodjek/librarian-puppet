@@ -143,7 +143,7 @@ module Librarian
 
         def fetch_dependencies(name, version, version_uri)
           repo(name).dependencies(version).map do |k, v|
-            v = Requirement.new(v).gem_requirement
+            v = Librarian::Dependency::Requirement.new(v).to_gem_requirement
             Dependency.new(k, v, nil)
           end
         end

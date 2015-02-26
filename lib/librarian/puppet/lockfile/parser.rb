@@ -1,5 +1,5 @@
 require 'librarian/manifest'
-require 'librarian/dependency'
+require 'librarian/puppet/dependency'
 require 'librarian/manifest_set'
 
 module Librarian
@@ -44,7 +44,7 @@ module Librarian
         while lines.first =~ /^ {2}([\w\-\/]+)(?: \((.*)\))?$/ # This change allows forward slash
           lines.shift
           name, requirement = normalize_name($1), $2.split(/,\s*/)
-          dependencies << Dependency.new(name, requirement, manifests_index[name].source)
+          dependencies << Librarian::Puppet::Dependency.new(name, requirement, manifests_index[name].source)
         end
 
         Resolution.new(dependencies, manifests)

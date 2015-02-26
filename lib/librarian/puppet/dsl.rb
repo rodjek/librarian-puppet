@@ -1,6 +1,7 @@
 require 'librarian/dsl'
 require 'librarian/dsl/target'
 require 'librarian/puppet/source'
+require 'librarian/puppet/dependency'
 
 module Librarian
   module Puppet
@@ -20,6 +21,10 @@ module Librarian
           forge FORGE_URL
           metadata
         end
+      end
+
+      def self.dependency_type
+        Librarian::Puppet::Dependency
       end
 
       def post_process_target(target)
