@@ -1,6 +1,7 @@
 require 'librarian/dsl'
 require 'librarian/dsl/target'
 require 'librarian/puppet/source'
+require 'librarian/puppet/dependency'
 
 module Librarian
   module Puppet
@@ -15,32 +16,25 @@ module Librarian
       source :path => Source::Path
       source :github_tarball => Source::GitHubTarball
 
-      # copied from Librarian::Dsl to use our own Receiver
-      def run(specfile = nil, sources = [])
-        specfile, sources = nil, specfile if specfile.kind_of?(Array) && sources.empty?
-
-        if specfile.kind_of?(Pathname) and !File.exists?(specfile)
-          debug { "Specfile not found, using defaults: #{specfile}" }
-          specfile = Proc.new do
-            forge FORGE_URL
-            metadata
-          end
+      def default_specfile
+        Proc.new do
+          forge FORGE_URL
+          metadata
         end
+      end
 
-        Target.new(self).tap do |target|
-          target.precache_sources(sources)
-          debug_named_source_cache("Pre-Cached Sources", target)
+      def self.dependency_type
+        Librarian::Puppet::Dependency
+      end
 
-          specfile ||= Proc.new if block_given?
-          receiver = Receiver.new(target)
-          receiver.run(specfile)
+      def post_process_target(target)
+        # save the default forge defined
+        default_forge = target.sources.select {|s| s.is_a? Librarian::Puppet::Source::Forge}.first
+        Librarian::Puppet::Source::Forge.default = default_forge || Librarian::Puppet::Source::Forge.from_lock_options(environment, :remote => FORGE_URL)
+      end
 
-          # save the default forge defined
-          default_forge = target.sources.select {|s| s.is_a? Librarian::Puppet::Source::Forge}.first
-          Librarian::Puppet::Source::Forge.default = default_forge || Librarian::Puppet::Source::Forge.from_lock_options(environment, :remote => FORGE_URL)
-
-          debug_named_source_cache("Post-Cached Sources", target)
-        end.to_spec
+      def receiver(target)
+        Receiver.new(target)
       end
 
       class Receiver < Librarian::Dsl::Receiver

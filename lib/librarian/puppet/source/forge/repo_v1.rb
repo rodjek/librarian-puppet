@@ -33,30 +33,9 @@ module Librarian
 
         private
 
-          # Issue #223 dependencies may be duplicated
-          # and convert organization/modulename to organization-modulename
-          def clear_duplicated_dependencies(data)
+          # convert organization/modulename to organization-modulename
+          def normalize_dependencies(data)
             return nil if data.nil?
-            data.each do |m,versions|
-              versions.each do |v|
-                if v["dependencies"] and !v["dependencies"].empty?
-                  # convert organization/modulename to organization-modulename
-                  v["dependencies"].each {|d| d[0] = normalize_name(d[0])}
-
-                  dependency_names = v["dependencies"].map {|d| d[0]}
-                  duplicated = dependency_names.select{ |e| dependency_names.count(e) > 1 }
-                  unless duplicated.empty?
-                    duplicated.uniq.each do |module_duplicated|
-                      to_remove = []
-                      v["dependencies"].each_index{|i| to_remove << i if module_duplicated == v["dependencies"][i][0]}
-                      warn { "Module #{m}@#{v["version"]} contains duplicated dependencies for #{module_duplicated}, ignoring all but the first of #{to_remove.map {|i| v["dependencies"][i]}}" }
-                      to_remove.slice(1..-1).reverse.each {|i| v["dependencies"].delete_at(i) }
-                      v["dependencies"] = v["dependencies"] - to_remove.slice(1..-1)
-                    end
-                  end
-                end
-              end
-            end
             # convert organization/modulename to organization-modulename
             data.keys.each do |m|
               if m =~ %r{.*/.*}
@@ -71,7 +50,7 @@ module Librarian
           def api_data(module_name)
             return @api_data[module_name] if @api_data
             # call API and cache data
-            @api_data = clear_duplicated_dependencies(api_call(module_name))
+            @api_data = normalize_dependencies(api_call(module_name))
             if @api_data.nil?
               raise Error, "Unable to find module '#{name}' on #{source}"
             end
@@ -83,7 +62,7 @@ module Librarian
             # if we already got all the versions, find in cached data
             return @api_data[module_name].detect{|x| x['version'] == version.to_s} if @api_data
             # otherwise call the api for this version if not cached already
-            @api_version_data[version] = clear_duplicated_dependencies(api_call(name, version)) if @api_version_data[version].nil?
+            @api_version_data[version] = normalize_dependencies(api_call(name, version)) if @api_version_data[version].nil?
             @api_version_data[version]
           end
 

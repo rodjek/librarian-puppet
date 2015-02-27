@@ -13,6 +13,7 @@ Git repositories or just a path.
 * Forge modules can be installed from [Puppetlabs Forge](https://forge.puppetlabs.com/) or an internal Forge such as [Pulp](http://www.pulpproject.org/)
 * Git modules can be installed from a branch, tag or specific commit, optionally using a path inside the repository
 * Modules can be installed from GitHub using tarballs, without needing Git installed
+* Modules can be installed from a filesystem path
 * Module dependencies are resolved transitively without needing to list all the modules explicitly
 
 
@@ -68,6 +69,10 @@ as if the Puppetfile contained
 
     mod 'puppetlabs-apache', '0.6.0',
       :github_tarball => 'puppetlabs/puppetlabs-apache'
+
+    mod 'acme-mymodule', :path => './some_folder'
+
+    exclusion 'acme-bad_module'
 
 
 ### Recursive module dependency resolution
@@ -133,6 +138,21 @@ module subdirectory.
 
 Our puppet infrastructure repository depends on the `apt` module, which we have
 stored as a directory under our `puppet-modules` git repos.
+
+    mod 'puppetlabs-apache', '0.6.0',
+      :github_tarball => 'puppetlabs/puppetlabs-apache'
+
+Our puppet infrastructure repository depends on the `puppetlabs-apache` module,
+to be downloaded from GitHub tarball.
+
+    mod 'acme-mymodule', :path => './some_folder'
+
+Our puppet infrastructure repository depends on the `acme-mymodule` module,
+which is already in the filesystem.
+
+    exclusion 'acme-bad_module'
+
+Exclude the module `acme-bad_module` from resolution and installation.
 
 ## How to Use
 

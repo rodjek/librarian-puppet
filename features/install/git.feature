@@ -164,27 +164,26 @@ Feature: cli/install/git
     And the file "modules/test/Modulefile" should match /version *'0\.0\.1'/
     And a file named "modules/stdlib/metadata.json" should exist
 
-  @announce
   Scenario: Install a module with mismatching Puppetfile and Modulefile
     Given a file named "Puppetfile" with:
     """
     mod 'duritong/munin', :git => 'https://github.com/2ndquadrant-it/puppet-munin.git', :ref => '0bb71e'
     """
-    When PENDING I run `librarian-puppet install --verbose`
+    When I run `librarian-puppet install`
     Then the exit status should be 0
     And the file "modules/munin/Modulefile" should match /name *'duritong-munin'/
-    And the file "modules/concat/Modulefile" should match /name *'puppetlabs-concat'/
+    And the file "modules/concat/metadata.json" should match /"name": *"puppetlabs-concat"/
+    And a file named "modules/stdlib/metadata.json" should exist
 
-  @announce
   Scenario: Install from Puppetfile with duplicated entries
     Given a file named "Puppetfile" with:
     """
-    mod 'stdlib',
+    mod 'puppetlabs-stdlib',
       :git => 'git://github.com/puppetlabs/puppetlabs-stdlib.git'
 
-    mod 'stdlib',
+    mod 'puppetlabs-stdlib',
       :git => 'https://github.com/puppetlabs/puppetlabs-stdlib.git'
     """
-    When PENDING I run `librarian-puppet install --verbose`
-    Then the exit status should be 0
-    And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
+    When I run `librarian-puppet install`
+    Then the exit status should be 1
+    And the output should contain "Duplicated dependencies"

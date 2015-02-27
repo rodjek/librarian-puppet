@@ -2,6 +2,14 @@
 
 ## From 2.x Librarian-Puppet requires Ruby >= 1.9, uses Puppet Forge API v3. For Ruby 1.8 use 1.x
 
+### 2.1.0
+
+ * Update librarian to use the new `exclusion` syntax
+ * [Issue #282](https://github.com/rodjek/librarian-puppet/issues/282) Merge duplicated dependencies and warn the user, no more `Cannot bounce Puppetfile.lock!` errors
+ * [Issue #217](https://github.com/rodjek/librarian-puppet/issues/217)[Issue #244](https://github.com/rodjek/librarian-puppet/issues/244) Use librarianp 0.4.0 that no longer uses recursion to avoid `stack level too deep` errors
+ * [Issue #277](https://github.com/rodjek/librarian-puppet/issues/277) Warn when there are two dependencies with the same module name
+ * Use `librarianp` gem instead of `librarian`, a fork with the needed improvements and fixes.
+
 ### 2.0.1
 
  * [Issue #272](https://github.com/rodjek/librarian-puppet/issues/272) Defined forge is not used when resolving dependencies
@@ -15,6 +23,14 @@
  * [Issue #254](https://github.com/rodjek/librarian-puppet/issues/254) Add a rsync option to prevent deleting directories
  * [Issue #261](https://github.com/rodjek/librarian-puppet/issues/261) Incorrect install directory is created if the organization name contains a dash
  * [Issue #255](https://github.com/rodjek/librarian-puppet/issues/255) Ignored forge URL when using API v3
+
+### 1.5.0
+
+ * Update librarian to use the new `exclusion` syntax
+ * [Issue #282](https://github.com/rodjek/librarian-puppet/issues/282) Merge duplicated dependencies and warn the user, no more `Cannot bounce Puppetfile.lock!` errors
+ * [Issue #217](https://github.com/rodjek/librarian-puppet/issues/217)[Issue #244](https://github.com/rodjek/librarian-puppet/issues/244) Use librarianp 0.4.0 that no longer uses recursion to avoid `stack level too deep` errors
+ * [Issue #277](https://github.com/rodjek/librarian-puppet/issues/277) Warn when there are two dependencies with the same module name
+ * Use `librarianp` gem instead of `librarian`, a fork with the needed improvements and fixes.
 
 ### 1.4.1
 

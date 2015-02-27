@@ -1,7 +1,7 @@
 require "librarian/environment"
 require "librarian/puppet/dsl"
 require "librarian/puppet/source"
-require "librarian/puppet/lockfile/parser"
+require "librarian/puppet/lockfile"
 
 module Librarian
   module Puppet
@@ -9,6 +9,14 @@ module Librarian
 
       def adapter_name
         "puppet"
+      end
+
+      def lockfile
+        Lockfile.new(self, lockfile_path)
+      end
+
+      def ephemeral_lockfile
+        Lockfile.new(self, nil)
       end
 
       def tmp_path
