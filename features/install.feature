@@ -33,7 +33,7 @@ Feature: cli/install
   Scenario: Installing two modules with same name and using exclusions
     Given a file named "Puppetfile" with:
     """
-    forge "https://forgeapi.puppetlabs.com"
+    forge "http://forge.puppetlabs.com"
 
     mod 'librarian-duplicated_dependencies', :path => '../../features/examples/duplicated_dependencies'
     exclusion 'ripienaar-concat'
@@ -46,7 +46,7 @@ Feature: cli/install
   Scenario: Installing two modules with same name and using exclusions, apply transitively
     Given a file named "Puppetfile" with:
     """
-    forge "https://forgeapi.puppetlabs.com"
+    forge "http://forge.puppetlabs.com"
 
     mod 'librarian-duplicated_dependencies_transitive', :path => '../../features/examples/duplicated_dependencies_transitive'
     """
