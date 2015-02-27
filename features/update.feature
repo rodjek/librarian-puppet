@@ -239,6 +239,7 @@ Feature: cli/update
     And a directory named "modules/test" should exist
     And the file "modules/test" should have the same inode and ctime as before
 
+  @announce
   Scenario: Updating a git module with the rsync configuration
     Given a file named "Puppetfile" with:
     """
