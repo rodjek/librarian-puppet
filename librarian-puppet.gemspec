@@ -26,9 +26,9 @@ Gem::Specification.new do |s|
 
   s.executables = ['librarian-puppet']
 
-  s.add_dependency "librarianp", ">=0.5.0"
-  # s.add_dependency "puppet_forge"
+  s.add_dependency "librarianp", ">=0.5.1"
   s.add_dependency "rsync"
+  # s.add_dependency "puppet_forge"
 
   # only needed for ruby 1.8
   s.add_dependency "json"
