@@ -164,7 +164,6 @@ Feature: cli/install/git
     And the file "modules/test/Modulefile" should match /version *'0\.0\.1'/
     And a file named "modules/stdlib/metadata.json" should exist
 
-  @test
   Scenario: Install a module with mismatching Puppetfile and Modulefile
     Given a file named "Puppetfile" with:
     """
@@ -176,7 +175,6 @@ Feature: cli/install/git
     And the file "modules/concat/metadata.json" should match /"name": *"puppetlabs-concat"/
     And a file named "modules/stdlib/metadata.json" should exist
 
-  @test
   Scenario: Install from Puppetfile with duplicated entries
     Given a file named "Puppetfile" with:
     """
