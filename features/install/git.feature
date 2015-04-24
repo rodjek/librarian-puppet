@@ -167,7 +167,7 @@ Feature: cli/install/git
   Scenario: Install a module with mismatching Puppetfile and Modulefile
     Given a file named "Puppetfile" with:
     """
-    mod 'duritong/munin', :git => 'https://github.com/2ndquadrant-it/puppet-munin.git', :ref => '0bb71e'
+    mod 'duritong/munin', :git => 'https://github.com/duritong/puppet-munin.git', :ref => '0bb71e'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
