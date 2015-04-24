@@ -85,7 +85,7 @@ Feature: cli/install/forge
 
     mod 'puppetlabs/apache', '0.4.0'
     mod 'puppetlabs/postgresql', '2.0.1'
-    mod 'puppetlabs/apt', '< 1.4.2' # 1.4.2 causes trouble in travis
+    mod 'puppetlabs/apt', '< 1.4.1' # 1.4.2 causes trouble in travis
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
@@ -128,7 +128,7 @@ Feature: cli/install/forge
     forge "http://forge.puppetlabs.com"
 
     mod 'puppetlabs/postgresql', '3.2.0'
-    mod 'puppetlabs/apt', '< 1.4.2' # 1.4.2 causes trouble in travis
+    mod 'puppetlabs/apt', '< 1.4.1' # 1.4.2 causes trouble in travis
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
