@@ -88,6 +88,10 @@ This declares that we want to use the official Puppet Labs Forge as our default
 source when pulling down modules.  If you run your own local forge, you may
 want to change this.
 
+    metadata
+
+Download all the dependencies listed in your `metadata.json` or `Modulefile` from the Puppet Forge.
+
     mod 'puppetlabs-razor'
 
 Pull in the latest version of the Puppet Labs Razor module from the default
@@ -259,7 +263,7 @@ and transforming it: replace hyphens (`-`) with underscores (`_`) and periods
 
 Configuration affects how various commands operate.
 
-* The `path` config sets the cookbooks directory to install to. If a relative
+* The `path` config sets the directory to install to. If a relative
   path, it is relative to the directory containing the `Puppetfile`. The
   equivalent environment variable is `LIBRARIAN_PUPPET_PATH`.
 
