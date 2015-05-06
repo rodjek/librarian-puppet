@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "librarianp", ">=0.6.2"
   s.add_dependency "rsync"
-  s.add_dependency "puppet_forge"
+  s.add_dependency "puppet_forge", "~> 1.0"
 
   s.add_development_dependency "rake"
   s.add_development_dependency "rspec"
