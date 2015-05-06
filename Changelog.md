@@ -2,6 +2,10 @@
 
 ## From 2.x Librarian-Puppet requires Ruby >= 1.9, uses Puppet Forge API v3. For Ruby 1.8 use 1.x
 
+### 2.2.0
+
+ * [Issue #296](https://github.com/rodjek/librarian-puppet/issues/296) Uninitialized constant Puppet::ModuleTool::ModulefileReader using Modulefiles in Puppet 4. Ignore those dependencies
+
 ### 2.1.1
 
  * [Issue #302](https://github.com/rodjek/librarian-puppet/issues/302) Ensure path is not lost when default specfile is used

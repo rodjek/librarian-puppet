@@ -85,6 +85,13 @@ module Librarian
           @@require_puppet ||= require_puppet
 
           metadata = ::Puppet::ModuleTool::Metadata.new
+
+          # Puppet 4 does not have the class
+          unless defined? ::Puppet::ModuleTool::ModulefileReader
+            warn { "Can't parse Modulefile in Puppet >= 4.0 and you are using #{Librarian::Puppet::puppet_version}. Ignoring dependencies in #{modulefile}" }
+            return metadata
+          end
+
           begin
             ::Puppet::ModuleTool::ModulefileReader.evaluate(metadata, modulefile)
             raise SyntaxError, "Missing version" unless metadata.version
