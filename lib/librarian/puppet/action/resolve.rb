@@ -1,3 +1,5 @@
+require 'librarian/action/resolve'
+
 module Librarian
   module Puppet
     module Action
