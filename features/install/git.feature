@@ -7,29 +7,29 @@ Feature: cli/install/git
     forge "http://forge.puppetlabs.com"
 
     mod 'puppetlabs/apache',
-        :git => 'https://github.com/puppetlabs/puppetlabs-apache.git', :ref => '0.6.0'
+        :git => 'https://github.com/puppetlabs/puppetlabs-apache.git', :ref => '1.4.0'
 
     mod 'puppetlabs/stdlib',
-        :git => 'https://github.com/puppetlabs/puppetlabs-stdlib.git', :ref => 'v2.2.1'
+        :git => 'https://github.com/puppetlabs/puppetlabs-stdlib.git', :ref => '4.6.0'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/apache/Modulefile" should match /name *'puppetlabs-apache'/
-    And the file "modules/apache/Modulefile" should match /version *'0\.6\.0'/
-    And the git revision of module "apache" should be "b18fad908fe7cb8fbc6604fde1962c85540095f4"
-    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
-    And the file "modules/stdlib/Modulefile" should match /version *'2\.2\.1'/
-    And the git revision of module "stdlib" should be "a70b09d5de035de5254ebe6ad6e1519a6d7cf588"
+    And the file "modules/apache/metadata.json" should match /"name": "puppetlabs-apache"/
+    And the file "modules/apache/metadata.json" should match /"version": "1\.4\.0"/
+    And the git revision of module "apache" should be "e4ec6d4985fdb23e26c809e0d5786823d0689f90"
+    And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
+    And the file "modules/stdlib/metadata.json" should match /"version": "4\.6\.0"/
+    And the git revision of module "stdlib" should be "73474b00b5ae3cbccec6cd0711311d6450139e51"
 
   @spaces
   Scenario: Installing a module in a path with spaces
     Given a file named "Puppetfile" with:
     """
-    mod 'puppetlabs/stdlib', '4.1.0', :git => 'https://github.com/puppetlabs/puppetlabs-stdlib.git', :ref => '4.1.0'
+    mod 'puppetlabs/stdlib', '4.6.0', :git => 'https://github.com/puppetlabs/puppetlabs-stdlib.git', :ref => '4.6.0'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/stdlib/Modulefile" should match /name *'puppetlabs-stdlib'/
+    And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
 
   Scenario: Installing a module with invalid versions in git
     Given a file named "Puppetfile" with:
@@ -37,37 +37,37 @@ Feature: cli/install/git
     forge "http://forge.puppetlabs.com"
 
     mod "apache",
-      :git => "https://github.com/puppetlabs/puppetlabs-apache.git", :ref => "0.5.0-rc1"
+      :git => "https://github.com/puppetlabs/puppetlabs-apache.git", :ref => "1.4.0"
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/apache/Modulefile" should match /name *'puppetlabs-apache'/
-    And the file "modules/apache/Modulefile" should match /version *'0\.5\.0-rc1'/
+    And the file "modules/apache/metadata.json" should match /"name": "puppetlabs-apache"/
+    And the file "modules/apache/metadata.json" should match /"version": "1\.4\.0"/
 
   Scenario: Switching a module from forge to git
     Given a file named "Puppetfile" with:
     """
     forge "http://forge.puppetlabs.com"
 
-    mod 'puppetlabs/postgresql', '1.0.0'
+    mod 'puppetlabs/postgresql', '4.0.0'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/postgresql/Modulefile" should match /name *'puppetlabs-postgresql'/
-    And the file "modules/postgresql/Modulefile" should match /version *'1\.0\.0'/
+    And the file "modules/postgresql/metadata.json" should match /"name": "puppetlabs-postgresql"/
+    And the file "modules/postgresql/metadata.json" should match /"version": "4\.0\.0"/
     And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
     When I overwrite "Puppetfile" with:
     """
     forge "http://forge.puppetlabs.com"
 
     mod 'puppetlabs/postgresql',
-      :git => 'https://github.com/puppetlabs/puppetlabs-postgresql.git', :ref => '1.0.0'
+      :git => 'https://github.com/puppetlabs/puppetlabs-postgresql.git', :ref => '4.3.0'
     """
     And I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/postgresql/Modulefile" should match /name *'puppetlabs-postgresql'/
-    And the file "modules/postgresql/Modulefile" should match /version *'1\.0\.0'/
-    And the file "modules/postgresql/.git/HEAD" should match /183d401a3ffeb2e83372dfcc05f5b6bab25034b1/
+    And the file "modules/postgresql/metadata.json" should match /"name": "puppetlabs-postgresql"/
+    And the file "modules/postgresql/metadata.json" should match /"version": "4\.3\.0"/
+    And the file "modules/postgresql/.git/HEAD" should match /9ca4b42450ea9c9ed8eec52dac48cb67187ae925/
     And the file "modules/stdlib/metadata.json" should match /"name": "puppetlabs-stdlib"/
 
   Scenario: Install a module with dependencies specified in metadata.json
@@ -90,6 +90,7 @@ Feature: cli/install/git
     And the file "modules/with_puppetfile/Modulefile" should match /name *'librarian-with_puppetfile'/
     And the file "modules/test/Modulefile" should match /name *'librarian-test'/
 
+  @puppet2 @puppet3
   Scenario: Install a module with dependencies specified in a Puppetfile and Modulefile
     Given a file named "Puppetfile" with:
     """
@@ -100,12 +101,22 @@ Feature: cli/install/git
     And the file "modules/with_puppetfile/Modulefile" should match /name *'librarian-with_puppetfile_and_modulefile'/
     And the file "modules/test/Modulefile" should match /name *'maestrodev-test'/
 
+  Scenario: Install a module with dependencies specified in a Puppetfile and metadata.json
+    Given a file named "Puppetfile" with:
+    """
+    mod 'librarian/with_puppetfile', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/with_puppetfile_and_metadata_json'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/with_puppetfile/metadata.json" should match /"name": "librarian-with_puppetfile_and_metadata_json"/
+    And the file "modules/test/metadata.json" should match /"name": "maestrodev-test"/
+
   Scenario: Running install with no Modulefile nor metadata.json
     Given a file named "Puppetfile" with:
     """
     forge "http://forge.puppetlabs.com"
 
-    mod 'puppetlabs/stdlib', :git => 'https://github.com/puppetlabs/puppetlabs-stdlib.git', :ref => '3.0.0'
+    mod 'puppetlabs/stdlib', :git => 'https://github.com/puppetlabs/puppetlabs-stdlib.git', :ref => '4.6.0'
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
@@ -120,6 +131,7 @@ Feature: cli/install/git
     When I run `librarian-puppet install`
     Then the exit status should be 0
 
+  @puppet2 @puppet3
   Scenario: Install a module using modulefile syntax
     Given a file named "Puppetfile" with:
     """
@@ -138,7 +150,7 @@ Feature: cli/install/git
     When I run `librarian-puppet install`
     Then the exit status should be 0
     And the file "modules/metadata_syntax/metadata.json" should match /"name": "librarian-metadata_syntax"/
-    And the file "modules/test/Modulefile" should match /name *'maestrodev-test'/
+    And the file "modules/test/metadata.json" should match /"name": "maestrodev-test"/
 
   Scenario: Install a module from git and using path
     Given a file named "Puppetfile" with:
@@ -164,6 +176,7 @@ Feature: cli/install/git
     And the file "modules/test/Modulefile" should match /version *'0\.0\.1'/
     And a file named "modules/stdlib/metadata.json" should exist
 
+  @puppet2 @puppet3
   Scenario: Install a module with mismatching Puppetfile and Modulefile
     Given a file named "Puppetfile" with:
     """

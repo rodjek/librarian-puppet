@@ -21,12 +21,12 @@ Feature: cli/install
     """
     forge "http://forge.puppetlabs.com"
 
-    mod 'puppetlabs/stdlib', :git => 'https://github.com/puppetlabs/puppetlabs-stdlib.git', :ref => '3.0.0'
+    mod 'puppetlabs/stdlib', :git => 'https://github.com/puppetlabs/puppetlabs-stdlib.git', :ref => '4.6.0'
     mod 'librarian/test', :git => 'https://github.com/rodjek/librarian-puppet.git', :path => 'features/examples/test'
     """
     When I run `librarian-puppet install --verbose`
     Then the exit status should be 0
-    And the file "modules/stdlib/Modulefile" should match /version *'3\.0\.0'/
+    And the file "modules/stdlib/metadata.json" should match /"version": "4\.6\.0"/
     And the output should not match /Executing puppet module install for puppetlabs.stdlib/
 
   Scenario: Install duplicated dependencies from git and forge, last one wins
@@ -35,7 +35,7 @@ Feature: cli/install
     forge "http://forge.puppetlabs.com"
 
     metadata
-    mod 'puppetlabs-stdlib', :git => 'https://github.com/puppetlabs/puppetlabs-stdlib.git', :ref => '3.0.0'
+    mod 'puppetlabs-stdlib', :git => 'https://github.com/puppetlabs/puppetlabs-stdlib.git', :ref => '4.6.0'
     """
     And a file named "metadata.json" with:
     """
@@ -51,7 +51,7 @@ Feature: cli/install
     """
     When I run `librarian-puppet install --verbose`
     Then the exit status should be 0
-    And the file "modules/stdlib/Modulefile" should match /version *'3\.0\.0'/
+    And the file "modules/stdlib/metadata.json" should match /"version": "4\.6\.0"/
     And the output should not match /Executing puppet module install for puppetlabs.stdlib/
 
   Scenario: Installing two modules with same name and using exclusions
@@ -78,6 +78,7 @@ Feature: cli/install
     Then the exit status should be 0
     And the file "modules/concat/metadata.json" should match /"name": "puppetlabs-concat"/
 
+  @puppet2 @puppet3
   Scenario: Install a module with Modulefile without version
     Given a file named "Puppetfile" with:
     """

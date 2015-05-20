@@ -105,28 +105,29 @@ Feature: cli/update
     """
     forge "http://forge.puppetlabs.com"
 
-    mod "stdlib",
-      :git => "https://github.com/puppetlabs/puppetlabs-stdlib.git", :ref => "3.1.x"
+    mod "puppetlabs-stdlib",
+      :git => "https://github.com/puppetlabs/puppetlabs-stdlib.git", :ref => "3.2.x"
     """
     And a file named "Puppetfile.lock" with:
     """
     GIT
       remote: https://github.com/puppetlabs/puppetlabs-stdlib.git
-      ref: 3.1.x
-      sha: 614b3fbf6c15893e89ed8654fb85596223b5b7c5
+      ref: 3.2.x
+      sha: 326a8fd801ecba11005189c10ca8749872ef6577
       specs:
-        stdlib (3.1.1)
+        puppetlabs-stdlib (3.2.1)
 
     DEPENDENCIES
-      stdlib (>= 0)
+      puppetlabs-stdlib (>= 0)
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the git revision of module "stdlib" should be "614b3fbf6c15893e89ed8654fb85596223b5b7c5"
+    And the git revision of module "stdlib" should be "326a8fd801ecba11005189c10ca8749872ef6577"
     When I run `librarian-puppet update`
     Then the exit status should be 0
-    And the git revision of module "stdlib" should be "a3c600d5f277f0c9d91c98ef67daf7efc9eed3c5"
+    And the git revision of module "stdlib" should be "c0b5ce3b015db9f50d486040c16d8de56c6b4991"
 
+  @puppet2 @puppet3
   Scenario: Updating a module with invalid versions in git
     Given a file named "Puppetfile" with:
     """
@@ -245,20 +246,20 @@ Feature: cli/update
     """
     forge "http://forge.puppetlabs.com"
 
-    mod "stdlib",
-      :git => "https://github.com/puppetlabs/puppetlabs-stdlib.git", :ref => "3.1.x"
+    mod "puppetlabs-stdlib",
+      :git => "https://github.com/puppetlabs/puppetlabs-stdlib.git", :ref => "3.2.x"
     """
     And a file named "Puppetfile.lock" with:
     """
     GIT
       remote: https://github.com/puppetlabs/puppetlabs-stdlib.git
-      ref: 3.1.x
-      sha: 614b3fbf6c15893e89ed8654fb85596223b5b7c5
+      ref: 3.2.x
+      sha: 326a8fd801ecba11005189c10ca8749872ef6577
       specs:
-        stdlib (3.1.1)
+        puppetlabs-stdlib (3.2.1)
 
     DEPENDENCIES
-      stdlib (>= 0)
+      puppetlabs-stdlib (>= 0)
     """
     And a file named ".librarian/puppet/config" with:
     """
@@ -270,18 +271,18 @@ Feature: cli/update
     And the output should contain "rsync: true"
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "Puppetfile.lock" should contain "614b3fbf6c15893e89ed8654fb85596223b5b7c5"
-    And the git revision of module "stdlib" should be "614b3fbf6c15893e89ed8654fb85596223b5b7c5"
+    And the file "Puppetfile.lock" should contain "326a8fd801ecba11005189c10ca8749872ef6577"
+    And the git revision of module "stdlib" should be "326a8fd801ecba11005189c10ca8749872ef6577"
     And a directory named "modules/stdlib" should exist
     When I run `librarian-puppet update --verbose`
     Then the exit status should be 0
     And a directory named "modules/stdlib" should exist
     And the file "modules/stdlib" should have an inode and ctime
-    And the file "Puppetfile.lock" should contain "a3c600d5f277f0c9d91c98ef67daf7efc9eed3c5"
-    And the git revision of module "stdlib" should be "a3c600d5f277f0c9d91c98ef67daf7efc9eed3c5"
+    And the file "Puppetfile.lock" should contain "c0b5ce3b015db9f50d486040c16d8de56c6b4991"
+    And the git revision of module "stdlib" should be "c0b5ce3b015db9f50d486040c16d8de56c6b4991"
     When I run `librarian-puppet update --verbose`
     Then the exit status should be 0
     And a directory named "modules/stdlib" should exist
     And the file "modules/stdlib" should have the same inode and ctime as before
-    And the file "Puppetfile.lock" should contain "a3c600d5f277f0c9d91c98ef67daf7efc9eed3c5"
-    And the git revision of module "stdlib" should be "a3c600d5f277f0c9d91c98ef67daf7efc9eed3c5"
+    And the file "Puppetfile.lock" should contain "c0b5ce3b015db9f50d486040c16d8de56c6b4991"
+    And the git revision of module "stdlib" should be "c0b5ce3b015db9f50d486040c16d8de56c6b4991"

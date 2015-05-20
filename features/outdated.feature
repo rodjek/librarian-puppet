@@ -43,7 +43,7 @@ Feature: cli/outdated
       remote: https://github.com/rodjek/librarian-puppet.git
       path: features/examples/test
       ref: master
-      sha: 517beed403cfe3b2b61598975d8cecd27c665add
+      sha: 10fdf98190a7a22e479628b3616f17f48a857e81
       specs:
         test (0.0.1)
           puppetlabs/stdlib (>= 0)

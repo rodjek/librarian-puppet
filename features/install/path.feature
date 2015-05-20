@@ -8,8 +8,8 @@ Feature: cli/install/path
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/with_puppetfile/Modulefile" should match /name *'librarian-with_puppetfile'/
-    And the file "modules/test/Modulefile" should match /name *'librarian-test'/
+    And the file "modules/with_puppetfile/metadata.json" should match /"name": "librarian-with_puppetfile"/
+    And the file "modules/test/metadata.json" should match /"name": "librarian-test"/
 
   Scenario: Install a module with recursive path dependencies
     Given a file named "Puppetfile" with:
@@ -19,9 +19,10 @@ Feature: cli/install/path
     When I run `librarian-puppet install`
     Then the exit status should be 0
     And the file "modules/path_dependencies/metadata.json" should match /"name": "librarian-path_dependencies"/
-    And the file "modules/test/Modulefile" should match /name *'librarian-test'/
+    And the file "modules/test/metadata.json" should match /"name": "librarian-test"/
     And a file named "modules/stdlib/metadata.json" should exist
 
+  @puppet2 @puppet3
   Scenario: Install a module with dependencies specified in a Puppetfile and Modulefile
     Given a file named "Puppetfile" with:
     """
@@ -32,6 +33,16 @@ Feature: cli/install/path
     And the file "modules/with_puppetfile/Modulefile" should match /name *'librarian-with_puppetfile_and_modulefile'/
     And the file "modules/test/Modulefile" should match /name *'maestrodev-test'/
 
+  Scenario: Install a module with dependencies specified in a Puppetfile and metadata.json
+    Given a file named "Puppetfile" with:
+    """
+    mod 'librarian/with_puppetfile', :path => '../../features/examples/with_puppetfile_and_metadata_json'
+    """
+    When I run `librarian-puppet install`
+    Then the exit status should be 0
+    And the file "modules/with_puppetfile/metadata.json" should match /"name": "librarian-with_puppetfile_and_metadata_json"/
+    And the file "modules/test/metadata.json" should match /"name": "maestrodev-test"/
+
   Scenario: Install a module from path without version
     Given a file named "Puppetfile" with:
     """
@@ -41,7 +52,7 @@ Feature: cli/install/path
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/test/Modulefile" should match /version *'0\.0\.1'/
+    And the file "modules/test/metadata.json" should match /"version": "0\.0\.1"/
     And a file named "modules/stdlib/metadata.json" should exist
 
   @spaces
@@ -53,4 +64,4 @@ Feature: cli/install/path
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/test/Modulefile" should match /name *'librarian-test'/
+    And the file "modules/test/metadata.json" should match /"name": "librarian-test"/
