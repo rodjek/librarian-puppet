@@ -17,9 +17,9 @@ module Librarian
 
       begin
         @@puppet_version = Librarian::Posix.run!(%W{puppet --version}).strip
-      rescue Librarian::Posix::CommandFailure => error
+      rescue Errno::ENOENT, Librarian::Posix::CommandFailure => error
         msg = "Unable to load puppet. Please install it using native packages for your platform (eg .deb, .rpm, .dmg, etc)."
-        msg += "\npuppet --version returned #{error.status}"
+        msg += "\npuppet --version returned #{error.status}" if error.respond_to? :status
         msg += "\n#{error.message}" unless error.message.nil?
         $stderr.puts msg
         exit 1
