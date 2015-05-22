@@ -87,8 +87,8 @@ Feature: cli/install/git
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/with_puppetfile/Modulefile" should match /name *'librarian-with_puppetfile'/
-    And the file "modules/test/Modulefile" should match /name *'librarian-test'/
+    And the file "modules/with_puppetfile/metadata.json" should match /"name": "librarian-with_puppetfile"/
+    And the file "modules/test/metadata.json" should match /"name": "librarian-test"/
 
   @puppet2 @puppet3
   Scenario: Install a module with dependencies specified in a Puppetfile and Modulefile
@@ -161,7 +161,7 @@ Feature: cli/install/git
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/test/Modulefile" should match /version *'0\.0\.1'/
+    And the file "modules/test/metadata.json" should match /"version": "0\.0\.1"/
     And a file named "modules/stdlib/metadata.json" should exist
 
   Scenario: Install a module from git without version
@@ -173,7 +173,7 @@ Feature: cli/install/git
     """
     When I run `librarian-puppet install`
     Then the exit status should be 0
-    And the file "modules/test/Modulefile" should match /version *'0\.0\.1'/
+    And the file "modules/test/metadata.json" should match /"version": "0\.0\.1"/
     And a file named "modules/stdlib/metadata.json" should exist
 
   @puppet2 @puppet3
