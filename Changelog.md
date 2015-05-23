@@ -4,6 +4,7 @@
 
 ### 2.2.0
 
+ * Add support for Puppet 4
  * [Issue #296](https://github.com/rodjek/librarian-puppet/issues/296) Uninitialized constant Puppet::ModuleTool::ModulefileReader using Modulefiles in Puppet 4. Ignore those dependencies
 
 ### 2.1.1
