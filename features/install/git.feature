@@ -90,7 +90,6 @@ Feature: cli/install/git
     And the file "modules/with_puppetfile/metadata.json" should match /"name": "librarian-with_puppetfile"/
     And the file "modules/test/metadata.json" should match /"name": "librarian-test"/
 
-  @puppet2 @puppet3
   Scenario: Install a module with dependencies specified in a Puppetfile and Modulefile
     Given a file named "Puppetfile" with:
     """
@@ -131,7 +130,6 @@ Feature: cli/install/git
     When I run `librarian-puppet install`
     Then the exit status should be 0
 
-  @puppet2 @puppet3
   Scenario: Install a module using modulefile syntax
     Given a file named "Puppetfile" with:
     """
@@ -176,7 +174,6 @@ Feature: cli/install/git
     And the file "modules/test/metadata.json" should match /"version": "0\.0\.1"/
     And a file named "modules/stdlib/metadata.json" should exist
 
-  @puppet2 @puppet3
   Scenario: Install a module with mismatching Puppetfile and Modulefile
     Given a file named "Puppetfile" with:
     """

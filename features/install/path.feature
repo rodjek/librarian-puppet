@@ -22,7 +22,6 @@ Feature: cli/install/path
     And the file "modules/test/metadata.json" should match /"name": "librarian-test"/
     And a file named "modules/stdlib/metadata.json" should exist
 
-  @puppet2 @puppet3
   Scenario: Install a module with dependencies specified in a Puppetfile and Modulefile
     Given a file named "Puppetfile" with:
     """

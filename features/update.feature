@@ -127,7 +127,6 @@ Feature: cli/update
     Then the exit status should be 0
     And the git revision of module "stdlib" should be "c0b5ce3b015db9f50d486040c16d8de56c6b4991"
 
-  @puppet2 @puppet3
   Scenario: Updating a module with invalid versions in git
     Given a file named "Puppetfile" with:
     """
