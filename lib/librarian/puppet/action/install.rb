@@ -1,3 +1,5 @@
+require 'librarian/action/install'
+
 module Librarian
   module Puppet
     module Action

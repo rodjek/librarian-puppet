@@ -1,5 +1,0 @@
-name 'librarian-with_puppetfile'
-version '0.0.1'
-
-author 'librarian'
-license 'Apache License, Version 2.0'

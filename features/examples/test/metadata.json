@@ -1,0 +1,11 @@
+{
+  "name": "librarian-test",
+  "version": "0.0.1",
+  "license": "Apache 2.0",
+  "dependencies": [
+    {
+      "name": "puppetlabs/stdlib",
+      "version_requirement": ">= 0"
+    }
+  ]
+}

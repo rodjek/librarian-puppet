@@ -1,0 +1,11 @@
+{
+  "name": "librarian-with_puppetfile_and_metadata_json",
+  "version": "0.0.1",
+  "license": "Apache 2.0",
+  "dependencies": [
+    {
+      "name": "maestrodev/test",
+      "version_requirement": ">= 0"
+    }
+  ]
+}

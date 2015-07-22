@@ -27,6 +27,14 @@ Then /^the file "([^"]*)" should not have the same inode or ctime as before$/ do
     end
 end
 
+Then /^the git revision of module "([^"]*)" should be "([0-9a-f]*)"$/ do |module_name, rev|
+    cd("modules/#{module_name}")
+    cmd = "git rev-parse HEAD"
+    run_simple(cmd)
+    assert_exact_output(rev, output_from(cmd).strip)
+    cd("../..")
+end
+
 Given /^I wait for (\d+) seconds?$/ do |n|
   sleep(n.to_i)
 end

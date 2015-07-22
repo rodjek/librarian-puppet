@@ -10,6 +10,8 @@ notifications:
     - carlos@apache.org
     - tim@github.com
 env:
+  - PUPPET_VERSION="~> 4.1.0"
+  - PUPPET_VERSION="~> 4.0.0"
   - PUPPET_VERSION="~> 3.7.0"
   - PUPPET_VERSION="~> 3.6.0"
   - PUPPET_VERSION="~> 3.5.0"
