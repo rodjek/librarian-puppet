@@ -1,5 +1,5 @@
 Then /^the file "([^"]*)" should have an inode and ctime$/ do |file|
-    prep_for_fs_check do
+    cd('.') do
         stat = File.stat(File.expand_path(file))
         @before_inode = { 'ino' => stat.ino, 'ctime' => stat.ctime }
         expect(@before_inode['ino']).not_to eq nil
@@ -8,7 +8,7 @@ Then /^the file "([^"]*)" should have an inode and ctime$/ do |file|
 end
 
 Then /^the file "([^"]*)" should have the same inode and ctime as before$/ do |file|
-    prep_for_fs_check do
+    cd('.') do
         stat = File.stat(File.expand_path(file))
         expect(stat.ino).to eq @before_inode['ino']
         expect(stat.ctime).to eq @before_inode['ctime']
@@ -16,7 +16,7 @@ Then /^the file "([^"]*)" should have the same inode and ctime as before$/ do |f
 end
 
 Then /^the file "([^"]*)" should not have the same inode or ctime as before$/ do |file|
-    prep_for_fs_check do
+    cd('.') do
         stat = File.stat(File.expand_path(file))
 
         begin
