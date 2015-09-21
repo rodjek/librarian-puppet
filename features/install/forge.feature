@@ -1,3 +1,4 @@
+@announce
 Feature: cli/install/forge
   Puppet librarian needs to install modules from the Puppet Forge
 
