@@ -16,9 +16,7 @@ module Librarian
           end
 
           def get_versions
-            get_module.releases.map do |r|
-              r.version unless r.deleted_at != nil
-            end.compact
+            get_module.releases.select{|r| r.deleted_at.nil?}.map{|r| r.version}
           end
 
           def dependencies(version)
