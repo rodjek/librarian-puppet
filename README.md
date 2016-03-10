@@ -1,5 +1,7 @@
 # Librarian-puppet
 
+# NOTE This project has moved to https://github.com/voxpupuli/librarian-puppet
+
 [![Build Status](https://travis-ci.org/rodjek/librarian-puppet.png?branch=master)](https://travis-ci.org/rodjek/librarian-puppet)
 
 ## Introduction
